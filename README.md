@@ -6,6 +6,6 @@ We who built this solution:
 Andreas Galistel\
 add name here\
 add name here\
-add name here\
+add name here
 
 ## Project Management System for an NGO
