@@ -20,12 +20,12 @@ public class Start {
         
         try{
             idb = new InfDB("ngo_2024", "3306", "dbAdmin2024", "dbAdmin2024PW");
+            new Inloggning(idb).setVisible(true);
         }
         catch(InfException e){
             System.out.println("Databaskopplingen misslyckades");
             JOptionPane.showMessageDialog(null, "Databaskopplingen misslyckades. " + e.getMessage());
         }
         
-        new Inloggning(idb).setVisible(true);
     }
 }
