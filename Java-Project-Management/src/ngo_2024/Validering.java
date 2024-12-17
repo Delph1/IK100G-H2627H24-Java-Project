@@ -14,14 +14,15 @@ import javax.swing.JOptionPane;
 public class Validering {
 
     public static boolean emailKontroll(JTextField email) {
+        
         boolean resultat = true;
 
-        // Kontrolerar här om email är tom, och är den det startas en textruta och ifsatsen avslutas
+        // Kontrolerar här om email är tom, och är den det startas en textruta och ifsatsen avslutas.
         if (email.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Fältet är tomt");
             resultat = false;
 
-        } // Om mailen inte är tom kontrolleras den här med Regex om det är en epost, dvs innehåller ett @ och efter det en punkt
+        } // Om mailen inte är tom kontrolleras den här med Regex om det är en epost, dvs innehåller ett @ och efter det en punkt.
         else if (!email.getText().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[a-zA-Z]{2,6}$")) {
 
             JOptionPane.showMessageDialog(null, "Ogiltig e-postadress");
