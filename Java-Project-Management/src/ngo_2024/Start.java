@@ -19,7 +19,7 @@ public class Start {
     public static void main (String[] args){
         
         try{
-            idb = new InfDB("ngo_2024", "3306", "root", "hejsan123");
+            idb = new InfDB("ngo_2024", "3306", "dbAdmin2024", "dbAdmin2024PW");
         }
         catch(InfException e){
             System.out.println("Databaskopplingen misslyckades");
