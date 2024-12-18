@@ -5,7 +5,7 @@ A system development project in Java. The first part of the course was to identi
 We who built this solution:
 Andreas Galistel\
 Fredrik Magnusson\
-add name here\
-add name here
+Märta Sjöblom\
+Claudia Kourieh
 
 ## Project Management System for an NGO
