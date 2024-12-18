@@ -46,6 +46,8 @@ public class Inloggning extends javax.swing.JFrame {
 
         lblLösenord.setText("Lösenord:");
 
+        txtAnvändarnamn.setToolTipText("");
+
         lblMeddelande.setForeground(new java.awt.Color(255, 51, 51));
         lblMeddelande.setText("Felaktigt användarnamn eller lösenord.");
 
@@ -65,17 +67,17 @@ public class Inloggning extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblMeddelande)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblAnvändarnamn)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtAnvändarnamn))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(103, 103, 103)
                         .addComponent(btnLoggaIn))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblLösenord)
                         .addGap(51, 51, 51)
-                        .addComponent(txtLösenord, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(135, Short.MAX_VALUE))
+                        .addComponent(txtLösenord, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblAnvändarnamn)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtAnvändarnamn)))
+                .addContainerGap(117, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -103,6 +105,8 @@ public class Inloggning extends javax.swing.JFrame {
         String användarnamn = txtAnvändarnamn.getText();
         String lösenord = txtLösenord.getText();
         
+        if (Validering.emailKontroll(txtAnvändarnamn)) {
+        
         try{
             String sqlfråga = "Select losenord FROM anstalld WHERE epost = '" + användarnamn + "'";
             String query = idb.fetchSingle(sqlfråga);
@@ -115,11 +119,12 @@ public class Inloggning extends javax.swing.JFrame {
             {
                 lblMeddelande.setVisible(true);
             }
-        }
+        }           
+        
         catch(InfException e){
             System.out.println(e.getMessage());
         }
-
+        }
     }//GEN-LAST:event_btnLoggaInActionPerformed
 
 
