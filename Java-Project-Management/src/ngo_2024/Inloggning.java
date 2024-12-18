@@ -75,7 +75,7 @@ public class Inloggning extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("Handläggare");
+        jButton3.setText("Fyld med skräp");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -112,7 +112,7 @@ public class Inloggning extends javax.swing.JFrame {
                                 .addComponent(jButton2)
                                 .addGap(33, 33, 33)
                                 .addComponent(jButton3)))))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
