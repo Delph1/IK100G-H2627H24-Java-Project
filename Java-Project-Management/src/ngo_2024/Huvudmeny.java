@@ -4,6 +4,7 @@
  */
 package ngo_2024;
 
+import javax.swing.Box;
 import oru.inf.InfDB;
 import oru.inf.InfException;
 /**
@@ -34,35 +35,213 @@ public class Huvudmeny extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenu1 = new javax.swing.JMenu();
+        jMenu7 = new javax.swing.JMenu();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         lblInloggadAnvändare = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        PMenu = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
+        jMenu5 = new javax.swing.JMenu();
+        jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem9 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem10 = new javax.swing.JMenuItem();
+        jMenuItem11 = new javax.swing.JMenuItem();
+        jMenuItem12 = new javax.swing.JMenuItem();
+        jMenuItem13 = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        jMenuItem14 = new javax.swing.JMenuItem();
+        jMenuItem16 = new javax.swing.JMenuItem();
+        jMenuItem15 = new javax.swing.JMenuItem();
+        jMenuItem17 = new javax.swing.JMenuItem();
+        jMenuItem18 = new javax.swing.JMenuItem();
+        jMenu6 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
+
+        jMenu1.setText("jMenu1");
+
+        jMenu7.setText("jMenu7");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        jLabel1.setText("Inloggad användare");
+
         lblInloggadAnvändare.setText("inloggadAnvändare");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(lblInloggadAnvändare))
+                .addContainerGap(113, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblInloggadAnvändare)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        PMenu.setText("Mina uppgifter");
+
+        jMenuItem1.setText("Mina uppgifter");
+        PMenu.add(jMenuItem1);
+
+        jMenuItem4.setText("Logga ut");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        PMenu.add(jMenuItem4);
+
+        jMenuBar1.add(PMenu);
+
+        jMenu2.setText("Projekt");
+
+        jMenuItem2.setText("Mina projekt");
+        jMenu2.add(jMenuItem2);
+
+        jMenuItem5.setText("Alla projekt");
+        jMenu2.add(jMenuItem5);
+
+        jMenuItem6.setText("Projektpartners");
+        jMenu2.add(jMenuItem6);
+
+        jMenuItem7.setText("Hållbarhetsmål");
+        jMenu2.add(jMenuItem7);
+
+        jMenuBar1.add(jMenu2);
+
+        jMenu5.setText("Personal");
+
+        jMenuItem8.setText("Personal på min avdelning");
+        jMenu5.add(jMenuItem8);
+
+        jMenuItem9.setText("Handläggare");
+        jMenu5.add(jMenuItem9);
+
+        jMenuBar1.add(jMenu5);
+
+        jMenu3.setText("Projektledning");
+
+        jMenuItem10.setText("Mina projekt");
+        jMenu3.add(jMenuItem10);
+
+        jMenuItem11.setText("Ändra partners för projekt");
+        jMenu3.add(jMenuItem11);
+
+        jMenuItem12.setText("Ändra handläggare");
+        jMenu3.add(jMenuItem12);
+
+        jMenuItem13.setText("Statestik");
+        jMenu3.add(jMenuItem13);
+
+        jMenuBar1.add(jMenu3);
+
+        jMenu4.setText("Administration");
+
+        jMenuItem14.setText("Personal");
+        jMenu4.add(jMenuItem14);
+
+        jMenuItem16.setText("Avdelningar");
+        jMenu4.add(jMenuItem16);
+
+        jMenuItem15.setText("Projekt");
+        jMenu4.add(jMenuItem15);
+
+        jMenuItem17.setText("Partners");
+        jMenu4.add(jMenuItem17);
+
+        jMenuItem18.setText("Hållbarhetsmål");
+        jMenu4.add(jMenuItem18);
+
+        jMenuBar1.add(jMenu4);
+
+        jMenu6.setText("Hjälp");
+        jMenu6.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+
+        jMenuItem3.setText("Om");
+        jMenu6.add(jMenuItem3);
+
+        jMenuBar1.add(jMenu6);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(141, 141, 141)
-                .addComponent(lblInloggadAnvändare)
-                .addContainerGap(155, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(376, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(101, 101, 101)
-                .addComponent(lblInloggadAnvändare)
-                .addContainerGap(183, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(409, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+     new Inloggning(idb).setVisible (true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu PMenu;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu6;
+    private javax.swing.JMenu jMenu7;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
+    private javax.swing.JMenuItem jMenuItem11;
+    private javax.swing.JMenuItem jMenuItem12;
+    private javax.swing.JMenuItem jMenuItem13;
+    private javax.swing.JMenuItem jMenuItem14;
+    private javax.swing.JMenuItem jMenuItem15;
+    private javax.swing.JMenuItem jMenuItem16;
+    private javax.swing.JMenuItem jMenuItem17;
+    private javax.swing.JMenuItem jMenuItem18;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblInloggadAnvändare;
     // End of variables declaration//GEN-END:variables
 }
