@@ -4,7 +4,7 @@ A system development project in Java. The first part of the course was to identi
 <!--- Ett backslash \ efter namnet ger en radbrytning -->
 We who built this solution:
 Andreas Galistel\
-add name here\
+Fredrik Magnusson\
 add name here\
 add name here
 
