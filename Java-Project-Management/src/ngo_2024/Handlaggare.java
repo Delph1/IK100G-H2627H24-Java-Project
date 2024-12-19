@@ -14,7 +14,7 @@ import oru.inf.InfException;
  *
  * @author andre
  */
-public class Handlaggare extends Anstalld {
+public class Handlaggare {
     
     private InfDB idb;
     private String ansvarighetsomraden;
