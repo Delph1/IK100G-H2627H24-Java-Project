@@ -75,4 +75,31 @@ public class Handlaggare extends Anstalld {
         }
         return allaProjekt;
     }
+    
+    /**
+     * 
+     * Nedan följer set-metoder för Handläggare.
+     * 
+     */
+    
+    /**
+     * Tilldela en mentor till handläggare
+     * @param mentor 
+     */
+    public void setMentor(int mentor)
+    {
+        this.mentor = mentor;
+        
+        try
+        {
+            String sqlfråga = "UPDATE handlaggare SET mentor = " + mentor + " WHERE aid = " + aid; 
+            idb.update(sqlfråga);
+        }
+        catch(InfException e)
+        {
+            System.out.println("Kunde inte tilldela mentor för handläggare.");
+            JOptionPane.showMessageDialog(null, "Kunde inte tilldela mentor för handläggare. \n" + e.getMessage());
+        }
+    }
+ 
 }
