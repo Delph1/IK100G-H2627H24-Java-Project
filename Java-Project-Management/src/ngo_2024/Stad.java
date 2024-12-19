@@ -81,7 +81,7 @@ public class Stad {
         ArrayList<HashMap<String, String>> allaStäder = new ArrayList<>();
         try
         {
-            String sqlfråga = "SELECT * FROM STAD";
+            String sqlfråga = "SELECT * FROM stad";
             allaStäder = idb.fetchRows(sqlfråga);
         }
         catch(InfException e)
@@ -102,7 +102,7 @@ public class Stad {
         HashMap<String, String> enStad = new HashMap<>();
         try
         {
-            String sqlfråga = "SELECT * FROM STAD WHERE sid = '" + sid + "'";
+            String sqlfråga = "SELECT * FROM stad WHERE sid = '" + sid + "'";
             enStad = idb.fetchRow(sqlfråga); 
         }
         catch(InfException e)
