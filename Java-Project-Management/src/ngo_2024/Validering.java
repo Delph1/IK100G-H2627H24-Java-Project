@@ -4,6 +4,8 @@
  */
 package ngo_2024;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import javax.swing.JTextField;
 import javax.swing.JOptionPane;
 
@@ -36,6 +38,74 @@ public class Validering {
             JOptionPane.showMessageDialog(null, "Fältet är tomt.\nVar vänlig fyll i fältet.");
             resultat = false;           
         }       return resultat;
-                    
-}
+    }
+    
+    /**
+     * Kontrollerar fält för inmatning mot korrekt datumformatering enligt yyyy-MM-dd
+     * @param param
+     * @return 
+     */
+    public static boolean datumKontroll(JTextField param) 
+    {
+        boolean resultat = true;
+
+        // Kontrolerar här om ett fält har korrekt datumformatering enligt yyyy-MM-dd
+        try {
+            LocalDate ld = LocalDate.parse(param.getText());
+        }
+        catch (DateTimeParseException e) {
+            JOptionPane.showMessageDialog(null, "Felaktigt datumformat. \nVar vänlig fyll i enligt ÅÅÅÅ-MM-DD");
+            resultat = false;           
+        }
+        return resultat;
+    }
+    
+    /**
+     * Tar ett datum att utgå från, ex genom SQL-query, för att jämföra så att
+     * det nyinmatade datumet är samtidigt eller tidigare
+     * 
+     * Ingen kontroll av korrekt formatering sker, använd gärna i kombination med metoden .datumKontroll() för fält
+     * 
+     * @param slutDatum
+     * @param param
+     * @return resultat boolean
+     */
+    public static boolean datumFöreKontroll (String slutDatum, JTextField param)
+    {
+        boolean resultat = true;
+        LocalDate slut = LocalDate.parse(slutDatum);
+        LocalDate start = LocalDate.parse(param.getText());
+        
+        if(start.isAfter(slut)) {
+            resultat = false;
+            JOptionPane.showMessageDialog(null, "Startdatumet är senare än slutdatumet.\n" +
+                    "Var vänlig fyll i ett startdatum som är samma dag eller tidigare än slutdatum");
+        }
+        return resultat;
+    }
+    /**
+     * Tar ett datum att utgå från, ex genom SQL-query, för att jämföra så att
+     * det nyinmatade datumet är samtidigt eller senare
+     * 
+     * Ingen kontroll av korrekt formatering sker, använd gärna i kombination med metoden .datumKontroll() för fält
+     * 
+     * @param startDatum
+     * @param param
+     * @return resultat boolean
+     */
+    public static boolean datumEfterKontroll(String startDatum, JTextField param)
+    {
+        boolean resultat = true;
+        LocalDate start = LocalDate.parse(startDatum);
+        LocalDate slut = LocalDate.parse(param.getText());
+        
+        if(slut.isBefore(start)) {
+            resultat = false;
+            JOptionPane.showMessageDialog(null, "Slutdatumet är före startdatumet. \n" +
+                    "Var vänlig fyll i ett slutdatum som är samma dag eller senare än startdatum");
+        }
+        return resultat;
+    }
+            
+            
 }
