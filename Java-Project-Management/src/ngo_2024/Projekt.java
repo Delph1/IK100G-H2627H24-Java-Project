@@ -6,7 +6,7 @@ package ngo_2024;
 
 import oru.inf.InfDB;
 import oru.inf.InfException;
-import java.time.LocalDate;
+import java.util.HashMap;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,15 +19,15 @@ public class Projekt {
     private int pid;
     private String projektNamn;
     private String beskrivning;
-    private LocalDate startDatum;
-    private LocalDate slutDatum;
+    private String startDatum;
+    private String slutDatum;
     private double kostnad;
     private String status;
     private String prioritet;
     private int projektChef; //OBS se konstuktor och metoder där chef ska ändra typ från bara int till typ Anställd/Handläggare
     private int land;
     
-    public Projekt(InfDB idb, String projektNamn, String beskrivning, LocalDate startDatum, LocalDate slutDatum, double kostnad, String status, String prioritet, int projektChef, Land land) 
+    public Projekt(InfDB idb, String projektNamn, String beskrivning, String startDatum, String slutDatum, double kostnad, String status, String prioritet, int projektChef, Land land) 
     {
         //OBS projektChef ska ändra typ från bara int till typ Anställd/Handläggare 
         this.idb = idb;
@@ -87,7 +87,7 @@ public class Projekt {
      * Returnerar datum i formatet YYYY-MM-DD
      * @return startDatum 
      */
-    public LocalDate getStartDatum()
+    public String getStartDatum()
     {
         return startDatum;
     }
@@ -96,7 +96,7 @@ public class Projekt {
      * Returnerar datum i formatet YYYY-MM-DD
      * @return slutDatum
      */
-    public LocalDate getSlutDatum()
+    public String getSlutDatum()
     {
         return slutDatum;
     }
@@ -146,6 +146,23 @@ public class Projekt {
         return land;
     }
     
+    public HashMap<String,String> getEttProjekt(int pid)
+    {
+        HashMap<String, String> ettProjekt = new HashMap<>();
+        try
+        {
+            String sqlfråga = "SELECT * FROM projekt WHERE pid = '" + pid + "'";
+            ettProjekt = idb.fetchRow(sqlfråga); 
+        }
+        catch(InfException e)
+        {
+            System.out.println("Kunde inte hämta projekt. \n" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt.");
+            ettProjekt = null;
+        }
+        return ettProjekt;
+    }
+    
     /**
      * 
      * @param projektNamn 
@@ -186,10 +203,10 @@ public class Projekt {
     }
     
     /**
-     * Datum i formatet YYYY-MM-DD
+     * Datum i formatet YYYY-MM-DD, använd gärna med Validering.datumKontroll() för textfält
      * @param startDatum 
      */
-    public void setStartDatum(LocalDate startDatum)
+    public void setStartDatum(String startDatum)
     {
         this.startDatum = startDatum;
         
@@ -206,10 +223,10 @@ public class Projekt {
     }
     
     /**
-     * Datum i formatet YYYY-MM-DD
+     * Datum i formatet YYYY-MM-DD, använd gärna med Validering.datumKontroll() för textfält
      * @param slutDatum 
      */
-    public void setSlutDatum(LocalDate slutDatum)
+    public void setSlutDatum(String slutDatum)
     {
         this.slutDatum = slutDatum;
         
