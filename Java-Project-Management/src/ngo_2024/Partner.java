@@ -48,8 +48,8 @@ public class Partner {
             String dbPid = idb.fetchSingle(sqlPid);
             this.pid = Integer.parseInt(dbPid);
         } catch (InfException e) {
-            System.out.println("Databasen har inte uppdaterats.");
-            JOptionPane.showMessageDialog(null, "Databasen har inte uppdaterats. \n" + e.getMessage());
+            System.out.println("Databasen har inte uppdaterats.\n" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Databasen har inte uppdaterats.");
         }
     }
     
@@ -159,8 +159,8 @@ public class Partner {
         }
         catch(InfException e)
         {
-            System.out.println("Kunde inte hämta partners.");
-            JOptionPane.showMessageDialog(null, "Kunde inte hämta partners. \n" + e.getMessage());
+            System.out.println("Kunde inte hämta partners. \n" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Kunde inte hämta partners.");
             allaPartner = null;
         }
         return allaPartner;
@@ -172,8 +172,6 @@ public class Partner {
      */
     public void setNamn(String namn)
     {
-        //if (Validering.isEmpty(namn))
-            
         this.namn = namn;
         try
         {
@@ -182,8 +180,8 @@ public class Partner {
         }
         catch(InfException e)
         {
-            System.out.println("Databasen har inte uppdaterats.");
-            JOptionPane.showMessageDialog(null, "Databasen har inte uppdaterats. \n" + e.getMessage());
+            System.out.println("Databasen har inte uppdaterats. \n" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Databasen har inte uppdaterats.");
         }        
     }
     
@@ -193,8 +191,6 @@ public class Partner {
      */
     public void setKontaktPerson(String kontaktPerson)
     {
-        //if (Validering.isEmpty(kontaktPerson))
-
         this.kontaktPerson = kontaktPerson;
         try {
         String sqlfråga = "UPDATE partner WHERE pid = " + pid + " SET kontaktPerson = '" + kontaktPerson + "'";
@@ -202,8 +198,8 @@ public class Partner {
         }
         catch(InfException e)
         {
-            System.out.println("Databasen har inte uppdaterats.");
-            JOptionPane.showMessageDialog(null, "Databasen har inte uppdaterats. \n" + e.getMessage());
+            System.out.println("Databasen har inte uppdaterats. \n" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Databasen har inte uppdaterats.");
         }    
     }
     
@@ -213,8 +209,6 @@ public class Partner {
      */
     public void setKontaktEpost(String kontaktEpost)
     {
-        //if (Validering.isEmpty(kontaktEpost))
-
         this.kontaktEpost = kontaktEpost;
         try {
         String sqlfråga = "UPDATE partner WHERE pid = " + pid + " SET kontaktEpost = '" + kontaktEpost + "'";
@@ -222,8 +216,8 @@ public class Partner {
         }
         catch(InfException e)
         {
-            System.out.println("Databasen har inte uppdaterats.");
-            JOptionPane.showMessageDialog(null, "Databasen har inte uppdaterats. \n" + e.getMessage());
+            System.out.println("Databasen har inte uppdaterats. \n" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Databasen har inte uppdaterats.");
         }    
     }
     
@@ -233,8 +227,6 @@ public class Partner {
      */
     public void setTelefon(String telefon)
     {
-        //if (Validering.isEmpty(telefon))
-
         this.telefon = telefon;
         try {
         String sqlfråga = "UPDATE partner WHERE pid = " + pid + " SET telefon = '" + telefon + "'";
@@ -242,8 +234,8 @@ public class Partner {
         }
         catch(InfException e)
         {
-            System.out.println("Databasen har inte uppdaterats.");
-            JOptionPane.showMessageDialog(null, "Databasen har inte uppdaterats. \n" + e.getMessage());
+            System.out.println("Databasen har inte uppdaterats. \n" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Databasen har inte uppdaterats.");
         }    
     }
     
@@ -253,8 +245,6 @@ public class Partner {
      */
     public void setAdress(String adress)
     {
-        //if (Validering.isEmpty(adress))
-
         this.adress = adress;
         try {
         String sqlfråga = "UPDATE partner WHERE pid = " + pid + " SET adress = '" + adress + "'";
@@ -262,15 +252,13 @@ public class Partner {
         }
         catch(InfException e)
         {
-            System.out.println("Databasen har inte uppdaterats.");
-            JOptionPane.showMessageDialog(null, "Databasen har inte uppdaterats. \n" + e.getMessage());
+            System.out.println("Databasen har inte uppdaterats. \n" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Databasen har inte uppdaterats.");
         }    
     }
     
     public void setBranch(String branch)
     {
-        //if (Validering.isEmpty(branch))
-
         this.branch = branch;
         try {
         String sqlfråga = "UPDATE partner WHERE pid = " + pid + " SET branch = '" + branch + "'";
@@ -278,8 +266,8 @@ public class Partner {
         }
         catch(InfException e)
         {
-            System.out.println("Databasen har inte uppdaterats.");
-            JOptionPane.showMessageDialog(null, "Databasen har inte uppdaterats. \n" + e.getMessage());
+            System.out.println("Databasen har inte uppdaterats. \n" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Databasen har inte uppdaterats.");
         }    
     }
     
@@ -296,8 +284,8 @@ public class Partner {
         }
         catch(InfException e)
         {
-            System.out.println("Databasen har inte uppdaterats.");
-            JOptionPane.showMessageDialog(null, "Databasen har inte uppdaterats. \n" + e.getMessage());
+            System.out.println("Databasen har inte uppdaterats. \n" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Databasen har inte uppdaterats.");
         }    
     }
     
@@ -307,14 +295,14 @@ public class Partner {
      */
     public void taBortPartner(int pid)
     {
-        //if (Validering.isInt(pid) kontrollera att int
         try {
             String sqlFråga = "delete from partner where pid = '" + pid + "'";
             idb.delete(sqlFråga);
         }
         catch (InfException e) 
         {
-            JOptionPane.showMessageDialog(null, "Partner har inte tagits bort. \n" + e.getMessage());
+            System.out.println("Databasen har inte uppdaterats. \n" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Partner har inte tagits bort.");
         }
     }
 }
