@@ -48,6 +48,15 @@ public class Land {
     }
     
     /**
+     * Returnerar information om id för ett land
+     * @return lid
+     */
+    public int getLid()
+    {
+        return lid;
+    }
+    
+    /**
      * Returnerar information om namn för ett land
      * @return namn
      */
