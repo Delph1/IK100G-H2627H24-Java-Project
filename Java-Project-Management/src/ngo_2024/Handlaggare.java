@@ -11,7 +11,7 @@ import oru.inf.InfDB;
 import oru.inf.InfException;
 
 /**
- * Klass för Handläggar, en subklass av Anställd.
+ * Klass för Handläggare, en subklass av Anställd.
  * @author Andreas Galistel
  */
 public class Handlaggare {
