@@ -67,7 +67,7 @@ public class Projekt {
         try {
             String sqlfråga = "INSERT INTO projekt (projektnamn, beskrivning, startdatum, slutdatum, kostnad, status, prioritet, projektchef, land) values ('"
                     + projektNamn + "', '" + beskrivning + "', '" + startDatum + "', '" + slutDatum + "', '" + kostnad + "', '" + status
-                    + "', '" + prioritet+ "', '" + projektChef+ "', '" + land + "')";
+                    + "', '" + prioritet+ "', " + projektChef + ", " + land + ")";
             idb.insert(sqlfråga);
             
             String sqlPid = "select pid from projekt where projektnamn = '" + projektNamn + "'";
@@ -97,7 +97,7 @@ public class Projekt {
     {
         if (projektNamn == null) {
             try {
-                String sqlFråga = "SELECT projektnamn FROM projekt WHERE pid = '" + pid + "'";
+                String sqlFråga = "SELECT projektnamn FROM projekt WHERE pid = " + pid;
                 String dbProjektNamn = idb.fetchSingle(sqlFråga);
                 return dbProjektNamn;
             }
@@ -118,7 +118,7 @@ public class Projekt {
     {
         if (beskrivning == null) {
             try {
-                String sqlFråga = "SELECT beskrivning FROM projekt WHERE pid = '" + pid + "'";
+                String sqlFråga = "SELECT beskrivning FROM projekt WHERE pid = " + pid;
                 String dbBeskrivning = idb.fetchSingle(sqlFråga);
                 return dbBeskrivning;
             }
@@ -139,7 +139,7 @@ public class Projekt {
     {
         if (startDatum == null) {
             try {
-                String sqlFråga = "SELECT startdatum FROM projekt WHERE pid = '" + pid + "'";
+                String sqlFråga = "SELECT startdatum FROM projekt WHERE pid = " + pid;
                 String dbStartDatum = idb.fetchSingle(sqlFråga);
                 return dbStartDatum;
             }
@@ -159,7 +159,7 @@ public class Projekt {
     {
         if (slutDatum == null) {
             try {
-                String sqlFråga = "SELECT slutdatum FROM projekt WHERE pid = '" + pid + "'";
+                String sqlFråga = "SELECT slutdatum FROM projekt WHERE pid = " + pid;
                 String dbSlutDatum = idb.fetchSingle(sqlFråga);
                 return dbSlutDatum;
             }
@@ -180,7 +180,7 @@ public class Projekt {
     {
         if (kostnad == 0) {
             try {
-                String sqlFråga = "SELECT kostnad FROM projekt WHERE pid = '" + pid + "'";
+                String sqlFråga = "SELECT kostnad FROM projekt WHERE pid = " + pid;
                 double dbkostnad = Double.parseDouble(idb.fetchSingle(sqlFråga));
                 return dbkostnad;
             }
@@ -201,7 +201,7 @@ public class Projekt {
     {
         if (status == null) {
             try {
-                String sqlFråga = "SELECT status FROM projekt WHERE pid = '" + pid + "'";
+                String sqlFråga = "SELECT status FROM projekt WHERE pid = " + pid;
                 String dbStatus = idb.fetchSingle(sqlFråga);
                 return dbStatus;
             }
@@ -222,7 +222,7 @@ public class Projekt {
     {
         if (prioritet == null) {
             try {
-                String sqlFråga = "SELECT prioritet FROM projekt WHERE pid = '" + pid + "'";
+                String sqlFråga = "SELECT prioritet FROM projekt WHERE pid = " + pid;
                 String dbPrioritet = idb.fetchSingle(sqlFråga);
                 return dbPrioritet;
             }
@@ -243,7 +243,7 @@ public class Projekt {
     {
         if (projektChef == 0) {
             try {
-                String sqlFråga = "SELECT projektchef FROM projekt WHERE pid = '" + pid + "'";
+                String sqlFråga = "SELECT projektchef FROM projekt WHERE pid = " + pid;
                 int dbProjektChef = Integer.parseInt(idb.fetchSingle(sqlFråga));
                 return dbProjektChef;
             }
@@ -263,7 +263,7 @@ public class Projekt {
     {
         if (land == 0) {
             try {
-                String sqlFråga = "SELECT land FROM projekt WHERE pid = '" + pid + "'";
+                String sqlFråga = "SELECT land FROM projekt WHERE pid = " + pid;
                 int dbLand = Integer.parseInt(idb.fetchSingle(sqlFråga));
                 return dbLand;
             }
@@ -285,7 +285,7 @@ public class Projekt {
         HashMap<String, String> ettProjekt = new HashMap<>();
         try
         {
-            String sqlfråga = "SELECT * FROM projekt WHERE pid = '" + pid + "'";
+            String sqlfråga = "SELECT * FROM projekt WHERE pid = " + pid;
             ettProjekt = idb.fetchRow(sqlfråga); 
         }
         catch(InfException e)
@@ -335,7 +335,7 @@ public class Projekt {
         try{
             String sqlfråga = "INSERT INTO projekt (projektnamn, beskrivning, startdatum, slutdatum, kostnad, status, prioritet, projektchef, land) values ('"
                     + projektNamn + "', '" + beskrivning + "', '" + startDatum + "', '" + slutDatum + "', '" + kostnad + "', '" + status
-                    + "', '" + prioritet+ "', '" + projektChef + "', '" + land + "')";
+                    + "', '" + prioritet+ "', " + projektChef + ", " + land + ")";
             idb.insert(sqlfråga);
             JOptionPane.showMessageDialog(null, "Nytt projekt tillagt");
         }
@@ -430,7 +430,7 @@ public class Projekt {
     {
         try
         {
-            String sqlfråga = "UPDATE projekt WHERE pid = " + pid + " SET kostnad = '" + kostnad + "'";
+            String sqlfråga = "UPDATE projekt WHERE pid = " + pid + " SET kostnad = " + kostnad;
             idb.update(sqlfråga);
         }
         catch(InfException e)
@@ -487,7 +487,7 @@ public class Projekt {
     {
         try
         {
-            String sqlfråga = "UPDATE projekt WHERE pid = " + pid + " SET projektchef = '" + projektChef + "'";
+            String sqlfråga = "UPDATE projekt WHERE pid = " + pid + " SET projektchef = " + projektChef;
             idb.update(sqlfråga);
         }
         catch(InfException e)
@@ -506,7 +506,7 @@ public class Projekt {
     {
         try
         {
-            String sqlfråga = "UPDATE projekt WHERE pid = " + pid + " SET land = '" + land + "'";
+            String sqlfråga = "UPDATE projekt WHERE pid = " + pid + " SET land = " + land;
             idb.update(sqlfråga);
         }
         catch(InfException e)
