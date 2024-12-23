@@ -146,13 +146,14 @@ public class Stad {
     
     /**
      * Metod för att uppdatera land för en Stad
-     * @param land 
+     * @param sid
+     * @param lid 
      */
-    public void setLand(int sid, String land)
+    public void setLand(int sid, int lid)
     {
         try
         {
-            String sqlfråga = "UPDATE stad WHERE sid = " + sid + " SET name = '" + land + "'";
+            String sqlfråga = "UPDATE stad WHERE sid = " + sid + " SET name = " + lid;
             idb.update(sqlfråga);
         }
         catch(InfException e)
@@ -166,13 +167,13 @@ public class Stad {
     /**
      * Metod för att spara en stad i databasen.
      * @param namn
-     * @param land 
+     * @param lid 
      */
-    public void sparaStad(String namn, String land)
+    public void sparaStad(String namn, int lid)
     {
         try
         {
-            String sqlfråga = "INSERT INTO stad (namn, land) values ('" + namn + "', '" + land + "')";
+            String sqlfråga = "INSERT INTO stad (namn, land) values ('" + namn + "', " + lid + ")";
             idb.insert(sqlfråga);
         }   
         catch(InfException e)
