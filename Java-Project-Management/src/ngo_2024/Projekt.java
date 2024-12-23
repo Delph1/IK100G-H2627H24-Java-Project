@@ -4,6 +4,7 @@
  */
 package ngo_2024;
 
+import java.util.ArrayList;
 import oru.inf.InfDB;
 import oru.inf.InfException;
 import java.util.HashMap;
@@ -24,12 +25,34 @@ public class Projekt {
     private double kostnad;
     private String status;
     private String prioritet;
-    private int projektChef; //OBS se konstuktor och metoder där chef ska ändra typ från bara int till typ Anställd/Handläggare
+    private int projektChef;
     private int land;
     
-    public Projekt(InfDB idb, String projektNamn, String beskrivning, String startDatum, String slutDatum, double kostnad, String status, String prioritet, int projektChef, Land land) 
+    /**
+     * Konstruktor som endast instansierar objekt med databasparameter
+     * för användning med select-frågor
+     * @param idb 
+     */
+    public Projekt(InfDB idb)
     {
-        //OBS projektChef ska ändra typ från bara int till typ Anställd/Handläggare 
+        this.idb = idb;
+    }
+    /**
+     * Konstruktor för instansiering med alla fält ifyllda
+     * 
+     * @param idb
+     * @param projektNamn
+     * @param beskrivning
+     * @param startDatum
+     * @param slutDatum
+     * @param kostnad
+     * @param status
+     * @param prioritet
+     * @param projektChef
+     * @param land 
+     */
+    public Projekt(InfDB idb, String projektNamn, String beskrivning, String startDatum, String slutDatum, double kostnad, String status, String prioritet, int projektChef, int land) 
+    { 
         this.idb = idb;
         this.projektNamn = projektNamn;
         this.beskrivning = beskrivning;
@@ -38,13 +61,13 @@ public class Projekt {
         this.kostnad = kostnad;
         this.status = status;
         this.prioritet = prioritet;
-        this.projektChef = projektChef; //OBS ska ändra typ från bara int till typ Anställd/Handläggare 
-        this.land = land.getLid();
+        this.projektChef = projektChef; //Just nu ingen kontroll/validering om projektChef är handläggare
+        this.land = land;
         
         try {
             String sqlfråga = "INSERT INTO projekt (projektnamn, beskrivning, startdatum, slutdatum, kostnad, status, prioritet, projektchef, land) values ('"
                     + projektNamn + "', '" + beskrivning + "', '" + startDatum + "', '" + slutDatum + "', '" + kostnad + "', '" + status
-                    + "', '" + prioritet+ "', '" + projektChef+ "', '" + land.getLid() + "')";
+                    + "', '" + prioritet+ "', '" + projektChef+ "', '" + land + "')";
             idb.insert(sqlfråga);
             
             String sqlPid = "select pid from projekt where projektnamn = '" + projektNamn + "'";
@@ -56,8 +79,10 @@ public class Projekt {
         }
     }
     
+
+    
     /**
-     * 
+     * Returnmetod för instansierat objekt, ej kopplat mot databasen
      * @return pid
      */
     public int getPid()
@@ -67,28 +92,64 @@ public class Projekt {
     
     /**
      * 
+     * @param pid
      * @return projektNamn
      */
-    public String getProjektNamn()
+    public String getProjektNamn(int pid)
     {
+        if (projektNamn == null) {
+            try {
+                String sqlFråga = "SELECT projektnamn FROM projekt WHERE pid = '" + pid + "'";
+                String dbProjektNamn = idb.fetchSingle(sqlFråga);
+                return dbProjektNamn;
+            }
+            catch (InfException e) {
+                System.out.println("Kunde inte hämta från databasen" + e);
+                JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt från databasen.");
+            }
+        }
         return projektNamn;
     }
     
     /**
      * 
+     * @param pid
      * @return beskrivning
      */
-    public String getBeskrivning()
+    public String getBeskrivning(int pid)
     {
+        if (beskrivning == null) {
+            try {
+                String sqlFråga = "SELECT beskrivning FROM projekt WHERE pid = '" + pid + "'";
+                String dbBeskrivning = idb.fetchSingle(sqlFråga);
+                return dbBeskrivning;
+            }
+            catch (InfException e) {
+                System.out.println("Kunde inte hämta från databasen" + e);
+                JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt från databasen.");
+            }
+        }
         return beskrivning;
     }
     
     /**
      * Returnerar datum i formatet YYYY-MM-DD
+     * @param pid
      * @return startDatum 
      */
-    public String getStartDatum()
+    public String getStartDatum(int pid)
     {
+        if (startDatum == null) {
+            try {
+                String sqlFråga = "SELECT startdatum FROM projekt WHERE pid = '" + pid + "'";
+                String dbStartDatum = idb.fetchSingle(sqlFråga);
+                return dbStartDatum;
+            }
+            catch (InfException e) {
+                System.out.println("Kunde inte hämta från databasen" + e);
+                JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt från databasen.");
+            }
+        }
         return startDatum;
     }
     
@@ -98,42 +159,101 @@ public class Projekt {
      */
     public String getSlutDatum()
     {
+        if (slutDatum == null) {
+            try {
+                String sqlFråga = "SELECT slutdatum FROM projekt WHERE pid = '" + pid + "'";
+                String dbSlutDatum = idb.fetchSingle(sqlFråga);
+                return dbSlutDatum;
+            }
+            catch (InfException e) {
+                System.out.println("Kunde inte hämta från databasen" + e);
+                JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt från databasen.");
+            }
+        }
         return slutDatum;
     }
     
     /**
      * 
+     * @param pid
      * @return kostnad
      */
-    public double getKostnad()
+    public double getKostnad(int pid)
     {
+        if (kostnad == 0) {
+            try {
+                String sqlFråga = "SELECT kostnad FROM projekt WHERE pid = '" + pid + "'";
+                double dbkostnad = Double.parseDouble(idb.fetchSingle(sqlFråga));
+                return dbkostnad;
+            }
+            catch (InfException e) {
+                System.out.println("Kunde inte hämta från databasen" + e);
+                JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt från databasen.");
+            }
+        }
         return kostnad;
     }
     
     /**
      * 
+     * @param pid
      * @return status
      */
-    public String getStatus()
+    public String getStatus(int pid)
     {
+        if (status == null) {
+            try {
+                String sqlFråga = "SELECT status FROM projekt WHERE pid = '" + pid + "'";
+                String dbStatus = idb.fetchSingle(sqlFråga);
+                return dbStatus;
+            }
+            catch (InfException e) {
+                System.out.println("Kunde inte hämta från databasen" + e);
+                JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt från databasen.");
+            }
+        }
         return status;
     }
     
     /**
      * 
+     * @param pid
      * @return prioritet
      */
-    public String getPrioritet()
+    public String getPrioritet(int pid)
     {
+        if (prioritet == null) {
+            try {
+                String sqlFråga = "SELECT prioritet FROM projekt WHERE pid = '" + pid + "'";
+                String dbPrioritet = idb.fetchSingle(sqlFråga);
+                return dbPrioritet;
+            }
+            catch (InfException e) {
+                System.out.println("Kunde inte hämta från databasen" + e);
+                JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt från databasen.");
+            }
+        }
         return prioritet;
     }
     
     /**
      * 
+     * @param pid
      * @return projektChef
      */
-    public int getProjektChef()
+    public int getProjektChef(int pid)
     {
+        if (projektChef == 0) {
+            try {
+                String sqlFråga = "SELECT projektchef FROM projekt WHERE pid = '" + pid + "'";
+                int dbProjektChef = Integer.parseInt(idb.fetchSingle(sqlFråga));
+                return dbProjektChef;
+            }
+            catch (InfException e) {
+                System.out.println("Kunde inte hämta från databasen" + e);
+                JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt från databasen.");
+            }
+        }
         return projektChef;
     }
     
@@ -143,9 +263,25 @@ public class Projekt {
      */
     public int getLand()
     {
+        if (land == 0) {
+            try {
+                String sqlFråga = "SELECT land FROM projekt WHERE pid = '" + pid + "'";
+                int dbLand = Integer.parseInt(idb.fetchSingle(sqlFråga));
+                return dbLand;
+            }
+            catch (InfException e) {
+                System.out.println("Kunde inte hämta från databasen" + e);
+                JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt från databasen.");
+            }
+        }
         return land;
     }
     
+    /**
+     * returnerar ett projekt
+     * @param pid
+     * @return ettProjekt
+     */
     public HashMap<String,String> getEttProjekt(int pid)
     {
         HashMap<String, String> ettProjekt = new HashMap<>();
@@ -164,12 +300,60 @@ public class Projekt {
     }
     
     /**
+     * Hämtar alla projekt i databasen
+     * @return allaProjekt
+     */
+    public ArrayList<HashMap<String, String>> getAllaProjekt()
+    {
+        ArrayList<HashMap<String, String>> allaProjekt = new ArrayList<>();
+        try
+        {
+            String sqlfråga = "SELECT * FROM projekt";
+            allaProjekt = idb.fetchRows(sqlfråga);
+        }
+        catch(InfException e)
+        {
+            System.out.println("Kunde inte hämta projekt.\n" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt.");
+            allaProjekt = null;
+        }
+        return allaProjekt;
+    }
+    
+    /**
+     * Lägger till nytt projekt till databasen
+     * @param projektNamn
+     * @param beskrivning
+     * @param startDatum
+     * @param slutDatum
+     * @param kostnad
+     * @param status
+     * @param prioritet
+     * @param projektChef
+     * @param land 
+     */
+    public void setNyttProjekt(String projektNamn, String beskrivning, String startDatum, String slutDatum, double kostnad, String status, String prioritet, int projektChef, int land)
+    {
+        try{
+            String sqlfråga = "INSERT INTO projekt (projektnamn, beskrivning, startdatum, slutdatum, kostnad, status, prioritet, projektchef, land) values ('"
+                    + projektNamn + "', '" + beskrivning + "', '" + startDatum + "', '" + slutDatum + "', '" + kostnad + "', '" + status
+                    + "', '" + prioritet+ "', '" + projektChef + "', '" + land + "')";
+            idb.insert(sqlfråga);
+            JOptionPane.showMessageDialog(null, "Nytt projekt tillagt");
+        }
+        catch (InfException e) {
+            System.out.println("Kunde inte lägga till nytt projekt. \n" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Kunde inte lägga till nytt projekt. Kontrollera att all information är korrekt");
+        }
+    }
+    
+    /**
      * 
+     * @param pid
      * @param projektNamn 
      */
-    public void setProjektNamn(String projektNamn)
+    public void setProjektNamn(int pid, String projektNamn)
     {
-        this.projektNamn = projektNamn;
         try
         {
             String sqlfråga = "UPDATE projekt WHERE pid = " + pid + " SET projektnamn = '" + projektNamn + "'";
@@ -184,12 +368,11 @@ public class Projekt {
     
     /**
      * 
+     * @param pid
      * @param beskrivning 
      */
-    public void setBeskrivning(String beskrivning)
+    public void setBeskrivning(int pid, String beskrivning)
     {
-        this.beskrivning = beskrivning;
-        
         try
         {
             String sqlfråga = "UPDATE projekt WHERE pid = " + pid + " SET beskrivning = '" + beskrivning + "'";
@@ -204,12 +387,11 @@ public class Projekt {
     
     /**
      * Datum i formatet YYYY-MM-DD, använd gärna med Validering.datumKontroll() för textfält
+     * @param pid
      * @param startDatum 
      */
-    public void setStartDatum(String startDatum)
+    public void setStartDatum(int pid, String startDatum)
     {
-        this.startDatum = startDatum;
-        
         try
         {
             String sqlfråga = "UPDATE projekt WHERE pid = " + pid + " SET startdatum = '" + startDatum + "'";
@@ -224,12 +406,11 @@ public class Projekt {
     
     /**
      * Datum i formatet YYYY-MM-DD, använd gärna med Validering.datumKontroll() för textfält
+     * @param pid
      * @param slutDatum 
      */
-    public void setSlutDatum(String slutDatum)
+    public void setSlutDatum(int pid, String slutDatum)
     {
-        this.slutDatum = slutDatum;
-        
         try
         {
             String sqlfråga = "UPDATE projekt WHERE pid = " + pid + " SET slutdatum = '" + slutDatum + "'";
@@ -244,12 +425,11 @@ public class Projekt {
     
     /**
      * 
+     * @param pid
      * @param kostnad 
      */
-    public void setKostnad(double kostnad)
+    public void setKostnad(int pid, double kostnad)
     {
-        this.kostnad = kostnad;
-        
         try
         {
             String sqlfråga = "UPDATE projekt WHERE pid = " + pid + " SET kostnad = '" + kostnad + "'";
@@ -264,12 +444,11 @@ public class Projekt {
     
     /**
      * 
+     * @param pid
      * @param status 
      */
-    public void setStatus(String status)
+    public void setStatus(int pid, String status)
     {
-        this.status = status;
-        
         try
         {
             String sqlfråga = "UPDATE projekt WHERE pid = " + pid + " SET status = '" + status + "'";
@@ -284,12 +463,11 @@ public class Projekt {
     
     /**
      * 
+     * @param pid
      * @param prioritet 
      */
-    public void setPrioritet(String prioritet)
+    public void setPrioritet(int pid, String prioritet)
     {
-        this.prioritet = prioritet;
-        
         try
         {
             String sqlfråga = "UPDATE projekt WHERE pid = " + pid + " SET prioritet = '" + prioritet + "'";
@@ -304,12 +482,11 @@ public class Projekt {
     
     /**
      * 
+     * @param pid
      * @param projektChef 
      */
-    public void setProjektChef(int projektChef)
+    public void setProjektChef(int pid, int projektChef)
     {
-        this.projektChef = projektChef;
-        
         try
         {
             String sqlfråga = "UPDATE projekt WHERE pid = " + pid + " SET projektchef = '" + projektChef + "'";
@@ -324,15 +501,14 @@ public class Projekt {
     
     /**
      * 
+     * @param pid
      * @param land 
      */
-    public void setLand(Land land)
+    public void setLand(int pid, int land)
     {
-        this.land = land.getLid();
-        
         try
         {
-            String sqlfråga = "UPDATE projekt WHERE pid = " + pid + " SET land = '" + land.getLid() + "'";
+            String sqlfråga = "UPDATE projekt WHERE pid = " + pid + " SET land = '" + land + "'";
             idb.update(sqlfråga);
         }
         catch(InfException e)
