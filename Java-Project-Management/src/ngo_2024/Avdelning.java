@@ -4,6 +4,8 @@
  */
 package ngo_2024;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.JOptionPane;
 import oru.inf.InfDB;
 import oru.inf.InfException;
@@ -22,9 +24,30 @@ public class Avdelning {
     private String epost;
     private String telefon;
     private int stad;
-    private int chef; //Chef just nu bara int vid input i konstruktorn, ska ändras till hämtas. Även set-metod längre ner
-
-    public Avdelning(InfDB idb, String namn, String beskrivning, String adress, String epost, String telefon, Stad stad, int chef) //Ska ändras till Handläggare chef när klassen är klar
+    private int chef;
+    
+    /**
+     * Konstruktor som endast instansierar objekt med databasparameter
+     * 
+     * @param idb 
+     */
+    public Avdelning (InfDB idb)
+    {
+        this.idb = idb;
+    }
+    
+    /**
+     * Konstruktor för instansiering av komplett fältfylld objekt
+     * @param idb
+     * @param namn
+     * @param beskrivning
+     * @param adress
+     * @param epost
+     * @param telefon
+     * @param stad
+     * @param chef 
+     */
+    public Avdelning(InfDB idb, String namn, String beskrivning, String adress, String epost, String telefon, int stad, int chef) 
     {
         this.idb = idb;
         this.namn = namn;
@@ -32,12 +55,12 @@ public class Avdelning {
         this.adress = adress;
         this.epost = epost;
         this.telefon = telefon;
-        this.stad = stad.getSid();
-        this.chef = chef; //ska ändras til chef.getID
+        this.stad = stad;
+        this.chef = chef;
 
         try {
             String sqlfråga = "INSERT INTO Avdelning (namn, beskrivning, adress, epost, telefon, stad, chef) values ('"
-                    + namn + "', '" + beskrivning + "', '" + adress + "', '" + epost + "', '" + telefon + "', '" + stad + "', '" + chef + "')";
+                    + namn + "', '" + beskrivning + "', '" + adress + "', '" + epost + "', '" + telefon + "', " + stad + ", " + chef + ")";
 
             idb.insert(sqlfråga);
             String sqlAvdid = "select lid from land where namn = '" + namn + "'";   //autoskapar avdID, hämtar med namn
@@ -58,67 +81,210 @@ public class Avdelning {
     }
     /**
      * 
+     * @param avdid
      * @return namn på Avdelning
      */
-    public String getNamn() {
+    public String getNamn(int avdid) {
+        if (namn == null) {
+            try {
+                String sqlFråga = "SELECT namn FROM avdelning WHERE avdid = " + avdid;
+                String dbNamn = idb.fetchSingle(sqlFråga);
+                return dbNamn;
+            }
+            catch (InfException e) {
+                System.out.println("Kunde inte hämta från databasen" + e);
+                JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt från databasen.");
+            }
+        }
         return namn;
     }
     
     /**
      * 
+     * @param avdid
      * @return beskrivning på Avdelning
      */
-    public String getBeskrivning() {
+    public String getBeskrivning(int avdid) {
+        if (beskrivning == null) {
+            try {
+                String sqlFråga = "SELECT beskrivning FROM avdelning WHERE avdid = " + avdid;
+                String dbBeskrivning = idb.fetchSingle(sqlFråga);
+                return dbBeskrivning;
+            }
+            catch (InfException e) {
+                System.out.println("Kunde inte hämta från databasen" + e);
+                JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt från databasen.");
+            }
+        }
         return beskrivning;
     }
     
     /**
      * 
+     * @param avdid
      * @return adress till Avdelning
      */
-    public String getAdress() {
+    public String getAdress(int avdid) {
+        if (adress == null) {
+            try {
+                String sqlFråga = "SELECT adress FROM avdelning WHERE avdid = " + avdid;
+                String dbAdress = idb.fetchSingle(sqlFråga);
+                return dbAdress;
+            }
+            catch (InfException e) {
+                System.out.println("Kunde inte hämta från databasen" + e);
+                JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt från databasen.");
+            }
+        }
         return adress;
     }
     
     /**
      * 
+     * @param avdid
      * @return epost till Avdelning
      */
-    public String getEpost() {
+    public String getEpost(int avdid) {
+        if (epost == null) {
+            try {
+                String sqlFråga = "SELECT epost FROM avdelning WHERE avdid = " + avdid;
+                String dbEpost = idb.fetchSingle(sqlFråga);
+                return dbEpost;
+            }
+            catch (InfException e) {
+                System.out.println("Kunde inte hämta från databasen" + e);
+                JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt från databasen.");
+            }
+        }
         return epost;
     }
     
     /**
      * 
+     * @param avdid
      * @return telefon till Avdelning
      */
-    public String getTelefon() {
+    public String getTelefon(int avdid) {
+        if (telefon == null) {
+            try {
+                String sqlFråga = "SELECT telefon FROM avdelning WHERE avdid = " + avdid;
+                String dbTelefon = idb.fetchSingle(sqlFråga);
+                return dbTelefon;
+            }
+            catch (InfException e) {
+                System.out.println("Kunde inte hämta från databasen" + e);
+                JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt från databasen.");
+            }
+        }
         return telefon;
     }
     
     /**
      * 
+     * @param avdid
      * @return stad där Avdelning ligger
      */
-    public int getStad() {
+    public int getStad(int avdid) {
+        if (stad == 0) {
+            try {
+                String sqlFråga = "SELECT stad FROM avdelning WHERE avdid = " + avdid;
+                int dbStad = Integer.parseInt(idb.fetchSingle(sqlFråga));
+                return dbStad;
+            }
+            catch (InfException e) {
+                System.out.println("Kunde inte hämta från databasen" + e);
+                JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt från databasen.");
+            }
+        }
         return stad;
     }
     
     /**
      * 
+     * @param avdid
      * @return chef över Avdelning
      */
-    public int getChef() {
+    public int getChef(int avdid) {
+        if (chef == 0) {
+            try {
+                String sqlFråga = "SELECT chef FROM avdelning WHERE avdid = " + avdid;
+                int dbChef = Integer.parseInt(idb.fetchSingle(sqlFråga));
+                return dbChef;
+            }
+            catch (InfException e) {
+                System.out.println("Kunde inte hämta från databasen" + e);
+                JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt från databasen.");
+            }
+        }
         return chef;
     }
     
     /**
-     * Sätter namn på Avdelning och uppdaterar databasen
+     * Returnerar en HashMap över en avdelning
+     * @param avdid
+     * @return enAvdelning
+     */
+    public HashMap<String, String> getEnAvdelning(int avdid)
+    {
+        HashMap<String, String> enAvdelning = new HashMap<>();
+        try
+        {
+            String sqlfråga = "SELECT * FROM avdelning WHERE pid = " + avdid;
+            enAvdelning = idb.fetchRow(sqlfråga); 
+        }
+        catch(InfException e)
+        {
+            System.out.println("Kunde inte hämta avdelningen. \n" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Kunde inte hämta avdelningen.");
+            enAvdelning = null;
+        }
+        return enAvdelning;
+    }
+    
+    /**
+     * Returnerar arraylist bestående av HashMaps för alla avdelningar
+     * @return 
+     */
+    public ArrayList<HashMap<String, String>> getAllaAvdelningar()
+    {
+        ArrayList<HashMap<String, String>> allaAvdelningar = new ArrayList<>();
+        try
+        {
+            String sqlfråga = "SELECT * FROM avdelning";
+            allaAvdelningar = idb.fetchRows(sqlfråga);
+        }
+        catch(InfException e)
+        {
+            System.out.println("Kunde inte hämta projekt.\n" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt.");
+            allaAvdelningar = null;
+        }
+        return allaAvdelningar;
+    }
+    
+        public void setNyAvdelning(String namn, String beskrivning, String adress, String epost, String telefon, int stad, int chef) 
+    {
+        try {
+            String sqlfråga = "INSERT INTO Avdelning (namn, beskrivning, adress, epost, telefon, stad, chef) values ('"
+                    + namn + "', '" + beskrivning + "', '" + adress + "', '" + epost + "', '" + telefon + "', " + stad + ", " + chef + ")";
+
+            idb.insert(sqlfråga);
+            JOptionPane.showMessageDialog(null, "Ny avdelning lades till korrekt");
+        } catch (InfException e) {
+            System.out.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, "Databasen har inte uppdaterats.");
+        }
+    }
+        
+        
+    /**
+     * Uppdaterar en avdelnings namn
+     * @param avdid
      * @param namn (String)
      */
-    public void setNamn(String namn) 
+    public void setNamn(int avdid, String namn) 
     {
-        this.namn = namn;
+        //this.namn = namn;
 
         try {
             String sqlfråga = "UPDATE Avdelning WHERE avdid = " + avdid + " SET namn = '" + namn + "'";
@@ -130,12 +296,13 @@ public class Avdelning {
     }
     
     /**
-     * Sätter beskrivning på Avdelning och uppdaterar databasen
+     * Uppdaterar en avdelnings beskrivning
+     * @param avdid
      * @param beskrivning (String)
      */
-    public void setBeskrivning(String beskrivning) 
+    public void setBeskrivning(int avdid, String beskrivning) 
     {
-        this.beskrivning = beskrivning;
+        //this.beskrivning = beskrivning;
 
         try {
             String sqlfråga = "UPDATE Avdelning WHERE avdid = " + avdid + " SET beskrivning = '" + beskrivning + "'";
@@ -147,12 +314,13 @@ public class Avdelning {
     }
     
     /**
-     * Sätter adress på Avdelning och uppdaterar databasen
+     * Uppdaterar en avdelnings adress
+     * @param avdid
      * @param adress (String)
      */
-    public void setAdress(String adress) 
+    public void setAdress(int avdid, String adress) 
     {
-        this.adress = adress;
+        //this.adress = adress;
 
         try {
             String sqlfråga = "UPDATE Avdelning WHERE avdid = " + avdid + " SET adress = '" + adress + "'";
@@ -164,12 +332,13 @@ public class Avdelning {
     }
     
     /**
-     * Sätter epost till Avdelning och uppdaterar databasen
+     * Uppdaterar en avdelnings epost
+     * @param avdid
      * @param epost (String)
      */
-    public void setEpost(String epost) 
+    public void setEpost(int avdid, String epost) 
     {
-        this.epost = epost;
+        //this.epost = epost;
 
         try {
             String sqlfråga = "UPDATE Avdelning WHERE avdid = " + avdid + " SET epost = '" + epost + "'";
@@ -181,12 +350,13 @@ public class Avdelning {
     }
     
     /**
-     * Sätter telefon till på Avdelning och uppdaterar databasen
+     * Uppdaterar en avdelnings telefon
+     * @param avdid
      * @param telefon (String)
      */
-    public void setTelefon(String telefon) 
+    public void setTelefon(int avdid, String telefon) 
     {
-        this.telefon = telefon;
+        //this.telefon = telefon;
 
         try {
             String sqlfråga = "UPDATE Avdelning WHERE avdid = " + avdid + " SET telefon = '" + telefon + "'";
@@ -198,15 +368,16 @@ public class Avdelning {
     }
     
     /**
-     * Sätter stad-id på Avdelning och uppdaterar databasen
+     * Uppdaterar en avdelnings stad-nyckel
+     * @param avdid
      * @param stad 
      */
-    public void setStad(Stad stad) 
+    public void setStad(int avdid, int stad) 
     {
-        this.stad = stad.getSid();
+        //this.stad = stad;
 
         try {
-            String sqlfråga = "UPDATE Avdelning WHERE avdid = " + avdid + " SET stad = '" + stad + "'";
+            String sqlfråga = "UPDATE Avdelning WHERE avdid = " + avdid + " SET stad = " + stad;
             idb.update(sqlfråga);
         } catch (InfException e) {
             System.out.println(e.getMessage());
@@ -215,15 +386,16 @@ public class Avdelning {
     }
     
     /**
-     * Sätter avdelningschef till Avdelning och uppdaterar databasen
+     * Uppdaterar en avdelnings chef-nyckel
+     * @param avdid
      * @param chef 
      */
-    public void setChef(int chef) //Uppdatera när vi kan koppla mot Anställd/Handläggare
+    public void setChef(int avdid, int chef)
     {
-        this.chef = chef;
+        //this.chef = chef;
 
         try {
-            String sqlfråga = "UPDATE Avdelning WHERE avdid = " + avdid + " SET chef = '" + chef + "'";
+            String sqlfråga = "UPDATE Avdelning WHERE avdid = " + avdid + " SET chef = " + chef;
             idb.update(sqlfråga);
         } catch (InfException e) {
             System.out.println(e.getMessage());
