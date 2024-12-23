@@ -146,7 +146,8 @@ public class Stad {
     
     /**
      * Metod för att uppdatera land för en Stad
-     * @param land 
+     * @param sid
+     * @param lid 
      */
     public void setLand(int sid, int lid)
     {
@@ -166,7 +167,7 @@ public class Stad {
     /**
      * Metod för att spara en stad i databasen.
      * @param namn
-     * @param land 
+     * @param lid 
      */
     public void sparaStad(String namn, int lid)
     {
