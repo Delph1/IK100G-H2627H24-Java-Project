@@ -79,8 +79,6 @@ public class Projekt {
         }
     }
     
-
-    
     /**
      * Returnmetod för instansierat objekt, ej kopplat mot databasen
      * @return pid
