@@ -23,20 +23,26 @@ public class Stad {
     private String namn;
     private String land;
     
-    public Stad(String namn, String land)
+    /**
+     * Konstruktor för att skapa ett Stad-objekt
+     * @param idb
+     * @param namn
+     * @param land 
+     */
+    public Stad(InfDB idb, String namn, String land)
     {
         this.namn = namn;
         this.land = land;
-        try
-        {
-            String sqlfråga = "INSERT INTO stad (namn, land) values ('" + namn + "', '" + land + "')";
-            idb.insert(sqlfråga);
-        }   
-        catch(InfException e)
-        {
-            System.out.println("Staden har inte sparats i databasen.");
-            JOptionPane.showMessageDialog(null, "Staden har inte sparats i databasen. \n" + e.getMessage()); 
-        }
+    }
+    
+    /**
+     * Konstruktor för att instantiera endast klasssen. 
+     * @param idb 
+     */
+    
+    public Stad(InfDB idb)
+    {
+        this.idb = idb;
     }
     
     /**
@@ -124,9 +130,8 @@ public class Stad {
      * Metod för att uppdatera namn på en Stad. 
      * @param namn 
      */
-    public void setNamn(String namn)
+    public void setNamn(int sid, String namn)
     {
-        this.namn = namn;
         try
         {
             String sqlfråga = "UPDATE stad WHERE sid = " + sid + " SET namn = '" + namn + "'";
@@ -143,9 +148,8 @@ public class Stad {
      * Metod för att uppdatera land för en Stad
      * @param land 
      */
-    public void setLand(String land)
+    public void setLand(int sid, String land)
     {
-        this.land = land;
         try
         {
             String sqlfråga = "UPDATE stad WHERE sid = " + sid + " SET name = '" + land + "'";
@@ -157,6 +161,25 @@ public class Stad {
             JOptionPane.showMessageDialog(null, "Databasen har inte uppdaterats. \n" + e.getMessage());
         }
 
+    }
+    
+    /**
+     * Metod för att spara en stad i databasen.
+     * @param namn
+     * @param land 
+     */
+    public void sparaStad(String namn, String land)
+    {
+        try
+        {
+            String sqlfråga = "INSERT INTO stad (namn, land) values ('" + namn + "', '" + land + "')";
+            idb.insert(sqlfråga);
+        }   
+        catch(InfException e)
+        {
+            System.out.println("Staden har inte sparats i databasen.");
+            JOptionPane.showMessageDialog(null, "Staden har inte sparats i databasen. \n" + e.getMessage()); 
+        }
     }
     
 }
