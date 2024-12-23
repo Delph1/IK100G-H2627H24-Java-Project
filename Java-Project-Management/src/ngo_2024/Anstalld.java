@@ -12,8 +12,9 @@ import oru.inf.InfException;
 
 /**
  * Klass för entiteten Anstalld. Innehåller klassmetoder och SQL-anrop. 
- * @author andre
+ * @author Andreas Galistel
  */
+
 public class Anstalld {
     
     private InfDB idb;
@@ -26,6 +27,30 @@ public class Anstalld {
     private String anstallningsdatum;
     private String losenord;
     private int avdelning;
+   
+    /**
+     * Konstruktor som endast instantierar klass med en databasparameter. 
+     * Gör det möjligt att använda sig av metoderna och prata med databasen utan att skapa något Anställd-objekt som innehåller någon data.
+     * @param idb 
+     */
+        
+    public Anstalld(InfDB idb)
+    {
+        this.idb = idb;
+    }
+    
+    /**
+     * Konstruktor som skapar ett Anställd-objekt och sätter in det i databasen.
+     * @param idb
+     * @param fornamn
+     * @param efternamn
+     * @param adress
+     * @param epost
+     * @param telefon
+     * @param anstallningsdatum
+     * @param losenord
+     * @param avdelning 
+     */
     
     public Anstalld(InfDB idb, String fornamn, String efternamn, String adress, String epost, String telefon, String anstallningsdatum, String losenord, int avdelning)
     {
@@ -38,19 +63,8 @@ public class Anstalld {
         this.anstallningsdatum = anstallningsdatum;
         this.losenord = losenord;
         this.avdelning = avdelning;
-        
-        try
-        {
-            String sqlfråga = "INSERT INTO anstalld (fornamn, efternamn, adress, epost, telefon, anstallningsdatum, losenord, avdelning) VALUES ('" + fornamn + "', '" + efternamn + "', '" + adress + "', '" + epost + "', '" + telefon + "', '" + anstallningsdatum + "', '" + losenord + "', '" + avdelning + "')";
-            idb.insert(sqlfråga); 
-        }
-        catch(InfException e)
-        {
-            System.out.println("Användaren har inte sparats i databasen.");
-            JOptionPane.showMessageDialog(null, "Användaren har inte sparats i databasen. \n" + e.getMessage()); 
-
-        }
     }
+    
     /**
      * 
      * Nedan följer först get-metoder. 
@@ -131,7 +145,12 @@ public class Anstalld {
         return avdelning;
     }
     
-    public ArrayList<HashMap<String, String>> allaAnstallda()
+    /**
+     * Metod för att hämta ut alla Anställd(a).
+     * @return 
+     */
+    
+    public ArrayList<HashMap<String, String>> getAllaAnstallda()
     {
         ArrayList<HashMap<String, String>> allaAnstallda = new ArrayList<>();
         try
@@ -148,18 +167,47 @@ public class Anstalld {
         return allaAnstallda;
     }
     
-    public HashMap<String, String> getEnAnstalld()
+    /**
+     * Metod för att hämta ut en Anställd via namn.
+     * @param namn
+     * @return 
+     */
+    
+    public HashMap<String, String> getEnAnstalldViaNamn(String namn)
+    {
+        HashMap<String, String> enAnstalld = new HashMap<>();
+        try
+        {
+            String sqlfråga = "SELECT * FROM anstalld WHERE namn = '" + namn + "'";
+            enAnstalld = idb.fetchRow(sqlfråga);
+        }
+        catch(InfException e)
+        {
+            System.out.println("Kunde inte hämta användare.");
+            JOptionPane.showMessageDialog(null, "Kunde inte hämta användare. \n" + e.getMessage());
+            enAnstalld = null;
+        }
+        return enAnstalld;
+    }
+    
+    /**
+     * Metod för att hämta ut en Anställd via aid.
+     * @param aid
+     * @return 
+     */
+    
+    public HashMap<String, String> getEnAnstalldViaAid(int aid)
     {
         HashMap<String, String> enAnstalld = new HashMap<>();
         try
         {
             String sqlfråga = "SELECT * FROM anstalld WHERE aid = '" + aid + "'";
-            enAnstalld = idb.fetchRow(sqlfråga); 
+            enAnstalld = idb.fetchRow(sqlfråga);
         }
         catch(InfException e)
         {
-            System.out.println("Kunde inte hämta stad.");
-            JOptionPane.showMessageDialog(null, "Kunde inte hämta stad. \n" + e.getMessage());
+            System.out.println("Kunde inte hämta användare.");
+            JOptionPane.showMessageDialog(null, "Kunde inte hämta användare. \n" + e.getMessage());
             enAnstalld = null;
         }
         return enAnstalld;
@@ -172,12 +220,36 @@ public class Anstalld {
      */
     
     /**
+     * Metod för att spara en hel användare i databasen. 
+     * @param fornamn
+     * @param efternamn
+     * @param adress
+     * @param epost
+     * @param telefon
+     * @param anstallningsdatum
+     * @param losenord
+     * @param avdelning 
+     */
+    public void sparaAnvandare(String fornamn, String efternamn, String adress, String epost, String telefon, String anstallningsdatum, String losenord, int avdelning)
+    {        
+        try
+        {
+            String sqlfråga = "INSERT INTO anstalld (fornamn, efternamn, adress, epost, telefon, anstallningsdatum, losenord, avdelning) VALUES ('" + fornamn + "', '" + efternamn + "', '" + adress + "', '" + epost + "', '" + telefon + "', '" + anstallningsdatum + "', '" + losenord + "', '" + avdelning + "')";
+            idb.insert(sqlfråga); 
+        }
+        catch(InfException e)
+        {
+            System.out.println("Användaren har inte sparats i databasen.");
+            JOptionPane.showMessageDialog(null, "Användaren har inte sparats i databasen. \n" + e.getMessage()); 
+        }
+    }
+    
+    /**
      * Metod för att uppdatera förnamnet på en Anställd
      * @param fornamn 
      */
-    public void setFornamn(String fornamn)
+    public void setFornamn(int aid, String fornamn)
     {
-        this.fornamn = fornamn;
         try
         {
             String sqlfråga = "UPDATE anstalld WHERE aid = " + aid + " SET fornamn = '" + fornamn + "'";
@@ -194,9 +266,8 @@ public class Anstalld {
      * Metod för att uppdatera efternamnet på en anställd.
      * @param efternamn 
      */
-    public void setEfternamn(String efternamn)
+    public void setEfternamn(int aid, String efternamn)
     {
-        this.efternamn = efternamn;
         try
         {
             String sqlfråga = "UPDATE anstalld WHERE aid = " + aid + " SET efternamn = '" + efternamn + "'";
@@ -213,9 +284,8 @@ public class Anstalld {
      * Metod för att uppdatera efternamnet på en anställd.
      * @param adress 
      */
-    public void setAdress(String adress)
+    public void setAdress(int aid, String adress)
     {
-        this.adress = adress;
         try
         {
             String sqlfråga = "UPDATE anstalld WHERE aid = " + aid + " SET adress = '" + adress + "'";
@@ -232,9 +302,8 @@ public class Anstalld {
      * Metod för att uppdatera efternamnet på en anställd.
      * @param epost 
      */
-    public void setEpost(String epost)
+    public void setEpost(int aid, String epost)
     {
-        this.epost = epost;
         try
         {
             String sqlfråga = "UPDATE anstalld WHERE aid = " + aid + " SET epost = '" + epost + "'";
@@ -251,9 +320,8 @@ public class Anstalld {
      * Metod för att uppdatera efternamnet på en anställd.
      * @param telefon 
      */
-    public void setTelefon(String telefon)
+    public void setTelefon(int aid, String telefon)
     {
-        this.telefon = telefon;
         try
         {
             String sqlfråga = "UPDATE anstalld WHERE aid = " + aid + " SET telefon = '" + telefon + "'";
@@ -270,9 +338,8 @@ public class Anstalld {
      * Metod för att uppdatera efternamnet på en anställd.
      * @param anstallningsdatum 
      */
-    public void setAnstallningsdatum(String anstallningsdatum)
+    public void setAnstallningsdatum(int aid, String anstallningsdatum)
     {
-        this.anstallningsdatum = anstallningsdatum;
         try
         {
             String sqlfråga = "UPDATE anstalld WHERE aid = " + aid + " SET anstallningsdatum = '" + anstallningsdatum + "'";
@@ -289,9 +356,8 @@ public class Anstalld {
      * Metod för att uppdatera efternamnet på en anställd.
      * @param losenord
      */
-    public void setLosenord(String losenord)
+    public void setLosenord(int aid, String losenord)
     {
-        this.losenord = losenord;
         try
         {
             String sqlfråga = "UPDATE anstalld WHERE aid = " + aid + " SET losenord = '" + losenord + "'";
@@ -308,9 +374,8 @@ public class Anstalld {
      * Metod för att uppdatera efternamnet på en anställd.
      * @param avdelning
      */
-    public void setAvdelning(int avdelning)
+    public void setAvdelning(int aid, int avdelning)
     {
-        this.avdelning = avdelning;
         try
         {
             String sqlfråga = "UPDATE anstalld WHERE aid = " + aid + " SET avdelning = '" + avdelning + "'";
