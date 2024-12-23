@@ -167,36 +167,13 @@ public class Anstalld {
         return allaAnstallda;
     }
     
-    /**
-     * Metod för att hämta ut en Anställd via namn.
-     * @param namn
-     * @return 
-     */
-    
-    public HashMap<String, String> getEnAnstalldViaNamn(String namn)
-    {
-        HashMap<String, String> enAnstalld = new HashMap<>();
-        try
-        {
-            String sqlfråga = "SELECT * FROM anstalld WHERE namn = '" + namn + "'";
-            enAnstalld = idb.fetchRow(sqlfråga);
-        }
-        catch(InfException e)
-        {
-            System.out.println("Kunde inte hämta användare.");
-            JOptionPane.showMessageDialog(null, "Kunde inte hämta användare. \n" + e.getMessage());
-            enAnstalld = null;
-        }
-        return enAnstalld;
-    }
-    
-    /**
+     /**
      * Metod för att hämta ut en Anställd via aid.
      * @param aid
      * @return 
      */
     
-    public HashMap<String, String> getEnAnstalldViaAid(int aid)
+    public HashMap<String, String> getEnAnstalld(int aid)
     {
         HashMap<String, String> enAnstalld = new HashMap<>();
         try
