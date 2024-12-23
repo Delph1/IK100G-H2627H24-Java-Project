@@ -30,10 +30,10 @@ public class Validering {
         }       return resultat;
     }
     
-    public static boolean faltkontroll(JTextField param) {
+    public static boolean faltEjTomtKontroll(JTextField param) {
         boolean resultat = true;
 
-        // Kontrolerar här om ett fält är tom, och är den det startas en textruta och ifsatsen avslutas
+        // Kontrollerar här om ett fält är tomt, och om den är det visas en textruta och if-satsen avslutas
         if (param.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Fältet är tomt.\nVar vänlig fyll i fältet.");
             resultat = false;           

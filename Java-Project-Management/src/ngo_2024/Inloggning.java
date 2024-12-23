@@ -148,7 +148,7 @@ public class Inloggning extends javax.swing.JFrame {
         String användarnamn = txtAnvändarnamn.getText();
         String lösenord = txtLösenord.getText();
                 
-        if (Validering.faltkontroll(txtAnvändarnamn) && Validering.emailKontroll(txtAnvändarnamn) && (Validering.faltkontroll(txtLösenord))) {
+        if (Validering.faltEjTomtKontroll(txtAnvändarnamn) && Validering.emailKontroll(txtAnvändarnamn) && (Validering.faltEjTomtKontroll(txtLösenord))) {
 
             try {
                 String sqlfråga = "Select losenord FROM anstalld WHERE epost = '" + användarnamn + "'";
