@@ -11,8 +11,8 @@ import oru.inf.InfDB;
 import oru.inf.InfException;
 
 /**
- *
- * @author andre
+ * Klass för Handläggar, en subklass av Anställd.
+ * @author Andreas Galistel
  */
 public class Handlaggare {
     
@@ -21,22 +21,26 @@ public class Handlaggare {
     private int mentor;
     private int aid;
     
+    /**
+     * Konstruktor för att skapa ett handläggarobjekt
+     * @param idb
+     * @param aid
+     * @param ansvarighetsomraden 
+     */
     public Handlaggare (InfDB idb, int aid, String ansvarighetsomraden)
     {
         this.idb = idb;
         this.aid = aid;
         this.ansvarighetsomraden = ansvarighetsomraden;
-        
-        try
-        {
-            String sqlfråga = "INSERT INTO Handlaggare (aid, ansvarighetsomraden) values ('" + aid + "', '" + ansvarighetsomraden + "')";
-            idb.insert(sqlfråga);
-        }   
-        catch(InfException e)
-        {
-            System.out.println("Handläggaren har inte sparats i databasen.");
-            JOptionPane.showMessageDialog(null, "Handläggaren har inte sparats i databasen. \n" + e.getMessage()); 
-        }
+    }
+    
+    /**
+     * Konstruktor för att starta en instans av Handläggare utan att det hanterar någon data i ett objekt
+     * @param idb 
+     */
+    public Handlaggare (InfDB idb)
+    {
+        this.idb = idb;
     }
     
     /**
@@ -101,5 +105,23 @@ public class Handlaggare {
             JOptionPane.showMessageDialog(null, "Kunde inte tilldela mentor för handläggare. \n" + e.getMessage());
         }
     }
- 
+    
+    /**
+     * Spara Handläggare i databasen.
+     * @param aid
+     * @param ansvarighetsomraden 
+     */
+    public void sparaHandlaggare(int aid, String ansvarighetsomraden)
+    {
+        try
+        {
+            String sqlfråga = "INSERT INTO Handlaggare (aid, ansvarighetsomraden) values ('" + aid + "', '" + ansvarighetsomraden + "')";
+            idb.insert(sqlfråga);
+        }   
+        catch(InfException e)
+        {
+            System.out.println("Handläggaren har inte sparats i databasen.");
+            JOptionPane.showMessageDialog(null, "Handläggaren har inte sparats i databasen. \n" + e.getMessage()); 
+        }
+    }
 }
