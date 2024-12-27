@@ -4,7 +4,6 @@
  */
 package ngo_2024;
 
-import javax.swing.Box;
 import oru.inf.InfDB;
 import oru.inf.InfException;
 /**
@@ -189,6 +188,11 @@ public class Huvudmeny extends javax.swing.JFrame {
         jMenu4.add(jMenuItem14);
 
         jMenuItem16.setText("Avdelningar");
+        jMenuItem16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem16ActionPerformed(evt);
+            }
+        });
         jMenu4.add(jMenuItem16);
 
         jMenuItem15.setText("Projekt");
@@ -252,8 +256,12 @@ public class Huvudmeny extends javax.swing.JFrame {
 
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-     new EditAnstalld(idb, queryAid).setVisible(true);
+        new EditAnstalld(idb, queryAid).setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed
+        new AvdelningMeny(idb).setVisible(true);
+    }//GEN-LAST:event_jMenuItem16ActionPerformed
 
 
 
