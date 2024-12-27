@@ -74,6 +74,11 @@ public class Anstallda extends javax.swing.JFrame {
         });
 
         jButton3.setText("Ta bort anställd");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Ny anställd");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -119,9 +124,9 @@ public class Anstallda extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     
-    
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-hamtaAnstallda();
+        hamtaAnstallda();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -129,14 +134,18 @@ hamtaAnstallda();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-getSelectedValue();       
+        getSelectedValue();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+//taBortAnstalld();       
+    }//GEN-LAST:event_jButton3ActionPerformed
 
  private void hamtaAnstallda() {
     try {
         // SQL-frågan för att hämta data
         String query = "SELECT aid, fornamn, efternamn, adress, epost, telefon, anstallningsdatum, losenord, avdelning FROM anstalld";
-        System.out.println("SQL-fråga: " + query); // Logga frågan Markera bort
+        System.out.println("SQL-fråga: " + query); // Logga frågan Markera bort senare
         ArrayList<HashMap<String, String>> resultat = idb.fetchRows(query);
 
         if (resultat != null) {
@@ -156,7 +165,7 @@ getSelectedValue();
             tableModel.addColumn("Lösenord");
             tableModel.addColumn("Avdelning");
 
-            // Fyller table med data från databasen
+            // For loop fyller table med data från databasen
             for (HashMap<String, String> rad : resultat) {
                 tableModel.addRow(new Object[]{
                     rad.get("aid"),
@@ -183,14 +192,20 @@ getSelectedValue();
     private void getSelectedValue() {
         int selectedRow = jTable1.getSelectedRow();
         if (selectedRow != -1) {
-            Object anstalld = jTable1.getValueAt(selectedRow, 0); // Hämta värde från kolumn 0
-            String anstalldString = anstalld.toString(); // Konvertera till String
-            new EditAnstalld(idb, anstalldString).setVisible(true);
-            // JOptionPane.showMessageDialog(this, "Valt ID: " + anstalld);
+            
+            Object anstalld = jTable1.getValueAt(selectedRow, 0); // Hämta värde från kolumn 0(dvs den första)
+            String queryAid = anstalld.toString(); // Konvertera till String
+            new EditAnstalld(idb, queryAid).setVisible(true); //öppnar nytt fönster, skickar med den anställde via AID från databasen, används av nästa fönster
+
         } else {
             JOptionPane.showMessageDialog(null, "Ingen rad är markerad!");
         }
     }
+    
+
+
+    
+            
     /**
      * @param args the command line arguments
      */
