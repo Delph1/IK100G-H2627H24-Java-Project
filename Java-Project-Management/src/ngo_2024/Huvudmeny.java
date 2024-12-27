@@ -17,6 +17,7 @@ public class Huvudmeny extends javax.swing.JFrame {
     private String aid;
     private String admins;
     private String projl;
+    public String queryAid;
 
     /**
      * Creates new form Huvudmeny
@@ -26,7 +27,7 @@ public class Huvudmeny extends javax.swing.JFrame {
         setLocationRelativeTo(null); //Den här koden sätter fönstret i mitten av skärmen. 
         this.idb = idb;
         this.admins = admins;
-        this.aid = queryAid;
+        this.queryAid = queryAid;
         lblInloggadAnvändare.setText(queryAid);
         jLabel1.setText(admins);
         jLabel2.setText(projl);
@@ -118,6 +119,11 @@ public class Huvudmeny extends javax.swing.JFrame {
         PMenu.setText("Mina uppgifter");
 
         jMenuItem1.setText("Mina uppgifter");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         PMenu.add(jMenuItem1);
 
         jMenuItem4.setText("Logga ut");
@@ -243,6 +249,12 @@ public class Huvudmeny extends javax.swing.JFrame {
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
        // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+     new EditAnstalld(idb, queryAid).setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
 
 
 
