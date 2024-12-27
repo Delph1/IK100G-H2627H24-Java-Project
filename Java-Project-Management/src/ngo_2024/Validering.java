@@ -40,6 +40,41 @@ public class Validering {
         }       return resultat;
     }
     
+    public static boolean arHeltal(JTextField param) {
+        boolean resultat = true;
+        try {
+            int värde = Integer.parseInt(param.getText());
+        } 
+        catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Fältet innehåller värde som inte är heltal");
+            resultat = false;
+        }
+        return resultat;
+    }
+    
+    public static boolean arDecimal(JTextField param) {
+        boolean resultat = true;
+        try {
+            double värde = Double.parseDouble(param.getText());
+        } 
+        catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Fältet innehåller värde som inte är decimalt");
+            resultat = false;
+        }
+        return resultat;
+    }
+    
+    public static boolean positivtVarde(JTextField param) {
+        boolean resultat = true;
+        int värde = Integer.parseInt(param.getText());
+        if (värde < 0 ) {
+            JOptionPane.showMessageDialog(null, "Fältet innehåller negativt tal. \nVar vänlig välj värde 0 eller högre.");
+            resultat = false;
+            param.requestFocus();
+        }
+        return resultat;
+    }
+    
     /**
      * Kontrollerar fält för inmatning mot korrekt datumformatering enligt yyyy-MM-dd
      * @param param
