@@ -75,6 +75,13 @@ public class Anstallda extends javax.swing.JFrame {
 
         jButton3.setText("Ta bort anställd");
 
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+
         jButton4.setText("Ny anställd");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -119,18 +126,22 @@ public class Anstallda extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     
-    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-hamtaAnstallda();
+        hamtaAnstallda();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+        String empty = "";
+        new EditAnstalld(idb, empty).setVisible(true);    //fulkod för att kunna öppna EditAnstalld som ett tomt formulär
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-getSelectedValue();       
+        editAnstalld();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+taBortAnstalld();        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
 
  private void hamtaAnstallda() {
     try {
@@ -180,17 +191,57 @@ getSelectedValue();
         JOptionPane.showMessageDialog(null, "Fel vid hämtning av anställda: " + e.getMessage());
     }
 }
-    private void getSelectedValue() {
+  
+     private void taBortAnstalld() {
+
         int selectedRow = jTable1.getSelectedRow();
         if (selectedRow != -1) {
             Object anstalld = jTable1.getValueAt(selectedRow, 0); // Hämta värde från kolumn 0
-            String anstalldString = anstalld.toString(); // Konvertera till String
-            new EditAnstalld(idb, anstalldString).setVisible(true);
+            String queryAid = anstalld.toString(); // Konvertera till String
+            try {
+               
+                String sqlfråga1 = "UPDATE projekt SET projektchef = NULL Where projektchef = '" + queryAid + "'";
+                idb.update(sqlfråga1);
+                String sqlfråga6 = "UPDATE avdelning SET chef = NULL Where chef = '" + queryAid + "'";
+                idb.update(sqlfråga6);
+                String sqlfråga4 = "DELETE FROM ans_proj WHERE aid = '" + queryAid + "'";
+                idb.delete(sqlfråga4);
+                String sqlfråga3 = "UPDATE handlaggare SET mentor = NULL Where mentor = '" + queryAid + "'";
+                idb.update(sqlfråga3);
+                String sqlfråga5 = "DELETE FROM admin WHERE aid = '" + queryAid + "'";
+                idb.delete(sqlfråga5);
+                String sqlfråga = "DELETE FROM handlaggare WHERE aid = '" + queryAid + "'";
+                idb.delete(sqlfråga);
+                String sqlfråga2 = "DELETE FROM anstalld WHERE aid = '" + queryAid + "'";
+                idb.delete(sqlfråga2);
+                
+              
+                hamtaAnstallda();
+            
+            } catch (InfException e) {
+                System.out.println(e.getMessage());
+
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingen rad är markerad!");
+        }
+
+    }
+
+    private void editAnstalld() {
+        int selectedRow = jTable1.getSelectedRow();
+        if (selectedRow != -1) {
+            Object anstalld = jTable1.getValueAt(selectedRow, 0); // Hämta värde från kolumn 0
+            String queryAid = anstalld.toString(); // Konvertera till String
+            new EditAnstalld(idb, queryAid).setVisible(true); //öppnar nytt fönster, skickar med den anställde via AID från databasen
+
             // JOptionPane.showMessageDialog(this, "Valt ID: " + anstalld);
         } else {
             JOptionPane.showMessageDialog(null, "Ingen rad är markerad!");
         }
     }
+
+  
     /**
      * @param args the command line arguments
      */
