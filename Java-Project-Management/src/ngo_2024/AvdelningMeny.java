@@ -96,6 +96,11 @@ public class AvdelningMeny extends javax.swing.JFrame {
         });
 
         jButton4.setText("Ny Avdelning");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -134,18 +139,21 @@ public class AvdelningMeny extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       //new EditAvdelning(idb, null).setVisible(true);
+        editAvdelning();        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         raderaAvdelning();
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        new EditAvdelning(idb, null).setVisible(true);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     private void getAvdelningar()
     {
         try {
             String query = "SELECT * FROM avdelning";
-            System.out.println(query);
             ArrayList<HashMap<String, String>> resultat = idb.fetchRows(query);
             
             if(resultat != null)
@@ -235,14 +243,14 @@ public class AvdelningMeny extends javax.swing.JFrame {
         }
     }
     
-    private void EditAvdelning()
+    private void editAvdelning()
     {
         int selectedRow = jTable1.getSelectedRow();
         if (selectedRow != -1)
         {
             Object avdelning = jTable1.getValueAt(selectedRow, 0);
-            int queryAid = (int) avdelning;
-            //new EditAvdelning(idb, queryAid).setVisible(true);
+            String queryAid = avdelning.toString();
+            new EditAvdelning(idb, queryAid).setVisible(true);
         }
         else
         {
