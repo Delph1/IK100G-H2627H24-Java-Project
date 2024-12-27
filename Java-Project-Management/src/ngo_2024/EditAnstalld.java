@@ -16,11 +16,11 @@ import oru.inf.InfException;
 public class EditAnstalld extends javax.swing.JFrame {
 
     private InfDB idb;
-   
     
     /**
      * Creates new form EditAnstalld
      */
+
     public EditAnstalld(InfDB idb, String queryAid) {
         initComponents();
         setLocationRelativeTo(null); //Den här koden sätter fönstret i mitten av skärmen.
@@ -31,10 +31,12 @@ public class EditAnstalld extends javax.swing.JFrame {
         
 try {
     String query = "SELECT fornamn, efternamn, adress, epost, telefon, anstallningsdatum, losenord, avdelning FROM anstalld WHERE aid = '" + queryAid + "'";
+
     HashMap<String, String> resultat = idb.fetchRow(query); // Hämta rad som en HashMap
     
     if (resultat != null) {
         // Hämta och sätt värden i motsvarande textfält
+
         jTextField1.setText(resultat.get("fornamn"));
         jTextField2.setText(resultat.get("efternamn"));
         jTextField3.setText(resultat.get("adress"));       
@@ -43,6 +45,7 @@ try {
         jTextField6.setText(resultat.get("telefon"));
         jTextField7.setText(resultat.get("losenord")); 
         jTextField8.setText(resultat.get("avdelning"));
+
     } else {
         JOptionPane.showMessageDialog(null, "Ingen anställd hittades med det angivna ID:t.");
     }
@@ -65,6 +68,7 @@ try {
         } catch (InfException e) {
             System.out.println("Ett fel inträffade: " + e.getMessage());
         }
+
     
 
     }
@@ -87,6 +91,7 @@ try {
         jTextField6 = new javax.swing.JTextField();
         jTextField7 = new javax.swing.JTextField();
         jTextField8 = new javax.swing.JTextField();
+
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -97,6 +102,7 @@ try {
         jLabel8 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
+
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -115,6 +121,7 @@ try {
         jTextField7.setActionCommand("<Not Set>");
 
         jTextField8.setActionCommand("<Not Set>");
+
 
         jLabel1.setText("Förnamn:");
 
@@ -136,10 +143,12 @@ try {
 
         jLabel10.setText("Roll:");
 
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -165,10 +174,12 @@ try {
                         .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jTextField8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)))
                 .addGap(0, 44, Short.MAX_VALUE))
+
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -206,6 +217,7 @@ try {
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10))
                 .addContainerGap(79, Short.MAX_VALUE))
+
         );
 
         pack();
@@ -247,6 +259,7 @@ try {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -257,6 +270,8 @@ try {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+
+  
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;

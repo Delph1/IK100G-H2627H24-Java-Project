@@ -25,26 +25,35 @@ public class Partner {
     private String adress;
     private String branch;
     private int stad;
+    
+    /**
+     * Konstruktor endast med databaskoppling
+     * @param idb 
+     */
+    public Partner(InfDB idb)
+    {
+        this.idb = idb;
+    }
 
-    public Partner(InfDB idb, String namn, String kontaktPerson, String kontaktEpost, String telefon, String adress, String branch, Stad stad) {
+    public Partner(InfDB idb, String namn, String kontaktPerson, String kontaktEpost, String telefon, String adress, String branch, int stad) {
         
-        //this.pid = löpnummer i sql? Se försök i try-catch nedanför
+        
         this.idb = idb;
         this.namn = namn;
         this.kontaktPerson = kontaktPerson;
-        this.kontaktEpost = kontaktEpost; //Validering epost?
-        this.telefon = telefon; //Validering varchar20?
+        this.kontaktEpost = kontaktEpost; 
+        this.telefon = telefon; 
         this.adress = adress;
         this.branch = branch;
-        this.stad = stad.getSid(); //Vettigt sätt att lösa detta på? eller ska ta in int sid direkt? känns inte användarvänligt?
+        this.stad = stad; 
 
         try {
-            String sqlfråga = "INSERT INTO partner (namn, kontaktPerson, kontaktEpost, telefon, adress, branch, stad) values ('"
+            String sqlfråga = "INSERT INTO partner (namn, kontaktperson, kontaktepost, telefon, adress, branch, stad) values ('"
                     + namn + "', '" + kontaktPerson + "', '" + kontaktEpost + "', '" + telefon + "', '" + adress + "', '" + branch
-                    + "', '" + stad.getSid() + "')";
+                    + "', " + stad + ")";
 
             idb.insert(sqlfråga);
-            String sqlPid = "select pid from partner where namn = '" + namn + "' and stad = '" + stad.getSid() + "'";   //autoskapar pid, hämtar med namn och stad, Ask nämnde en partner kan finnas i flera städer
+            String sqlPid = "select pid from partner where namn = '" + namn + "' and stad = " + stad;   //autoskapar pid, hämtar med namn och stad, Ask nämnde en partner kan finnas i flera städer
             String dbPid = idb.fetchSingle(sqlPid);
             this.pid = Integer.parseInt(dbPid);
         } catch (InfException e) {
@@ -53,96 +62,175 @@ public class Partner {
         }
     }
     
-    /* Alternativ konstruktor med mindre info. Behov eller bara bökigt?
-    
-    public Partner(InfDB idb, String namn, Stad stad)
-    {
-        this.idb = idb;
-        this.namn = namn;
-        this.stad = stad.getSid(); 
-        
-        try {
-            String sqlfråga = "INSERT INTO partner (namn, stad) values ('"
-                    + namn + "', '" + stad.getSid() + "')";
-            idb.insert(sqlfråga);
-            String sqlPid = "select pid from partner where namn = '" + namn + "' and stad = '" + stad.getSid() + "'";   //autoskapar pid, hämtar med namn och stad, Ask nämnde en partner kan finnas i flera städer
-            String dbPid = idb.fetchSingle(sqlPid);
-            this.pid = Integer.parseInt(dbPid);
-        } catch (InfException e) {
-            System.out.println("Databasen har inte uppdaterats.");
-            JOptionPane.showMessageDialog(null, "Databasen har inte uppdaterats. \n" + e.getMessage());
-        }
-    }*/
-    
-    /**
-     * 
-     * @return pid på Partner
-     */
+    /*
     public int getPid()
     {
         return pid;
-    }   
+    }   */
+    
     /**
      * 
+     * @param pid
      * @return namn på Partner 
      */
-    public String getNamn()
+    public String getNamn(int pid)
     {
+        if (namn == null) {
+            try {
+                String sqlFråga = "SELECT namn FROM partner WHERE pid = " + pid;
+                String dbNamn = idb.fetchSingle(sqlFråga);
+                return dbNamn;
+            }
+            catch (InfException e) {
+                System.out.println("Kunde inte hämta partner från databasen" + e);
+                JOptionPane.showMessageDialog(null, "Kunde inte hämta partner från databasen.");
+            }
+        }
         return namn;
     }
     
     /**
      * 
+     * @param pid
      * @return branch för Partner
      */
-    public String getBranch()
+    public String getBranch(int pid)
     {
+        if (branch == null) {
+            try {
+                String sqlFråga = "SELECT branch FROM partner WHERE pid = " + pid;
+                String dbBranch = idb.fetchSingle(sqlFråga);
+                return dbBranch;
+            }
+            catch (InfException e) {
+                System.out.println("Kunde inte hämta partner från databasen" + e);
+                JOptionPane.showMessageDialog(null, "Kunde inte hämta partner från databasen.");
+            }
+        }
         return branch;
     }
     
     /**
      * 
+     * @param pid
      * @return kontaktpersonens namn hos Partner
      */
-    public String getKontaktPerson()
+    public String getKontaktPerson(int pid)
     {
+        if (kontaktPerson == null) {
+            try {
+                String sqlFråga = "SELECT kontaktperson FROM partner WHERE pid = " + pid;
+                String dbKontaktPerson = idb.fetchSingle(sqlFråga);
+                return dbKontaktPerson;
+            }
+            catch (InfException e) {
+                System.out.println("Kunde inte hämta partner från databasen" + e);
+                JOptionPane.showMessageDialog(null, "Kunde inte hämta partner från databasen.");
+            }
+        }
         return kontaktPerson;
     }
     
     /**
      * 
+     * @param pid
      * @return kontaktpersonens epost hos Partner
      */
-    public String getKontaktEpost()
+    public String getKontaktEpost(int pid)
     {
+        if (kontaktEpost == null) {
+            try {
+                String sqlFråga = "SELECT kontaktepost FROM partner WHERE pid = " + pid;
+                String dbKontaktEpost = idb.fetchSingle(sqlFråga);
+                return dbKontaktEpost;
+            }
+            catch (InfException e) {
+                System.out.println("Kunde inte hämta partner från databasen" + e);
+                JOptionPane.showMessageDialog(null, "Kunde inte hämta partner från databasen.");
+            }
+        }
         return kontaktEpost;
     }
     
     /**
      * 
+     * @param pid
      * @return telefonnummer till Partner
      */
-    public String getTelefon()
+    public String getTelefon(int pid)
     {
+        if (telefon == null) {
+            try {
+                String sqlFråga = "SELECT telefon FROM partner WHERE pid = " + pid;
+                String dbKontaktPerson = idb.fetchSingle(sqlFråga);
+                return dbKontaktPerson;
+            }
+            catch (InfException e) {
+                System.out.println("Kunde inte hämta partner från databasen" + e);
+                JOptionPane.showMessageDialog(null, "Kunde inte hämta partner från databasen.");
+            }
+        }
         return telefon;
     }
     
     /**
      * 
+     * @param pid
      * @return adress till Partner
      */
-    public String getAdress()
+    public String getAdress(int pid)
     {
+        if (adress == null) {
+            try {
+                String sqlFråga = "SELECT adress FROM partner WHERE pid = " + pid;
+                String dbAdress = idb.fetchSingle(sqlFråga);
+                return dbAdress;
+            }
+            catch (InfException e) {
+                System.out.println("Kunde inte hämta partner från databasen" + e);
+                JOptionPane.showMessageDialog(null, "Kunde inte hämta partner från databasen.");
+            }
+        }
         return adress;
     }
     
     /**
      * 
+     * @param pid
      * @return sid till Stad när Partner huserar
      */
-    public int getStad()
+    public int getStad(int pid)
     {
+        if (stad == 0) {
+            try {
+                String sqlFråga = "SELECT stad FROM partner WHERE pid = " + pid;
+                int dbStad = Integer.parseInt(idb.fetchSingle(sqlFråga));
+                return dbStad;
+            }
+            catch (InfException e) {
+                System.out.println("Kunde inte hämta partner från databasen" + e);
+                JOptionPane.showMessageDialog(null, "Kunde inte hämta partner från databasen.");
+            }
+        }
         return stad;
+    }
+    
+    
+    public HashMap<String,String> getEnPartner(int pid)
+    {
+        HashMap<String, String> enPartner = new HashMap<>();
+        try
+        {
+            String sqlfråga = "SELECT * FROM partner WHERE pid = " + pid;
+            enPartner = idb.fetchRow(sqlfråga); 
+        }
+        catch(InfException e)
+        {
+            System.out.println("Kunde inte hämta partner. \n" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Kunde inte hämta partner.");
+            enPartner = null;
+        }
+        return enPartner;
     }
     
     /**
@@ -167,12 +255,37 @@ public class Partner {
     }
     
     /**
+     * Lägger till ny partner i databasen
+     * @param namn
+     * @param kontaktPerson
+     * @param kontaktEpost
+     * @param telefon
+     * @param adress
+     * @param branch
+     * @param stad 
+     */
+    public void setNyPartner(String namn, String kontaktPerson, String kontaktEpost, String telefon, String adress, String branch, int stad) 
+    {
+        try {
+            String sqlfråga = "INSERT INTO partner (namn, kontaktperson, kontaktepost, telefon, adress, branch, stad) values ('"
+                    + namn + "', '" + kontaktPerson + "', '" + kontaktEpost + "', '" + telefon + "', '" + adress + "', '" + branch
+                    + "', " + stad + ")";
+
+            idb.insert(sqlfråga);
+            JOptionPane.showMessageDialog(null, "Ny partner har lagts till");
+        } catch (InfException e) {
+            System.out.println("Databasen har inte uppdaterats.\n" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Databasen har inte uppdaterats.");
+        }
+    }
+    
+    /**
      * Ändrar eller lägger till namn på Partner
      * @param namn 
      */
     public void setNamn(String namn)
     {
-        this.namn = namn;
+        //this.namn = namn;
         try
         {
         String sqlfråga = "UPDATE partner WHERE pid = " + pid + " SET namn = '" + namn + "'";
@@ -191,9 +304,9 @@ public class Partner {
      */
     public void setKontaktPerson(String kontaktPerson)
     {
-        this.kontaktPerson = kontaktPerson;
+        //this.kontaktPerson = kontaktPerson;
         try {
-        String sqlfråga = "UPDATE partner WHERE pid = " + pid + " SET kontaktPerson = '" + kontaktPerson + "'";
+        String sqlfråga = "UPDATE partner WHERE pid = " + pid + " SET kontaktperson = '" + kontaktPerson + "'";
             idb.update(sqlfråga);
         }
         catch(InfException e)
@@ -209,9 +322,9 @@ public class Partner {
      */
     public void setKontaktEpost(String kontaktEpost)
     {
-        this.kontaktEpost = kontaktEpost;
+        //this.kontaktEpost = kontaktEpost;
         try {
-        String sqlfråga = "UPDATE partner WHERE pid = " + pid + " SET kontaktEpost = '" + kontaktEpost + "'";
+        String sqlfråga = "UPDATE partner WHERE pid = " + pid + " SET kontaktepost = '" + kontaktEpost + "'";
             idb.update(sqlfråga);
         }
         catch(InfException e)
@@ -227,7 +340,7 @@ public class Partner {
      */
     public void setTelefon(String telefon)
     {
-        this.telefon = telefon;
+        //this.telefon = telefon;
         try {
         String sqlfråga = "UPDATE partner WHERE pid = " + pid + " SET telefon = '" + telefon + "'";
             idb.update(sqlfråga);
@@ -245,7 +358,7 @@ public class Partner {
      */
     public void setAdress(String adress)
     {
-        this.adress = adress;
+        //this.adress = adress;
         try {
         String sqlfråga = "UPDATE partner WHERE pid = " + pid + " SET adress = '" + adress + "'";
             idb.update(sqlfråga);
@@ -259,7 +372,7 @@ public class Partner {
     
     public void setBranch(String branch)
     {
-        this.branch = branch;
+        //this.branch = branch;
         try {
         String sqlfråga = "UPDATE partner WHERE pid = " + pid + " SET branch = '" + branch + "'";
             idb.update(sqlfråga);
@@ -275,11 +388,11 @@ public class Partner {
      * 
      * @param stad som Partner huserar i
      */
-    public void setStad (Stad stad)
+    public void setStad (int stad)
     {
-        this.stad = stad.getSid();
+        //this.stad = stad.getSid();
         try {
-        String sqlfråga = "UPDATE partner WHERE pid = " + pid + " SET stad = '" + stad + "'";
+        String sqlfråga = "UPDATE partner WHERE pid = " + pid + " SET stad = " + stad;
             idb.update(sqlfråga);
         }
         catch(InfException e)
@@ -296,8 +409,9 @@ public class Partner {
     public void taBortPartner(int pid)
     {
         try {
-            String sqlFråga = "delete from partner where pid = '" + pid + "'";
+            String sqlFråga = "delete from partner where pid = " + pid;
             idb.delete(sqlFråga);
+            JOptionPane.showMessageDialog(null, "Partner har tagits bort.");
         }
         catch (InfException e) 
         {

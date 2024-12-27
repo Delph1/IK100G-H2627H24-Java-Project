@@ -24,6 +24,7 @@ public class Inloggning extends javax.swing.JFrame {
         lblMeddelande.setVisible(false);
         String nivå;
         setLocationRelativeTo(null); //Den här koden sätter fönstret i mitten av skärmen.
+        txtLösenord.setText("");
     }
 
     /**
@@ -38,12 +39,12 @@ public class Inloggning extends javax.swing.JFrame {
         lblAnvändarnamn = new javax.swing.JLabel();
         lblLösenord = new javax.swing.JLabel();
         txtAnvändarnamn = new javax.swing.JTextField();
-        txtLösenord = new javax.swing.JTextField();
         lblMeddelande = new javax.swing.JLabel();
         btnLoggaIn = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        txtLösenord = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Inloggning");
@@ -85,6 +86,8 @@ public class Inloggning extends javax.swing.JFrame {
             }
         });
 
+        txtLösenord.setText("jPasswordField1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -101,8 +104,8 @@ public class Inloggning extends javax.swing.JFrame {
                                     .addComponent(lblLösenord))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtLösenord)
-                                    .addComponent(txtAnvändarnamn, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)))))
+                                    .addComponent(txtAnvändarnamn, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
+                                    .addComponent(txtLösenord)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addComponent(jButton1)
@@ -125,19 +128,19 @@ public class Inloggning extends javax.swing.JFrame {
                     .addComponent(lblAnvändarnamn)
                     .addComponent(txtAnvändarnamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblLösenord)
                     .addComponent(txtLösenord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(15, 15, 15)
                 .addComponent(lblMeddelande)
-                .addGap(18, 18, 18)
+                .addGap(24, 24, 24)
                 .addComponent(btnLoggaIn)
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
                     .addComponent(jButton3))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
@@ -146,9 +149,9 @@ public class Inloggning extends javax.swing.JFrame {
     private void btnLoggaInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoggaInActionPerformed
         
         String användarnamn = txtAnvändarnamn.getText();
-        String lösenord = txtLösenord.getText();
+        String lösenord = new String(txtLösenord.getPassword());
                 
-        if (Validering.faltkontroll(txtAnvändarnamn) && Validering.emailKontroll(txtAnvändarnamn) && (Validering.faltkontroll(txtLösenord))) {
+        if (Validering.faltEjTomtKontroll(txtAnvändarnamn) && Validering.emailKontroll(txtAnvändarnamn) && (Validering.faltEjTomtKontroll(txtLösenord))) {
 
             try {
                 String sqlfråga = "Select losenord FROM anstalld WHERE epost = '" + användarnamn + "'";
@@ -206,6 +209,6 @@ public class Inloggning extends javax.swing.JFrame {
     private javax.swing.JLabel lblLösenord;
     private javax.swing.JLabel lblMeddelande;
     private javax.swing.JTextField txtAnvändarnamn;
-    private javax.swing.JTextField txtLösenord;
+    private javax.swing.JPasswordField txtLösenord;
     // End of variables declaration//GEN-END:variables
 }

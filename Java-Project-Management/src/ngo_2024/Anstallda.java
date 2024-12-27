@@ -74,11 +74,13 @@ public class Anstallda extends javax.swing.JFrame {
         });
 
         jButton3.setText("Ta bort anställd");
+
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
+
 
         jButton4.setText("Ny anställd");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -124,7 +126,6 @@ public class Anstallda extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         hamtaAnstallda();
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -190,6 +191,7 @@ taBortAnstalld();        // TODO add your handling code here:
         JOptionPane.showMessageDialog(null, "Fel vid hämtning av anställda: " + e.getMessage());
     }
 }
+  
      private void taBortAnstalld() {
 
         int selectedRow = jTable1.getSelectedRow();
@@ -232,16 +234,14 @@ taBortAnstalld();        // TODO add your handling code here:
             Object anstalld = jTable1.getValueAt(selectedRow, 0); // Hämta värde från kolumn 0
             String queryAid = anstalld.toString(); // Konvertera till String
             new EditAnstalld(idb, queryAid).setVisible(true); //öppnar nytt fönster, skickar med den anställde via AID från databasen
+
             // JOptionPane.showMessageDialog(this, "Valt ID: " + anstalld);
         } else {
             JOptionPane.showMessageDialog(null, "Ingen rad är markerad!");
         }
     }
-    
 
-
-    
-            
+  
     /**
      * @param args the command line arguments
      */

@@ -23,6 +23,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
+
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -39,10 +40,12 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jTextField7" min="-2" pref="134" max="-2" attributes="0"/>
+
                   <Component id="jTextField3" min="-2" pref="134" max="-2" attributes="0"/>
                   <Component id="jTextField4" min="-2" pref="134" max="-2" attributes="0"/>
                   <Component id="jTextField6" min="-2" pref="134" max="-2" attributes="0"/>
                   <Component id="jTextField5" min="-2" pref="134" max="-2" attributes="0"/>
+
                   <Component id="jTextField1" alignment="0" min="-2" pref="134" max="-2" attributes="0"/>
                   <Component id="jTextField2" alignment="0" min="-2" pref="134" max="-2" attributes="0"/>
                   <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
@@ -51,12 +54,14 @@
                   </Group>
               </Group>
               <EmptySpace min="0" pref="44" max="32767" attributes="0"/>
+
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
+
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -103,6 +108,8 @@
                   <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="79" max="32767" attributes="0"/>
+
+            
           </Group>
       </Group>
     </DimensionLayout>
@@ -148,6 +155,7 @@
         <Property name="actionCommand" type="java.lang.String" value="&lt;Not Set&gt;"/>
       </Properties>
     </Component>
+
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
         <Property name="text" type="java.lang.String" value="F&#xf6;rnamn:"/>
@@ -207,5 +215,7 @@
         <Property name="text" type="java.lang.String" value="Roll:"/>
       </Properties>
     </Component>
+
+  
   </SubComponents>
 </Form>

@@ -250,9 +250,11 @@ public class Huvudmeny extends javax.swing.JFrame {
        // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
+
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
      new EditAnstalld(idb, queryAid).setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
 
 
 
