@@ -175,6 +175,11 @@ public class Huvudmeny extends javax.swing.JFrame {
         jMenu4.setText("Administration");
 
         jMenuItem14.setText("Personal");
+        jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem14ActionPerformed(evt);
+            }
+        });
         jMenu4.add(jMenuItem14);
 
         jMenuItem16.setText("Avdelningar");
@@ -195,6 +200,11 @@ public class Huvudmeny extends javax.swing.JFrame {
         jMenu6.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
 
         jMenuItem3.setText("Om");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         jMenu6.add(jMenuItem3);
 
         jMenuBar1.add(jMenu6);
@@ -225,6 +235,14 @@ public class Huvudmeny extends javax.swing.JFrame {
      new Inloggning(idb).setVisible (true);
         this.setVisible(false);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
+    new Anstallda(idb).setVisible(true);        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem14ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+       // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
 
 
