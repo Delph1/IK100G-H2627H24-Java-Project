@@ -18,11 +18,20 @@ public class Admin {
     private int aid;
     private int behorighetsniva;
     
+    /**
+     * Konstruktor för att instantiera klassen utan någon data i objektet.
+     * @param idb 
+     */
     public Admin(InfDB idb)
     {
         this.idb = idb;
     }
     
+    /**
+     * Konstruktor för ett Admin-objekt.
+     * @param idb
+     * @param aid 
+     */
     
     public Admin(InfDB idb, int aid)
     {
@@ -31,7 +40,7 @@ public class Admin {
         this.behorighetsniva = 1;
         
     }
-    
+       
     /**
      * 
      * Nedan följer get-metoder för Admin
