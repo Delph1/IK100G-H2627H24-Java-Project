@@ -19,6 +19,15 @@ public class Hallbarhetsmal {
     private int hid; // Hållbarhetsmålets unika ID i databasen
 
     /**
+     * Konstruktor för att instantiera klassen
+     * @param idb
+     */
+    public Hallbarhetsmal(InfDB idb)
+    {
+        this.idb = idb;
+    }
+    
+    /**
      * Konstruktor för att skapa ett hållbarhetsmål och spara det i databasen.
      * @param idb
      * @param namn
