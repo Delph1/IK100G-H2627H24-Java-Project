@@ -130,22 +130,23 @@ public class Anstallda extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+        String empty = "";
+        new EditAnstalld(idb, empty).setVisible(true);    //fulkod för att kunna öppna EditAnstalld som ett tomt formulär
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        getSelectedValue();
+        editAnstalld();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-//taBortAnstalld();       
+taBortAnstalld();        // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
  private void hamtaAnstallda() {
     try {
         // SQL-frågan för att hämta data
         String query = "SELECT aid, fornamn, efternamn, adress, epost, telefon, anstallningsdatum, losenord, avdelning FROM anstalld";
-        System.out.println("SQL-fråga: " + query); // Logga frågan Markera bort senare
+        System.out.println("SQL-fråga: " + query); // Logga frågan Markera bort
         ArrayList<HashMap<String, String>> resultat = idb.fetchRows(query);
 
         if (resultat != null) {
@@ -165,7 +166,7 @@ public class Anstallda extends javax.swing.JFrame {
             tableModel.addColumn("Lösenord");
             tableModel.addColumn("Avdelning");
 
-            // For loop fyller table med data från databasen
+            // Fyller table med data från databasen
             for (HashMap<String, String> rad : resultat) {
                 tableModel.addRow(new Object[]{
                     rad.get("aid"),
@@ -189,14 +190,49 @@ public class Anstallda extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Fel vid hämtning av anställda: " + e.getMessage());
     }
 }
-    private void getSelectedValue() {
+     private void taBortAnstalld() {
+
         int selectedRow = jTable1.getSelectedRow();
         if (selectedRow != -1) {
-            
-            Object anstalld = jTable1.getValueAt(selectedRow, 0); // Hämta värde från kolumn 0(dvs den första)
+            Object anstalld = jTable1.getValueAt(selectedRow, 0); // Hämta värde från kolumn 0
             String queryAid = anstalld.toString(); // Konvertera till String
-            new EditAnstalld(idb, queryAid).setVisible(true); //öppnar nytt fönster, skickar med den anställde via AID från databasen, används av nästa fönster
+            try {
+               
+                String sqlfråga1 = "UPDATE projekt SET projektchef = NULL Where projektchef = '" + queryAid + "'";
+                idb.update(sqlfråga1);
+                String sqlfråga6 = "UPDATE avdelning SET chef = NULL Where chef = '" + queryAid + "'";
+                idb.update(sqlfråga6);
+                String sqlfråga4 = "DELETE FROM ans_proj WHERE aid = '" + queryAid + "'";
+                idb.delete(sqlfråga4);
+                String sqlfråga3 = "UPDATE handlaggare SET mentor = NULL Where mentor = '" + queryAid + "'";
+                idb.update(sqlfråga3);
+                String sqlfråga5 = "DELETE FROM admin WHERE aid = '" + queryAid + "'";
+                idb.delete(sqlfråga5);
+                String sqlfråga = "DELETE FROM handlaggare WHERE aid = '" + queryAid + "'";
+                idb.delete(sqlfråga);
+                String sqlfråga2 = "DELETE FROM anstalld WHERE aid = '" + queryAid + "'";
+                idb.delete(sqlfråga2);
+                
+              
+                hamtaAnstallda();
+            
+            } catch (InfException e) {
+                System.out.println(e.getMessage());
 
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingen rad är markerad!");
+        }
+
+    }
+
+    private void editAnstalld() {
+        int selectedRow = jTable1.getSelectedRow();
+        if (selectedRow != -1) {
+            Object anstalld = jTable1.getValueAt(selectedRow, 0); // Hämta värde från kolumn 0
+            String queryAid = anstalld.toString(); // Konvertera till String
+            new EditAnstalld(idb, queryAid).setVisible(true); //öppnar nytt fönster, skickar med den anställde via AID från databasen
+            // JOptionPane.showMessageDialog(this, "Valt ID: " + anstalld);
         } else {
             JOptionPane.showMessageDialog(null, "Ingen rad är markerad!");
         }
