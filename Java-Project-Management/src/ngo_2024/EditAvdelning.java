@@ -241,6 +241,7 @@ public class EditAvdelning extends javax.swing.JFrame {
                     
             }
             
+
         }
         catch(InfException e)
         {
