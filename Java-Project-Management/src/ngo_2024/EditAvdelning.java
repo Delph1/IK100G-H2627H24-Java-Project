@@ -82,7 +82,7 @@ public class EditAvdelning extends javax.swing.JFrame {
         jTextField7 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jTextField1.setColumns(10);
         jTextField1.setToolTipText("");
@@ -208,16 +208,40 @@ public class EditAvdelning extends javax.swing.JFrame {
         
         try
         {
-            String query = "UPDATE avdelning SET (namn, beskrivning, adress, epost, telefon, stad, chef) VALUES ('"
+            if(queryAid == null)
+            {
+            int avdid = Integer.parseInt(idb.getAutoIncrement("avdelning", "avdid"));
+            String query = "INSERT INTO avdelning (avdid, namn, beskrivning, adress, epost, telefon, stad, chef)"
+                    + " VALUES ("
+                    + avdid + ", '"
                     + namn + "', '"
                     + beskrivning + "', '"
                     + adress + "', '"
                     + epost + "', '"
-                    + telefon + "', "
+                    + telefon + "', " 
                     + stad + ", "
-                    + chef + ") WHERE avdid = " + queryAid;
+                    + chef + ")";
+            System.out.println(query);
+            idb.insert(query);
+                
+            }
+            else
+            {
+            String query = "UPDATE avdelning "
+                    + "SET namn = '" + namn + "', "
+                    + "beskrivning = '" + beskrivning + "', " 
+                    + "adress = '" + adress + "', "
+                    + "epost = '" + epost + "', "
+                    + "telefon = '" + telefon + "', " 
+                    + "stad = " + stad + ", "
+                    + "chef = " + chef
+                    + " WHERE avdid = " + queryAid;
             System.out.println(query);
             idb.update(query);
+                    
+            }
+            
+
         }
         catch(InfException e)
         {
