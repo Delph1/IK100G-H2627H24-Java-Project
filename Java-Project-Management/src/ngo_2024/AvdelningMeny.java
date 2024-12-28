@@ -44,7 +44,7 @@ public class AvdelningMeny extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -201,24 +201,24 @@ public class AvdelningMeny extends javax.swing.JFrame {
         if (selectedRow != -1)
         {
             Object avdelning = jTable1.getValueAt(selectedRow, 0);
-            int queryAid = (int) avdelning;
+            String queryAid = avdelning.toString();
 
             //Först kollar vi om anställda finns vid den avdelning som ska raderas och tar bort dem från avdelningen.
             try {
-                String query1 = "UPDATE anstalld SET avdelning = null WHERE avdelning = " + queryAid;
+                String query1 = "UPDATE anstalld SET avdelning = null WHERE avdelning = '" + queryAid + "'";
                 idb.update(query1);
                 
                 //Sedan raderar vi kopplingen mellan avdelningen och hållbarhetsmålen.
                 try
                 {
-                    String query2 = "DELETE FROM avd_hallbarhet WHERE avdid = " + queryAid;
+                    String query2 = "DELETE FROM avd_hallbarhet WHERE avdid = '" + queryAid + "'";
                     idb.delete(query2);
 
                     //Sist raderar vi själva avdelningen.
                     try
                     {
-                        String query3 = "DELETE FROM avdelning WHERE avdid = " + queryAid;
-                        idb.delete(query2);
+                        String query3 = "DELETE FROM avdelning WHERE avdid = '" + queryAid + "'";
+                        idb.delete(query3);
                     }
                     catch (InfException e)
                     {
@@ -236,6 +236,7 @@ public class AvdelningMeny extends javax.swing.JFrame {
             {
                 System.out.println(e.getMessage());
             }
+        getAvdelningar();
         }
         else 
         {
