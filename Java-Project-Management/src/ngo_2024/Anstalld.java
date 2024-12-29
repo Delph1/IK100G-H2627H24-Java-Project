@@ -150,6 +150,22 @@ public class Anstalld {
      * @return 
      */
     
+    public String getChefNamn(String aid)
+    {
+        String chefNamn;
+        try
+        {
+            String query = "SELECT CONCAT(fornamn, ' ', efternamn) as namn FROM anstalld WHERE aid = '" + aid + "'";
+            chefNamn = idb.fetchSingle(query);
+        }
+        catch (InfException e)
+        {
+            System.out.println(e.getMessage());
+            chefNamn = null;
+        }
+        return chefNamn;
+    }
+    
     public ArrayList<HashMap<String, String>> getAllaAnstallda()
     {
         ArrayList<HashMap<String, String>> allaAnstallda = new ArrayList<>();

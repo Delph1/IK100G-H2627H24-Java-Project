@@ -17,12 +17,16 @@ import oru.inf.InfException;
  */
 public class AvdelningMeny extends javax.swing.JFrame {
 
-    private InfDB idb; 
+    private InfDB idb;
+    private Stad stad; 
+    private Anstalld anstalld;
     /**
      * Creates new form AvdelningMeny
      */
     public AvdelningMeny(InfDB idb) {
         this.idb = idb;
+        this.stad = new Stad(idb);
+        this.anstalld = new Anstalld(idb);
         initComponents();
         setLocationRelativeTo(null);
         getAvdelningar();
@@ -45,23 +49,30 @@ public class AvdelningMeny extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                formWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Namn", "Beskrivning", "Adress", "E-post", "Telefon", "Stad", "Chef"
+                "ID", "Namn", "Beskrivning", "Adress", "E-post", "Telefon", "Stad Id", "Chef Id", "Stad", "Chef"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, true, true
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -73,6 +84,14 @@ public class AvdelningMeny extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(6).setMinWidth(0);
+            jTable1.getColumnModel().getColumn(6).setPreferredWidth(0);
+            jTable1.getColumnModel().getColumn(6).setMaxWidth(0);
+            jTable1.getColumnModel().getColumn(7).setMinWidth(0);
+            jTable1.getColumnModel().getColumn(7).setPreferredWidth(0);
+            jTable1.getColumnModel().getColumn(7).setMaxWidth(0);
+        }
 
         jButton1.setText("Uppdatera");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -150,6 +169,10 @@ public class AvdelningMeny extends javax.swing.JFrame {
         new EditAvdelning(idb, null).setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+        getAvdelningar();
+    }//GEN-LAST:event_formWindowGainedFocus
+
     private void getAvdelningar()
     {
         try {
@@ -167,7 +190,8 @@ public class AvdelningMeny extends javax.swing.JFrame {
                 tableModel.addColumn("Adress");
                 tableModel.addColumn("Epost");
                 tableModel.addColumn("Telefon");
-                tableModel.addColumn("Anställningsdatum");
+                tableModel.addColumn("Stad Id");
+                tableModel.addColumn("Chef Id");
                 tableModel.addColumn("Stad");
                 tableModel.addColumn("Chef");
                 
@@ -181,10 +205,25 @@ public class AvdelningMeny extends javax.swing.JFrame {
                     rad.get("telefon"),
                     rad.get("stad"),
                     rad.get("chef")
-                });
+                }
+                );
+                
+                for (int i = 0; i < tableModel.getRowCount() ; i++)
+                {
+                    String stadId = tableModel.getValueAt(i, 6).toString();
+                    Object stadNamn = stad.getNamn(Integer.parseInt(stadId));
+                    tableModel.setValueAt(stadNamn, i, 8);
+                    
+                    String chefId = tableModel.getValueAt(i, 7).toString();
+                    Object chefNamn = anstalld.getChefNamn(chefId); 
+                    tableModel.setValueAt(chefNamn, i, 9);
+                }
             }
             jTable1.setModel(tableModel);
-            }
+            jTable1.getColumnModel().getColumn(6).setMinWidth(0);
+            jTable1.getColumnModel().getColumn(6).setMaxWidth(0);
+            jTable1.getColumnModel().getColumn(7).setMinWidth(0);
+            jTable1.getColumnModel().getColumn(7).setMaxWidth(0);            }
             else
             {
                 JOptionPane.showMessageDialog(this, "Inga avdelningar hittades.");
@@ -195,6 +234,7 @@ public class AvdelningMeny extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Fel vid hämtning av avdelningar: " + e.getMessage());
         }
     }
+    
     private void raderaAvdelning()
     {
         int selectedRow = jTable1.getSelectedRow();
@@ -258,7 +298,7 @@ public class AvdelningMeny extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Ingen rad är markerad");
         }
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

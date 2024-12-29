@@ -4,6 +4,7 @@
  */
 package ngo_2024;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
 import oru.inf.InfDB;
@@ -17,7 +18,10 @@ public class EditAvdelning extends javax.swing.JFrame {
     
     private InfDB idb;
     private String queryAid;
-
+    private Anstalld anstalld;
+    private Stad stad;
+    private HashMap<String, String> chefLista;
+    private ArrayList<HashMap<String, String>> allaStader;
     /**
      * Creates new form EditAvdelning
      */
@@ -25,13 +29,83 @@ public class EditAvdelning extends javax.swing.JFrame {
     public EditAvdelning(InfDB idb, String queryAid) {
         this.idb = idb;
         this.queryAid = queryAid;
+        this.anstalld = new Anstalld(idb);
+        this.stad = new Stad(idb);
+        this.chefLista = new HashMap<>();
+        this.allaStader = new ArrayList<>();
+        skapaChefHashMap();
         initComponents();
         setLocationRelativeTo(null);
         
         if (queryAid != null)
         {
-            
-            try {
+            getAvdelningsdata(queryAid);
+        }
+        else
+        {
+            lblId.setVisible(false);
+            txtId.setVisible(false);
+        }
+//        txtStadId.setVisible(false);
+//        txtChefId.setVisible(false);
+        populeraCbChefNamn(chefLista);
+        populeraCbStad();
+    }
+    
+    private HashMap<String, String> skapaChefHashMap()
+    {
+        ArrayList<HashMap<String, String>> allaAnstallda = anstalld.getAllaAnstallda();
+        HashMap<String, String> enAnstalld = new HashMap<>();
+        for (int i = 0; i < allaAnstallda.size(); i++)
+        {
+            enAnstalld = allaAnstallda.get(i);
+            {
+                chefLista.put(enAnstalld.get("aid"), enAnstalld.get("fornamn") + " " + enAnstalld.get("efternamn"));
+            }
+        }
+        
+        return chefLista;
+    }
+    
+    private void populeraCbChefNamn(HashMap<String, String> chefLista)
+    {
+        //Lägger till nuvarande chefen först i listan
+        cbChefNamn.addItem(chefLista.get(txtChefId.getText()));
+
+        //lägger till alla andra efter det.
+        for(String key : chefLista.keySet())
+        {
+            if (!key.equals(txtChefId.getText()))
+            {
+                cbChefNamn.addItem(chefLista.get(key));
+            }
+        }
+    }
+    
+    private void populeraCbStad()
+    {
+        allaStader = stad.getAllaStader();
+        //Lägger till nuvarande staden först i listan
+        for(HashMap<String, String> enStad : allaStader)
+        {
+            if (enStad.get("sid").equals(txtStadId.getText()))
+            {
+                cbStadNamn.addItem(enStad.get("namn"));
+            }
+        }
+        //och sedan resten.
+        for(HashMap<String, String> enStad : allaStader)
+        {
+            if (!enStad.get("sid").equals(txtStadId.getText()))
+            {
+                cbStadNamn.addItem(enStad.get("namn"));
+            }
+        }
+    }
+    
+    private void getAvdelningsdata(String queryAid)
+    {
+        try {
             String query = "SELECT * FROM avdelning WHERE avdid = " + queryAid;
             System.out.println(query);
 
@@ -40,21 +114,20 @@ public class EditAvdelning extends javax.swing.JFrame {
                 if (resultat != null) {
                     // Hämta och sätt värden i motsvarande textfält
 
-                    jTextField1.setText(resultat.get("namn"));
-                    jTextField2.setText(resultat.get("beskrivning"));
-                    jTextField3.setText(resultat.get("adress"));       
-                    jTextField4.setText(resultat.get("epost"));  
-                    jTextField5.setText(resultat.get("telefon"));
-                    jTextField6.setText(resultat.get("stad")); 
-                    jTextField7.setText(resultat.get("chef"));
-
+                    txtNamn.setText(resultat.get("namn"));
+                    txtBeskrivning.setText(resultat.get("beskrivning"));
+                    txtAdress.setText(resultat.get("adress"));       
+                    txtEpost.setText(resultat.get("epost"));  
+                    txtTelefon.setText(resultat.get("telefon"));
+                    txtStadId.setText(resultat.get("stad")); 
+                    txtChefId.setText(resultat.get("chef"));
+                   
                 } else {
                     JOptionPane.showMessageDialog(null, "Ingen avdelning hittades med det angivna ID:t.");
                 }
             } catch (InfException e) {
                 System.out.println("Ett fel inträffade: " + e.getMessage());
             }
-        }
     }
     
     /**
@@ -66,52 +139,56 @@ public class EditAvdelning extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField1 = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
+        txtNamn = new javax.swing.JTextField();
+        lblNamn = new javax.swing.JLabel();
+        lblBeskrivning = new javax.swing.JLabel();
+        txtBeskrivning = new javax.swing.JTextField();
+        lblAdress = new javax.swing.JLabel();
+        txtAdress = new javax.swing.JTextField();
+        lblEpost = new javax.swing.JLabel();
+        lblTelefon = new javax.swing.JLabel();
+        lblStad = new javax.swing.JLabel();
+        lblChef = new javax.swing.JLabel();
+        txtEpost = new javax.swing.JTextField();
+        txtTelefon = new javax.swing.JTextField();
+        txtStadId = new javax.swing.JTextField();
+        txtChefId = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        cbStadNamn = new javax.swing.JComboBox<>();
+        cbChefNamn = new javax.swing.JComboBox<>();
+        txtId = new javax.swing.JTextField();
+        lblId = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jTextField1.setColumns(10);
-        jTextField1.setToolTipText("");
+        txtNamn.setColumns(10);
+        txtNamn.setToolTipText("");
 
-        jLabel1.setText("Namn:");
+        lblNamn.setText("Namn:");
 
-        jLabel2.setText("Beskrivning");
+        lblBeskrivning.setText("Beskrivning:");
 
-        jTextField2.setColumns(10);
+        txtBeskrivning.setColumns(10);
 
-        jLabel3.setText("Adress");
+        lblAdress.setText("Adress:");
 
-        jTextField3.setColumns(10);
+        txtAdress.setColumns(10);
 
-        jLabel4.setText("E-post");
+        lblEpost.setText("E-post:");
 
-        jLabel5.setText("Telefon");
+        lblTelefon.setText("Telefon:");
 
-        jLabel6.setText("Stad");
+        lblStad.setText("Stad:");
 
-        jLabel7.setText("Chef");
+        lblChef.setText("Chef:");
 
-        jTextField4.setColumns(10);
+        txtEpost.setColumns(10);
 
-        jTextField5.setColumns(10);
+        txtTelefon.setColumns(10);
 
-        jTextField6.setColumns(10);
+        txtStadId.setColumns(10);
 
-        jTextField7.setColumns(10);
+        txtChefId.setColumns(10);
 
         jButton1.setText("Spara");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -120,6 +197,22 @@ public class EditAvdelning extends javax.swing.JFrame {
             }
         });
 
+        cbStadNamn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbStadNamnActionPerformed(evt);
+            }
+        });
+
+        cbChefNamn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbChefNamnActionPerformed(evt);
+            }
+        });
+
+        txtId.setEnabled(false);
+
+        lblId.setText("Id:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -127,84 +220,109 @@ public class EditAvdelning extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel7))
+                    .addComponent(lblNamn)
+                    .addComponent(lblBeskrivning)
+                    .addComponent(lblAdress)
+                    .addComponent(lblEpost)
+                    .addComponent(lblTelefon)
+                    .addComponent(lblStad)
+                    .addComponent(lblChef))
                 .addGap(94, 94, 94)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton1))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addGap(17, 17, 17))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtBeskrivning)
+                                    .addComponent(txtNamn)
+                                    .addComponent(txtAdress, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtEpost, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
+                                    .addComponent(txtTelefon))
+                                .addGap(37, 37, 37)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblId)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtStadId, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtChefId, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(cbStadNamn, javax.swing.GroupLayout.Alignment.LEADING, 0, 144, Short.MAX_VALUE)
+                            .addComponent(cbChefNamn, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(17, 17, 17))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(txtNamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblNamn)
+                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblId))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblBeskrivning)
+                    .addComponent(txtBeskrivning, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblAdress)
+                    .addComponent(txtAdress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblEpost)
+                    .addComponent(txtEpost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblTelefon)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtTelefon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtChefId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtStadId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
+                        .addComponent(lblStad)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
-                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(32, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addGap(14, 14, 14))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton1)
+                                .addGap(14, 14, 14))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(24, 24, 24)
+                                .addComponent(lblChef)
+                                .addContainerGap(60, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(cbStadNamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(cbChefNamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        System.out.println("Namn: " + jTextField1.getText());
-        System.out.println("Beskrivning: " + jTextField2.getText());
+        System.out.println("Namn: " + txtNamn.getText());
+        System.out.println("Beskrivning: " + txtBeskrivning.getText());
         
-        String namn = jTextField1.getText();
-        String beskrivning = jTextField2.getText();
-        String adress = jTextField3.getText();
-        String epost = jTextField4.getText();
-        String telefon = jTextField5.getText();
-        int stad = Integer.parseInt(jTextField6.getText());
-        int chef = Integer.parseInt(jTextField7.getText());
+        String namn = txtNamn.getText();
+        String beskrivning = txtBeskrivning.getText();
+        String adress = txtAdress.getText();
+        String epost = txtEpost.getText();
+        String telefon = txtTelefon.getText();
+        int stad = Integer.parseInt(txtStadId.getText());
+        int chef = Integer.parseInt(txtChefId.getText());
         
         try
         {
@@ -240,8 +358,9 @@ public class EditAvdelning extends javax.swing.JFrame {
             idb.update(query);
                     
             }
-            
-
+        JOptionPane.showMessageDialog(null, "Avdelningen har sparats.");
+        this.setVisible(false);
+        
         }
         catch(InfException e)
         {
@@ -249,23 +368,50 @@ public class EditAvdelning extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void cbChefNamnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbChefNamnActionPerformed
+        // Uppdaterar txtChefId med rätt Id när man väljer en ny chef i listan.
+        String nyChef = cbChefNamn.getSelectedItem().toString();
+        for (String chef : chefLista.keySet())
+        {
+            if (chefLista.get(chef).equals(nyChef))
+            {
+                txtChefId.setText(chef);
+            }
+        }
+    }//GEN-LAST:event_cbChefNamnActionPerformed
 
+    private void cbStadNamnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbStadNamnActionPerformed
+        // Uppdaterar txtStadId med rätt Id när man väljer en ny stad i listan.
+        String nyStad = cbStadNamn.getSelectedItem().toString();
+        for(HashMap<String, String> enStad : allaStader)
+        {
+            if(enStad.get("namn").equals(nyStad))
+            {
+                txtStadId.setText(enStad.get("sid"));
+            }
+        }
+    }//GEN-LAST:event_cbStadNamnActionPerformed
 
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> cbChefNamn;
+    private javax.swing.JComboBox<String> cbStadNamn;
     private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
+    private javax.swing.JLabel lblAdress;
+    private javax.swing.JLabel lblBeskrivning;
+    private javax.swing.JLabel lblChef;
+    private javax.swing.JLabel lblEpost;
+    private javax.swing.JLabel lblId;
+    private javax.swing.JLabel lblNamn;
+    private javax.swing.JLabel lblStad;
+    private javax.swing.JLabel lblTelefon;
+    private javax.swing.JTextField txtAdress;
+    private javax.swing.JTextField txtBeskrivning;
+    private javax.swing.JTextField txtChefId;
+    private javax.swing.JTextField txtEpost;
+    private javax.swing.JTextField txtId;
+    private javax.swing.JTextField txtNamn;
+    private javax.swing.JTextField txtStadId;
+    private javax.swing.JTextField txtTelefon;
     // End of variables declaration//GEN-END:variables
 }
