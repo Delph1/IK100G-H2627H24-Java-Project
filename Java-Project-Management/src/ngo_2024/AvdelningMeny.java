@@ -49,6 +49,7 @@ public class AvdelningMeny extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
             public void windowGainedFocus(java.awt.event.WindowEvent evt) {
                 formWindowGainedFocus(evt);
@@ -56,6 +57,7 @@ public class AvdelningMeny extends javax.swing.JFrame {
             public void windowLostFocus(java.awt.event.WindowEvent evt) {
             }
         });
+
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -169,9 +171,11 @@ public class AvdelningMeny extends javax.swing.JFrame {
         new EditAvdelning(idb, null).setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 
+
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
         getAvdelningar();
     }//GEN-LAST:event_formWindowGainedFocus
+
 
     private void getAvdelningar()
     {

@@ -136,6 +136,11 @@ public class Huvudmeny extends javax.swing.JFrame {
         jMenuBar1.add(PMenu);
 
         jMenu2.setText("Projekt");
+        jMenu2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu2ActionPerformed(evt);
+            }
+        });
 
         jMenuItem2.setText("Mina projekt");
         jMenu2.add(jMenuItem2);
@@ -271,6 +276,10 @@ public class Huvudmeny extends javax.swing.JFrame {
     private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
         new EditProjekt(idb).setVisible(true);
     }//GEN-LAST:event_jMenuItem15ActionPerformed
+
+    private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
+        new Projekten(idb).setVisible(true);
+    }//GEN-LAST:event_jMenu2ActionPerformed
 
 
 

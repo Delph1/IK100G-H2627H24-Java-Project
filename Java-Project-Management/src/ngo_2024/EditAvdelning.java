@@ -358,9 +358,11 @@ public class EditAvdelning extends javax.swing.JFrame {
             idb.update(query);
                     
             }
+
         JOptionPane.showMessageDialog(null, "Avdelningen har sparats.");
         this.setVisible(false);
         
+
         }
         catch(InfException e)
         {
