@@ -21,7 +21,7 @@ public class EditProjekt extends javax.swing.JFrame {
     private boolean nyttProjekt;
     
     /**
-     * Creates new form EditProjekt
+     * Creates new form EditProjekt, för att skapa helt nya projekt
      */
     public EditProjekt(InfDB idb) {
         setLocationRelativeTo(null);
@@ -32,6 +32,28 @@ public class EditProjekt extends javax.swing.JFrame {
         fyllCmbPrioritet();
         fyllCmbProjektChef();
         fyllCmbLand();
+        lblProjektID.setVisible(false);
+        txtProjektID.setVisible(false);
+        btnSökPID.setVisible(false);
+        
+    }
+    
+    /**
+     * Konstruktor för att editera redan existerande projekt, med PID som parameter
+     * @param idb
+     * @param pid 
+     */
+        public EditProjekt(InfDB idb, int pid) {
+        setLocationRelativeTo(null);
+        this.idb = idb;
+        nyttProjekt = true;
+        initComponents();
+        fyllCmbStatus();
+        fyllCmbPrioritet();
+        fyllCmbProjektChef();
+        fyllCmbLand();
+        txtProjektID.setText(""+pid);
+        editProjekt(txtProjektID);
     }
 
     /**
@@ -393,24 +415,49 @@ public class EditProjekt extends javax.swing.JFrame {
 
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
         // Lägg till korrekt input från fälten som kan läggas till databasen
-        Validering.faltEjTomtKontroll(txtProjektNamn);
-        Validering.faltEjTomtKontroll(txtBeskrivning);
-        Validering.faltEjTomtKontroll(txtStartDatum);
-        Validering.faltEjTomtKontroll(txtSlutDatum);
-        Validering.faltEjTomtKontroll(txtKostnad);
+        if (Validering.faltEjTomtKontroll(txtProjektNamn)
+                && Validering.faltEjTomtKontroll(txtBeskrivning)
+                && Validering.faltEjTomtKontroll(txtStartDatum)
+                && Validering.faltEjTomtKontroll(txtSlutDatum)
+                && Validering.faltEjTomtKontroll(txtKostnad)
+                && //Hur felmeddela och popupa alla nedan valideringar vid ett spara-knapptryck?
+                Validering.datumKontroll(txtStartDatum)
+                && Validering.datumKontroll(txtSlutDatum)
+                && Validering.datumEfterKontroll(txtStartDatum.getText(), txtSlutDatum)
+                && Validering.datumFöreKontroll(txtSlutDatum.getText(), txtStartDatum)
+                && Validering.arDecimal(txtKostnad)
+                && Validering.positivtVarde(txtKostnad)) 
+        {
+
+            String projektnamn = txtProjektNamn.getText();
+            String beskrivning = txtBeskrivning.getText();
+            String startdatum = txtStartDatum.getText();
+            String slutdatum = txtSlutDatum.getText();
+            String status = cmbStatus.getSelectedItem().toString();
+            String prioritet = cmbPrioritet.getSelectedItem().toString();
+            double kostnad = Double.parseDouble(txtKostnad.getText());
+            System.out.println(kostnad);
+            Anstalld nyAnstalld = new Anstalld(idb);
+            int projektchef = nyAnstalld.aidFrånFulltNamn(cmbProjektChef.getSelectedItem().toString());
+            int land = 0;
+            try {
+                String sqlLand = "select lid from land where namn = '" + cmbLand.getSelectedItem().toString()+"'";
+                land = Integer.parseInt(idb.fetchSingle(sqlLand));
+            } catch (InfException e) {
+                System.out.println(e.getMessage());
+            }
+            if (nyttProjekt) {
+                String sqlFråga = "insert into projekt (projektnamn, beskrivning, startdatum, slutdatum, kostnad, status, prioritet, projektchef, land) values ('"+projektnamn+
+                        "', '"+beskrivning+"', '"+startdatum+"', '"+slutdatum+"', "+kostnad+", '"+status+"', '"+prioritet+"', "+projektchef+", "+land+")";
+                System.out.println(sqlFråga);
+            } else {
+                String sqlFråga = "update projekt set (projektnamn = '"+projektnamn+"', beskrivning = '"+beskrivning+"', startdatum = '"+startdatum+"', slutdatum = '"+slutdatum+
+                        "', kostnad = "+kostnad+", status = '"+status+"', prioritet = '"+prioritet+"', projektchef = "+projektchef+", land = "+land+") where pid = " + Integer.valueOf(txtProjektID.getText());
+                System.out.println(sqlFråga);
+            }
             
-        //Hur felmeddela och popupa alla nedan valideringar vid ett spara-knapptryck?
-        Validering.datumKontroll(txtStartDatum);
-        Validering.datumKontroll(txtSlutDatum);
-        Validering.datumEfterKontroll(txtStartDatum.getText(), txtSlutDatum);
-        Validering.datumFöreKontroll(txtSlutDatum.getText(), txtStartDatum);
-        Validering.arHeltal(txtKostnad);
-        Validering.positivtVarde(txtKostnad);
-        if (nyttProjekt) {
-            String sqlFråga = "insert into projekt (projektnamn, beskrivning, startdatum, slutdatum, kostnad, status, prioritet, projektchef, land) values ()";
-        }
-        else {
-            String sqlFråga = "update projekt set (projektnamn, beskrivning, startdatum, slutdatum, kostnad, status, prioritet, projektchef, land) values () where pid = '"+txtProjektID.getText()+"'";
+        } else {
+            JOptionPane.showMessageDialog(null, "Fel vid inmatning");
         }
     }//GEN-LAST:event_btnSparaActionPerformed
 
