@@ -136,16 +136,21 @@ public class Huvudmeny extends javax.swing.JFrame {
         jMenuBar1.add(PMenu);
 
         jMenu2.setText("Projekt");
-        jMenu2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu2ActionPerformed(evt);
-            }
-        });
 
         jMenuItem2.setText("Mina projekt");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem2);
 
         jMenuItem5.setText("Alla projekt");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem5);
 
         jMenuItem6.setText("Projektpartners");
@@ -169,6 +174,11 @@ public class Huvudmeny extends javax.swing.JFrame {
         jMenu3.setText("Projektledning");
 
         jMenuItem10.setText("Mina projekt");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem10);
 
         jMenuItem11.setText("Ändra partners för projekt");
@@ -177,7 +187,7 @@ public class Huvudmeny extends javax.swing.JFrame {
         jMenuItem12.setText("Ändra handläggare");
         jMenu3.add(jMenuItem12);
 
-        jMenuItem13.setText("Statestik");
+        jMenuItem13.setText("Statistik");
         jMenu3.add(jMenuItem13);
 
         jMenuBar1.add(jMenu3);
@@ -274,12 +284,22 @@ public class Huvudmeny extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem16ActionPerformed
 
     private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
-        new EditProjekt(idb).setVisible(true);
+        new ProjektMeny(idb).setVisible(true);
     }//GEN-LAST:event_jMenuItem15ActionPerformed
 
-    private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
-        new Projekten(idb).setVisible(true);
-    }//GEN-LAST:event_jMenu2ActionPerformed
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        new ProjektMeny(idb).setVisible(true);
+        //hamtaProjekt(queryAid);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        new ProjektMeny(idb).setVisible(true);
+        //hamtaProjektSomProjektChef(queryAid);
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        new ProjektMeny(idb).setVisible(true);
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
 
 
