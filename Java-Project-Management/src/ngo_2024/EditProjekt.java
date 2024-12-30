@@ -6,6 +6,7 @@ package ngo_2024;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import oru.inf.InfDB;
@@ -20,11 +21,11 @@ public class EditProjekt extends javax.swing.JFrame {
     private InfDB idb;
     private boolean nyttProjekt;
     
+    
     /**
      * Creates new form EditProjekt, för att skapa helt nya projekt
      */
     public EditProjekt(InfDB idb) {
-        setLocationRelativeTo(null);
         this.idb = idb;
         nyttProjekt = true;
         initComponents();
@@ -35,6 +36,8 @@ public class EditProjekt extends javax.swing.JFrame {
         lblProjektID.setVisible(false);
         txtProjektID.setVisible(false);
         btnSökPID.setVisible(false);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         
     }
     
@@ -54,6 +57,7 @@ public class EditProjekt extends javax.swing.JFrame {
         fyllCmbLand();
         txtProjektID.setText(""+pid);
         editProjekt(txtProjektID);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     /**
@@ -345,7 +349,13 @@ public class EditProjekt extends javax.swing.JFrame {
     }
     
     public void editProjekt(JTextField projektID) {
-            int pid = Integer.parseInt(projektID.getText());
+        int pid = 0;
+        try {   //Byt ut mot validering
+            pid = Integer.parseInt(projektID.getText());
+        }
+        catch (NumberFormatException ex) {
+            System.out.println("Saknas värde i pid");
+        }
         try {
             String query = "SELECT projektnamn, beskrivning, startdatum, slutdatum, kostnad, status, prioritet, projektchef, land FROM projekt WHERE pid = " + pid;
             HashMap<String, String> resultat = idb.fetchRow(query); // Hämta rad som en HashMap
@@ -388,7 +398,7 @@ public class EditProjekt extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Databasfel");
             txtProjektID.requestFocus();
         } catch (Exception ex) {
-            System.out.println("Annat fel");
+            System.out.println("Annat fel"+ex.getMessage());
             JOptionPane.showMessageDialog(null, "Annat fel");
         }
     }
@@ -436,7 +446,6 @@ public class EditProjekt extends javax.swing.JFrame {
             String status = cmbStatus.getSelectedItem().toString();
             String prioritet = cmbPrioritet.getSelectedItem().toString();
             double kostnad = Double.parseDouble(txtKostnad.getText());
-            System.out.println(kostnad);
             Anstalld nyAnstalld = new Anstalld(idb);
             int projektchef = nyAnstalld.aidFrånFulltNamn(cmbProjektChef.getSelectedItem().toString());
             int land = 0;
@@ -462,30 +471,32 @@ public class EditProjekt extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSparaActionPerformed
 
     private void btnSökPIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSökPIDActionPerformed
-        // TODO add your handling code here:
         boolean validering = Validering.faltEjTomtKontroll(txtProjektID);
         if (!validering) {
             txtProjektID.requestFocus();
         }
-        editProjekt(txtProjektID);
+        else {
+            editProjekt(txtProjektID);
+        }
     }//GEN-LAST:event_btnSökPIDActionPerformed
 
     private void btnRensaFältActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRensaFältActionPerformed
         // TODO add your handling code here:
-        if (txtProjektID == null)
+        boolean validering = Validering.faltEjTomtKontroll(txtProjektID);
+        if (validering)
         {
-//            txtProjektNamn.setText("");
-//            txtBeskrivning.setText("");
-//            txtStartDatum.setText("");
-//            txtSlutDatum.setText("");
-//            txtKostnad.setText("");
-//            cmbStatus.setSelectedIndex(0);
-//            cmbPrioritet.setSelectedIndex(0);
-//            cmbProjektChef.setSelectedIndex(0);
-//            cmbLand.setSelectedIndex(0);
+            editProjekt(txtProjektID);
         }
         else {
-            editProjekt(txtProjektID);
+            txtProjektNamn.setText("");
+            txtBeskrivning.setText("");
+            txtStartDatum.setText("");
+            txtSlutDatum.setText("");
+            txtKostnad.setText("");
+            cmbStatus.setSelectedIndex(0);
+            cmbPrioritet.setSelectedIndex(0);
+            cmbProjektChef.setSelectedIndex(0);
+            cmbLand.setSelectedIndex(0);
         }
     }//GEN-LAST:event_btnRensaFältActionPerformed
 
