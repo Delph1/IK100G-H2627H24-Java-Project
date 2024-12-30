@@ -12,7 +12,7 @@ import oru.inf.InfException;
 
 /**
  *
- * @author SuperPC
+ * @author Märta Sjöblom
  */
 public class Statistik extends javax.swing.JFrame {
     
