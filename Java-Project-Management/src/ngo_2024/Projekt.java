@@ -296,7 +296,44 @@ public class Projekt {
         }
         return ettProjekt;
     }
-    
+    /**
+     * Hämtar alla projekt i databasen
+     * @return allaProjekt
+     */
+    public ArrayList<HashMap<String, String>> getAllaProjektFranAid(int aid)
+    {
+        ArrayList<HashMap<String, String>> allaProjekt = new ArrayList<>();
+        try
+        {
+            String sqlfråga = "SELECT * FROM projekt where pid in (select pid from ans_proj where aid =" + aid + ")";
+            allaProjekt = idb.fetchRows(sqlfråga);
+        }
+        catch(InfException e)
+        {
+            System.out.println("Kunde inte hämta projekt.\n" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt.");
+        }
+        return allaProjekt;
+    }
+    /**
+     * Hämtar alla projekt i databasen
+     * @return allaProjekt
+     */
+    public ArrayList<HashMap<String, String>> getAllaProjektSomProjektChef(int aid)
+    {
+        ArrayList<HashMap<String, String>> allaProjekt = new ArrayList<>();
+        try
+        {
+            String sqlfråga = "SELECT * FROM projekt where projektchef =" + aid + ")";
+            allaProjekt = idb.fetchRows(sqlfråga);
+        }
+        catch(InfException e)
+        {
+            System.out.println("Kunde inte hämta projekt.\n" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt.");
+        }
+        return allaProjekt;
+    }
     /**
      * Hämtar alla projekt i databasen
      * @return allaProjekt
@@ -313,7 +350,6 @@ public class Projekt {
         {
             System.out.println("Kunde inte hämta projekt.\n" + e.getMessage());
             JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt.");
-            allaProjekt = null;
         }
         return allaProjekt;
     }
@@ -513,6 +549,19 @@ public class Projekt {
         {
             System.out.println("Databasen har inte uppdaterats. \n" + e.getMessage());
             JOptionPane.showMessageDialog(null, "Databasen har inte uppdaterats.");
+        }
+    }
+    public void taBortProjekt(int pid)
+    {
+        try {
+            String sqlFråga = "delete from projekt where pid = " + pid;
+            idb.delete(sqlFråga);
+            JOptionPane.showMessageDialog(null, "Projekt har tagits bort.");
+        }
+        catch (InfException e) 
+        {
+            System.out.println("Databasen har inte uppdaterats. \n" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Projekt har inte tagits bort.");
         }
     }
 }
