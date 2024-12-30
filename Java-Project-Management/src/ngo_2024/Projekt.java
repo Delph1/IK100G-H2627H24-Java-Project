@@ -1,3 +1,4 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -191,7 +192,19 @@ public class Projekt {
         }
         return kostnad;
     }
-    
+    public double getKostnadPerson(int aid){
+        ArrayList<HashMap<String,String>> allaProjekt = getAllaProjektFranAid(aid);
+        ArrayList<String> pidList = new ArrayList<>();
+        double summa = 0;
+        for (HashMap<String, String> rad : allaProjekt) {
+            pidList.add(rad.get("pid"));
+        }
+        for (String ettProjekt : pidList) {
+            summa += getKostnad(Integer.parseInt(ettProjekt));
+        }
+        return summa;
+    }
+            
     /**
      * 
      * @param pid
@@ -305,7 +318,7 @@ public class Projekt {
         ArrayList<HashMap<String, String>> allaProjekt = new ArrayList<>();
         try
         {
-            String sqlfråga = "SELECT * FROM projekt where pid in (select pid from ans_proj where aid =" + aid + ")";
+            String sqlfråga = "SELECT * FROM projekt where pid in (select pid from ans_proj where aid =" + aid + ");";
             allaProjekt = idb.fetchRows(sqlfråga);
         }
         catch(InfException e)
@@ -324,7 +337,7 @@ public class Projekt {
         ArrayList<HashMap<String, String>> allaProjekt = new ArrayList<>();
         try
         {
-            String sqlfråga = "SELECT * FROM projekt where projektchef =" + aid + ")";
+            String sqlfråga = "SELECT * FROM projekt where projektchef =" + aid;
             allaProjekt = idb.fetchRows(sqlfråga);
         }
         catch(InfException e)
