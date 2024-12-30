@@ -21,7 +21,7 @@ public class Stad {
     private InfDB idb;
     private int sid;
     private String namn;
-    private String land;
+    private int land;
     
     /**
      * Konstruktor för att skapa ett Stad-objekt
@@ -29,7 +29,7 @@ public class Stad {
      * @param namn
      * @param land 
      */
-    public Stad(InfDB idb, String namn, String land)
+    public Stad(InfDB idb, String namn, int land)
     {
         this.namn = namn;
         this.land = land;
@@ -55,8 +55,17 @@ public class Stad {
      * Metod för att hämta namn på Stad
      * @return 
      */
-    public String getNamn()
+    public String getNamn(int sid)
     {
+        try
+        {
+            String query = "SELECT namn FROM stad WHERE sid = " + sid;
+            namn = idb.fetchSingle(query);
+        }
+        catch(InfException e)
+        {
+            System.out.println(e.getMessage());
+        }
         return namn;
     }
     
@@ -64,8 +73,17 @@ public class Stad {
      * Metod för att hämta land för en stad.
      * @return 
      */
-    public String getLand()
+    public int getLand(int sid)
     {
+        try
+        {
+            String query = "SELECT land FROM stad WHERE sid = " + sid;
+            land = Integer.parseInt(idb.fetchSingle(query));
+        }
+        catch(InfException e)
+        {
+            System.out.println(e.getMessage());
+        }
         return land;
     }
     
@@ -82,7 +100,7 @@ public class Stad {
      * Metod för att hämta ut alla städer.
      * @return 
      */
-    public ArrayList<HashMap<String, String>> getAllaStäder()
+    public ArrayList<HashMap<String, String>> getAllaStader()
     {
         ArrayList<HashMap<String, String>> allaStäder = new ArrayList<>();
         try
@@ -153,7 +171,7 @@ public class Stad {
     {
         try
         {
-            String sqlfråga = "UPDATE stad WHERE sid = " + sid + " SET name = " + lid;
+            String sqlfråga = "UPDATE stad WHERE sid = " + sid + " SET land = " + lid;
             idb.update(sqlfråga);
         }
         catch(InfException e)
