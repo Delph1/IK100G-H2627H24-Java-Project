@@ -23,20 +23,26 @@ public class Stad {
     private String namn;
     private String land;
     
-    public Stad(String namn, String land)
+    /**
+     * Konstruktor för att skapa ett Stad-objekt
+     * @param idb
+     * @param namn
+     * @param land 
+     */
+    public Stad(InfDB idb, String namn, String land)
     {
         this.namn = namn;
         this.land = land;
-        try
-        {
-            String sqlfråga = "INSERT INTO stad (namn, land) values ('" + namn + "', '" + land + "')";
-            idb.insert(sqlfråga);
-        }   
-        catch(InfException e)
-        {
-            System.out.println("Staden har inte sparats i databasen.");
-            JOptionPane.showMessageDialog(null, "Staden har inte sparats i databasen. \n" + e.getMessage()); 
-        }
+    }
+    
+    /**
+     * Konstruktor för att instantiera endast klasssen. 
+     * @param idb 
+     */
+    
+    public Stad(InfDB idb)
+    {
+        this.idb = idb;
     }
     
     /**
@@ -81,7 +87,7 @@ public class Stad {
         ArrayList<HashMap<String, String>> allaStäder = new ArrayList<>();
         try
         {
-            String sqlfråga = "SELECT * FROM STAD";
+            String sqlfråga = "SELECT * FROM stad";
             allaStäder = idb.fetchRows(sqlfråga);
         }
         catch(InfException e)
@@ -102,7 +108,7 @@ public class Stad {
         HashMap<String, String> enStad = new HashMap<>();
         try
         {
-            String sqlfråga = "SELECT * FROM STAD WHERE sid = '" + sid + "'";
+            String sqlfråga = "SELECT * FROM stad WHERE sid = '" + sid + "'";
             enStad = idb.fetchRow(sqlfråga); 
         }
         catch(InfException e)
@@ -124,9 +130,8 @@ public class Stad {
      * Metod för att uppdatera namn på en Stad. 
      * @param namn 
      */
-    public void setNamn(String namn)
+    public void setNamn(int sid, String namn)
     {
-        this.namn = namn;
         try
         {
             String sqlfråga = "UPDATE stad WHERE sid = " + sid + " SET namn = '" + namn + "'";
@@ -141,14 +146,14 @@ public class Stad {
     
     /**
      * Metod för att uppdatera land för en Stad
-     * @param land 
+     * @param sid
+     * @param lid 
      */
-    public void setLand(String land)
+    public void setLand(int sid, int lid)
     {
-        this.land = land;
         try
         {
-            String sqlfråga = "UPDATE stad WHERE sid = " + sid + " SET name = '" + land + "'";
+            String sqlfråga = "UPDATE stad WHERE sid = " + sid + " SET name = " + lid;
             idb.update(sqlfråga);
         }
         catch(InfException e)
@@ -157,6 +162,25 @@ public class Stad {
             JOptionPane.showMessageDialog(null, "Databasen har inte uppdaterats. \n" + e.getMessage());
         }
 
+    }
+    
+    /**
+     * Metod för att spara en stad i databasen.
+     * @param namn
+     * @param lid 
+     */
+    public void sparaStad(String namn, int lid)
+    {
+        try
+        {
+            String sqlfråga = "INSERT INTO stad (namn, land) values ('" + namn + "', " + lid + ")";
+            idb.insert(sqlfråga);
+        }   
+        catch(InfException e)
+        {
+            System.out.println("Staden har inte sparats i databasen.");
+            JOptionPane.showMessageDialog(null, "Staden har inte sparats i databasen. \n" + e.getMessage()); 
+        }
     }
     
 }

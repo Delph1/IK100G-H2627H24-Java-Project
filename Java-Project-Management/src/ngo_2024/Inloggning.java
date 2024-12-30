@@ -22,6 +22,9 @@ public class Inloggning extends javax.swing.JFrame {
         this.idb = idb;
         initComponents();
         lblMeddelande.setVisible(false);
+        String nivå;
+        setLocationRelativeTo(null); //Den här koden sätter fönstret i mitten av skärmen.
+        txtLösenord.setText("");
     }
 
     /**
@@ -36,14 +39,15 @@ public class Inloggning extends javax.swing.JFrame {
         lblAnvändarnamn = new javax.swing.JLabel();
         lblLösenord = new javax.swing.JLabel();
         txtAnvändarnamn = new javax.swing.JTextField();
-        txtLösenord = new javax.swing.JTextField();
         lblMeddelande = new javax.swing.JLabel();
         btnLoggaIn = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        txtLösenord = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Inloggning");
 
         lblAnvändarnamn.setText("Användarnamn:");
 
@@ -75,12 +79,14 @@ public class Inloggning extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("Fyld med skräp");
+        jButton3.setText("Vanlig användare");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
+
+        txtLösenord.setText("jPasswordField1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -98,8 +104,8 @@ public class Inloggning extends javax.swing.JFrame {
                                     .addComponent(lblLösenord))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtLösenord)
-                                    .addComponent(txtAnvändarnamn, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)))))
+                                    .addComponent(txtAnvändarnamn, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
+                                    .addComponent(txtLösenord)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addComponent(jButton1)
@@ -112,7 +118,7 @@ public class Inloggning extends javax.swing.JFrame {
                                 .addComponent(jButton2)
                                 .addGap(33, 33, 33)
                                 .addComponent(jButton3)))))
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -122,19 +128,19 @@ public class Inloggning extends javax.swing.JFrame {
                     .addComponent(lblAnvändarnamn)
                     .addComponent(txtAnvändarnamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblLösenord)
                     .addComponent(txtLösenord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(15, 15, 15)
                 .addComponent(lblMeddelande)
-                .addGap(18, 18, 18)
+                .addGap(24, 24, 24)
                 .addComponent(btnLoggaIn)
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
                     .addComponent(jButton3))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
@@ -143,27 +149,37 @@ public class Inloggning extends javax.swing.JFrame {
     private void btnLoggaInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoggaInActionPerformed
         
         String användarnamn = txtAnvändarnamn.getText();
-        String lösenord = txtLösenord.getText();
-        
-        if (Validering.faltkontroll(txtAnvändarnamn) && Validering.emailKontroll(txtAnvändarnamn) && (Validering.faltkontroll(txtLösenord))) {
-        
-        try{
-            String sqlfråga = "Select losenord FROM anstalld WHERE epost = '" + användarnamn + "'";
-            String query = idb.fetchSingle(sqlfråga);
-            if(lösenord.equals(query))
-            {
-                new Huvudmeny(idb, användarnamn).setVisible(true);
-                this.setVisible(false);
+        String lösenord = new String(txtLösenord.getPassword());
+                
+        if (Validering.faltEjTomtKontroll(txtAnvändarnamn) && Validering.emailKontroll(txtAnvändarnamn) && (Validering.faltEjTomtKontroll(txtLösenord))) {
+
+            try {
+                String sqlfråga = "Select losenord FROM anstalld WHERE epost = '" + användarnamn + "'";
+                String query = idb.fetchSingle(sqlfråga);
+                
+
+                if (lösenord.equals(query)) {
+
+                    String sqlfrågaAid = "Select aid FROM anstalld WHERE epost = '" + användarnamn + "'";
+                    String queryAid = idb.fetchSingle(sqlfrågaAid);
+                    
+
+                    String sqlFrågaAdmin = "Select behorighetsniva FROM admin WHERE aid = '" + queryAid + "'";
+                    String admins = idb.fetchSingle(sqlFrågaAdmin);
+                    
+                    
+                   String sqlFrågaHand = "Select projektchef FROM projekt WHERE pid = '" + queryAid + "'";
+                    String projl = idb.fetchSingle(sqlFrågaHand);
+
+                    new Huvudmeny(idb, queryAid, admins, projl).setVisible(true);
+
+                    this.setVisible(false);
+                } else {
+                    lblMeddelande.setVisible(true);
+                }
+            } catch (InfException e) {
+                System.out.println(e.getMessage());
             }
-            else
-            {
-                lblMeddelande.setVisible(true);
-            }
-        }           
-        
-        catch(InfException e){
-            System.out.println(e.getMessage());
-        }
         }
     }//GEN-LAST:event_btnLoggaInActionPerformed
 
@@ -178,8 +194,8 @@ public class Inloggning extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        txtAnvändarnamn.setText("anva @gmail.com");
-        txtLösenord.setText("lösen ord");
+        txtAnvändarnamn.setText("yuna.k@example.com");
+        txtLösenord.setText("passwordxyz");
     }//GEN-LAST:event_jButton3ActionPerformed
 
 
@@ -193,6 +209,6 @@ public class Inloggning extends javax.swing.JFrame {
     private javax.swing.JLabel lblLösenord;
     private javax.swing.JLabel lblMeddelande;
     private javax.swing.JTextField txtAnvändarnamn;
-    private javax.swing.JTextField txtLösenord;
+    private javax.swing.JPasswordField txtLösenord;
     // End of variables declaration//GEN-END:variables
 }
