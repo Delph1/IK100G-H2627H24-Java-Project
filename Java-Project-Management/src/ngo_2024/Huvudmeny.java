@@ -48,30 +48,31 @@ public class Huvudmeny extends javax.swing.JFrame {
         lblInloggadAnvändare = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        PMenu = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
-        jMenuItem7 = new javax.swing.JMenuItem();
-        jMenu5 = new javax.swing.JMenu();
-        jMenuItem8 = new javax.swing.JMenuItem();
-        jMenuItem9 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        jMenuItem10 = new javax.swing.JMenuItem();
-        jMenuItem11 = new javax.swing.JMenuItem();
-        jMenuItem12 = new javax.swing.JMenuItem();
-        jMenuItem13 = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
-        jMenuItem14 = new javax.swing.JMenuItem();
-        jMenuItem16 = new javax.swing.JMenuItem();
-        jMenuItem15 = new javax.swing.JMenuItem();
-        jMenuItem17 = new javax.swing.JMenuItem();
-        jMenuItem18 = new javax.swing.JMenuItem();
-        jMenu6 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        menyMinaUppgifter = new javax.swing.JMenu();
+        mvminMinaUppgifter = new javax.swing.JMenuItem();
+        mvminLoggaUt = new javax.swing.JMenuItem();
+        menyProjekt = new javax.swing.JMenu();
+        mvprojMinaProjekt = new javax.swing.JMenuItem();
+        mvprojAllaProjekt = new javax.swing.JMenuItem();
+        mvprojProjektPartners = new javax.swing.JMenuItem();
+        mvprojHallarbhetsmal = new javax.swing.JMenuItem();
+        menyPersonal = new javax.swing.JMenu();
+        mvpersPersonalPaMinAvdelning = new javax.swing.JMenuItem();
+        mvpersHandlaggare = new javax.swing.JMenuItem();
+        menyProjektledning = new javax.swing.JMenu();
+        mvproledMinaProjekt = new javax.swing.JMenuItem();
+        mvproledAndraPartnersForProjekt = new javax.swing.JMenuItem();
+        mvproledAndrahandlaggare = new javax.swing.JMenuItem();
+        mvproledStatistik = new javax.swing.JMenuItem();
+        menyAdministration = new javax.swing.JMenu();
+        mvadnPersonal = new javax.swing.JMenuItem();
+        mvadnAvdelningar = new javax.swing.JMenuItem();
+        mvadnProjekt = new javax.swing.JMenuItem();
+        mvadnPartners = new javax.swing.JMenuItem();
+        mvadnHallbarhetsmal = new javax.swing.JMenuItem();
+        mvadnLand = new javax.swing.JMenuItem();
+        menyHjalp = new javax.swing.JMenu();
+        mvhjOm = new javax.swing.JMenuItem();
 
         jMenu1.setText("jMenu1");
 
@@ -115,129 +116,148 @@ public class Huvudmeny extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        PMenu.setText("Mina uppgifter");
+        menyMinaUppgifter.setText("Mina uppgifter");
 
-        jMenuItem1.setText("Mina uppgifter");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        mvminMinaUppgifter.setText("Mina uppgifter");
+        mvminMinaUppgifter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                mvminMinaUppgifterActionPerformed(evt);
             }
         });
-        PMenu.add(jMenuItem1);
+        menyMinaUppgifter.add(mvminMinaUppgifter);
 
-        jMenuItem4.setText("Logga ut");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        mvminLoggaUt.setText("Logga ut");
+        mvminLoggaUt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                mvminLoggaUtActionPerformed(evt);
             }
         });
-        PMenu.add(jMenuItem4);
+        menyMinaUppgifter.add(mvminLoggaUt);
 
-        jMenuBar1.add(PMenu);
+        jMenuBar1.add(menyMinaUppgifter);
 
-        jMenu2.setText("Projekt");
+        menyProjekt.setText("Projekt");
 
-        jMenuItem2.setText("Mina projekt");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        mvprojMinaProjekt.setText("Mina projekt");
+        mvprojMinaProjekt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                mvprojMinaProjektActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem2);
+        menyProjekt.add(mvprojMinaProjekt);
 
-        jMenuItem5.setText("Alla projekt");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+        mvprojAllaProjekt.setText("Alla projekt");
+        mvprojAllaProjekt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
+                mvprojAllaProjektActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem5);
+        menyProjekt.add(mvprojAllaProjekt);
 
-        jMenuItem6.setText("Projektpartners");
-        jMenu2.add(jMenuItem6);
+        mvprojProjektPartners.setText("Projektpartners");
+        menyProjekt.add(mvprojProjektPartners);
 
-        jMenuItem7.setText("Hållbarhetsmål");
-        jMenu2.add(jMenuItem7);
+        mvprojHallarbhetsmal.setText("Hållbarhetsmål");
+        menyProjekt.add(mvprojHallarbhetsmal);
 
-        jMenuBar1.add(jMenu2);
+        jMenuBar1.add(menyProjekt);
 
-        jMenu5.setText("Personal");
+        menyPersonal.setText("Personal");
 
-        jMenuItem8.setText("Personal på min avdelning");
-        jMenu5.add(jMenuItem8);
-
-        jMenuItem9.setText("Handläggare");
-        jMenu5.add(jMenuItem9);
-
-        jMenuBar1.add(jMenu5);
-
-        jMenu3.setText("Projektledning");
-
-        jMenuItem10.setText("Mina projekt");
-        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+        mvpersPersonalPaMinAvdelning.setText("Personal på min avdelning");
+        mvpersPersonalPaMinAvdelning.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem10ActionPerformed(evt);
+                mvpersPersonalPaMinAvdelningActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem10);
+        menyPersonal.add(mvpersPersonalPaMinAvdelning);
 
-        jMenuItem11.setText("Ändra partners för projekt");
-        jMenu3.add(jMenuItem11);
+        mvpersHandlaggare.setText("Handläggare");
+        menyPersonal.add(mvpersHandlaggare);
 
-        jMenuItem12.setText("Ändra handläggare");
-        jMenu3.add(jMenuItem12);
+        jMenuBar1.add(menyPersonal);
 
-        jMenuItem13.setText("Statistik");
-        jMenu3.add(jMenuItem13);
+        menyProjektledning.setText("Projektledning");
 
-        jMenuBar1.add(jMenu3);
-
-        jMenu4.setText("Administration");
-
-        jMenuItem14.setText("Personal");
-        jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
+        mvproledMinaProjekt.setText("Mina projekt");
+        mvproledMinaProjekt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem14ActionPerformed(evt);
+                mvproledMinaProjektActionPerformed(evt);
             }
         });
-        jMenu4.add(jMenuItem14);
+        menyProjektledning.add(mvproledMinaProjekt);
 
-        jMenuItem16.setText("Avdelningar");
-        jMenuItem16.addActionListener(new java.awt.event.ActionListener() {
+        mvproledAndraPartnersForProjekt.setText("Ändra partners för projekt");
+        menyProjektledning.add(mvproledAndraPartnersForProjekt);
+
+        mvproledAndrahandlaggare.setText("Ändra handläggare");
+        menyProjektledning.add(mvproledAndrahandlaggare);
+
+        mvproledStatistik.setText("Statistik");
+        menyProjektledning.add(mvproledStatistik);
+
+        jMenuBar1.add(menyProjektledning);
+
+        menyAdministration.setText("Administration");
+        menyAdministration.setToolTipText("");
+
+        mvadnPersonal.setText("Personal");
+        mvadnPersonal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem16ActionPerformed(evt);
+                mvadnPersonalActionPerformed(evt);
             }
         });
-        jMenu4.add(jMenuItem16);
+        menyAdministration.add(mvadnPersonal);
 
-        jMenuItem15.setText("Projekt");
-        jMenuItem15.addActionListener(new java.awt.event.ActionListener() {
+        mvadnAvdelningar.setText("Avdelningar");
+        mvadnAvdelningar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem15ActionPerformed(evt);
+                mvadnAvdelningarActionPerformed(evt);
             }
         });
-        jMenu4.add(jMenuItem15);
+        menyAdministration.add(mvadnAvdelningar);
 
-        jMenuItem17.setText("Partners");
-        jMenu4.add(jMenuItem17);
-
-        jMenuItem18.setText("Hållbarhetsmål");
-        jMenu4.add(jMenuItem18);
-
-        jMenuBar1.add(jMenu4);
-
-        jMenu6.setText("Hjälp");
-        jMenu6.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-
-        jMenuItem3.setText("Om");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        mvadnProjekt.setText("Projekt");
+        mvadnProjekt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                mvadnProjektActionPerformed(evt);
             }
         });
-        jMenu6.add(jMenuItem3);
+        menyAdministration.add(mvadnProjekt);
 
-        jMenuBar1.add(jMenu6);
+        mvadnPartners.setText("Partners");
+        menyAdministration.add(mvadnPartners);
+
+        mvadnHallbarhetsmal.setText("Hållbarhetsmål");
+        mvadnHallbarhetsmal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mvadnHallbarhetsmalActionPerformed(evt);
+            }
+        });
+        menyAdministration.add(mvadnHallbarhetsmal);
+
+        mvadnLand.setText("Land");
+        mvadnLand.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mvadnLandActionPerformed(evt);
+            }
+        });
+        menyAdministration.add(mvadnLand);
+
+        jMenuBar1.add(menyAdministration);
+
+        menyHjalp.setText("Hjälp");
+        menyHjalp.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+
+        mvhjOm.setText("Om");
+        mvhjOm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mvhjOmActionPerformed(evt);
+            }
+        });
+        menyHjalp.add(mvhjOm);
+
+        jMenuBar1.add(menyHjalp);
 
         setJMenuBar(jMenuBar1);
 
@@ -261,80 +281,92 @@ public class Huvudmeny extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-     new Inloggning(idb).setVisible (true);
+    private void mvminLoggaUtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvminLoggaUtActionPerformed
+        new InloggningMeny(idb).setVisible (true);
         this.setVisible(false);
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+    }//GEN-LAST:event_mvminLoggaUtActionPerformed
 
-    private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
-    new Anstallda(idb).setVisible(true);        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem14ActionPerformed
+    private void mvadnPersonalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvadnPersonalActionPerformed
+        new AnstalldMeny(idb).setVisible(true);
+    }//GEN-LAST:event_mvadnPersonalActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void mvhjOmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvhjOmActionPerformed
        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    }//GEN-LAST:event_mvhjOmActionPerformed
 
-
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void mvminMinaUppgifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvminMinaUppgifterActionPerformed
         new EditAnstalld(idb, queryAid).setVisible(true);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_mvminMinaUppgifterActionPerformed
 
-    private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed
+    private void mvadnAvdelningarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvadnAvdelningarActionPerformed
         new AvdelningMeny(idb).setVisible(true);
-    }//GEN-LAST:event_jMenuItem16ActionPerformed
+    }//GEN-LAST:event_mvadnAvdelningarActionPerformed
 
-    private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
+    private void mvadnProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvadnProjektActionPerformed
         new ProjektMeny(idb).setVisible(true);
-    }//GEN-LAST:event_jMenuItem15ActionPerformed
+    }//GEN-LAST:event_mvadnProjektActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void mvprojMinaProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvprojMinaProjektActionPerformed
         new ProjektMeny(idb).setVisible(true);
         //hamtaProjekt(queryAid);
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_mvprojMinaProjektActionPerformed
 
-    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+    private void mvproledMinaProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvproledMinaProjektActionPerformed
         new ProjektMeny(idb).setVisible(true);
         //hamtaProjektSomProjektChef(queryAid);
-    }//GEN-LAST:event_jMenuItem10ActionPerformed
+    }//GEN-LAST:event_mvproledMinaProjektActionPerformed
 
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+    private void mvprojAllaProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvprojAllaProjektActionPerformed
         new ProjektMeny(idb).setVisible(true);
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
+    }//GEN-LAST:event_mvprojAllaProjektActionPerformed
+
+    private void mvadnHallbarhetsmalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvadnHallbarhetsmalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mvadnHallbarhetsmalActionPerformed
+
+    private void mvadnLandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvadnLandActionPerformed
+        new LandMeny(idb).setVisible(true);
+    }//GEN-LAST:event_mvadnLandActionPerformed
+
+    private void mvpersPersonalPaMinAvdelningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvpersPersonalPaMinAvdelningActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mvpersPersonalPaMinAvdelningActionPerformed
 
 
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu PMenu;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
-    private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem10;
-    private javax.swing.JMenuItem jMenuItem11;
-    private javax.swing.JMenuItem jMenuItem12;
-    private javax.swing.JMenuItem jMenuItem13;
-    private javax.swing.JMenuItem jMenuItem14;
-    private javax.swing.JMenuItem jMenuItem15;
-    private javax.swing.JMenuItem jMenuItem16;
-    private javax.swing.JMenuItem jMenuItem17;
-    private javax.swing.JMenuItem jMenuItem18;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JMenuItem jMenuItem8;
-    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblInloggadAnvändare;
+    private javax.swing.JMenu menyAdministration;
+    private javax.swing.JMenu menyHjalp;
+    private javax.swing.JMenu menyMinaUppgifter;
+    private javax.swing.JMenu menyPersonal;
+    private javax.swing.JMenu menyProjekt;
+    private javax.swing.JMenu menyProjektledning;
+    private javax.swing.JMenuItem mvadnAvdelningar;
+    private javax.swing.JMenuItem mvadnHallbarhetsmal;
+    private javax.swing.JMenuItem mvadnLand;
+    private javax.swing.JMenuItem mvadnPartners;
+    private javax.swing.JMenuItem mvadnPersonal;
+    private javax.swing.JMenuItem mvadnProjekt;
+    private javax.swing.JMenuItem mvhjOm;
+    private javax.swing.JMenuItem mvminLoggaUt;
+    private javax.swing.JMenuItem mvminMinaUppgifter;
+    private javax.swing.JMenuItem mvpersHandlaggare;
+    private javax.swing.JMenuItem mvpersPersonalPaMinAvdelning;
+    private javax.swing.JMenuItem mvprojAllaProjekt;
+    private javax.swing.JMenuItem mvprojHallarbhetsmal;
+    private javax.swing.JMenuItem mvprojMinaProjekt;
+    private javax.swing.JMenuItem mvprojProjektPartners;
+    private javax.swing.JMenuItem mvproledAndraPartnersForProjekt;
+    private javax.swing.JMenuItem mvproledAndrahandlaggare;
+    private javax.swing.JMenuItem mvproledMinaProjekt;
+    private javax.swing.JMenuItem mvproledStatistik;
     // End of variables declaration//GEN-END:variables
 }
