@@ -131,8 +131,8 @@ public class Anstallda extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        String empty = "";
-        new EditAnstalld(idb, empty).setVisible(true);    //fulkod för att kunna öppna EditAnstalld som ett tomt formulär
+        String queryAid = null;
+        new EditAnstalld(idb, queryAid).setVisible(true);    //fulkod för att kunna öppna EditAnstalld som ett tomt formulär
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
