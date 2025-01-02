@@ -92,7 +92,6 @@ public class LandMeny extends javax.swing.JFrame {
         });
         spTabell.setViewportView(jtTabell);
 
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -138,7 +137,6 @@ public class LandMeny extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnÄndraActionPerformed
 private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-
         getLand();
     }                                        
 
@@ -184,9 +182,7 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
                         rad.get("ekonomi")
                     });
                 }
-
                 jtTabell.setModel(tableModel);
-
             }
             else
             {
@@ -201,12 +197,10 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
     
     private void raderaLand()
     {
-
         int selectedRow = jtTabell.getSelectedRow();
         if (selectedRow != -1)
         {
             Object land = jtTabell.getValueAt(selectedRow, 0);
-
             int queryLid = (int) land;
 
             // Först kollar vi om det finns några beroenden innan vi tar bort landet.
@@ -231,12 +225,10 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
     
     private void EditLand()
     {
-
         int selectedRow = jtTabell.getSelectedRow();
         if (selectedRow != -1)
         {
             Object land = jtTabell.getValueAt(selectedRow, 0);
-
             int queryLid = (int) land;
             //new EditLand(idb, queryLid).setVisible(true);
         }
@@ -255,4 +247,3 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
     private javax.swing.JScrollPane spTabell;
     // End of variables declaration//GEN-END:variables
 }
-
