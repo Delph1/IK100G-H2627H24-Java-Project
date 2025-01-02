@@ -326,7 +326,7 @@ public class Huvudmeny extends javax.swing.JFrame {
     }//GEN-LAST:event_mvprojAllaProjektActionPerformed
 
     private void mvadnHallbarhetsmalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvadnHallbarhetsmalActionPerformed
-        // TODO add your handling code here:
+        new HallbarhetsmalMeny(idb).setVisible(true);
     }//GEN-LAST:event_mvadnHallbarhetsmalActionPerformed
 
     private void mvadnLandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvadnLandActionPerformed
