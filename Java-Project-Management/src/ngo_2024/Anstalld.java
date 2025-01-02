@@ -69,7 +69,22 @@ public class Anstalld {
      * 
      * Nedan följer först get-metoder. 
      * 
+     * @param fulltNamn
+     * @return 
      */
+    public int aidFrånFulltNamn(String fulltNamn) {
+        int anställdID = 0;
+        String[] namn = fulltNamn.split(" ");
+        String sqlFörnamn = namn[0];
+        String sqlEfternamn = namn[1];
+        String sqlFråga = "select aid from anstalld where fornamn = '" + sqlFörnamn + "' and efternamn = '" + sqlEfternamn + "'";
+        try {
+            anställdID = Integer.parseInt(idb.fetchSingle(sqlFråga));
+        } catch (InfException e) {
+            System.out.println(e.getMessage());
+        }
+        return anställdID;
+    }
     
     /**
      * Metod för att hämta förnamn
@@ -149,6 +164,22 @@ public class Anstalld {
      * Metod för att hämta ut alla Anställd(a).
      * @return 
      */
+    
+    public String getChefNamn(String aid)
+    {
+        String chefNamn;
+        try
+        {
+            String query = "SELECT CONCAT(fornamn, ' ', efternamn) as namn FROM anstalld WHERE aid = '" + aid + "'";
+            chefNamn = idb.fetchSingle(query);
+        }
+        catch (InfException e)
+        {
+            System.out.println(e.getMessage());
+            chefNamn = null;
+        }
+        return chefNamn;
+    }
     
     public ArrayList<HashMap<String, String>> getAllaAnstallda()
     {

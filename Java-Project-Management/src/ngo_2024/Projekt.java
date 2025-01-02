@@ -1,3 +1,4 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -191,7 +192,19 @@ public class Projekt {
         }
         return kostnad;
     }
-    
+    public double getKostnadPerson(int aid){
+        ArrayList<HashMap<String,String>> allaProjekt = getAllaProjektFranAid(aid);
+        ArrayList<String> pidList = new ArrayList<>();
+        double summa = 0;
+        for (HashMap<String, String> rad : allaProjekt) {
+            pidList.add(rad.get("pid"));
+        }
+        for (String ettProjekt : pidList) {
+            summa += getKostnad(Integer.parseInt(ettProjekt));
+        }
+        return summa;
+    }
+            
     /**
      * 
      * @param pid
@@ -296,7 +309,44 @@ public class Projekt {
         }
         return ettProjekt;
     }
-    
+    /**
+     * Hämtar alla projekt i databasen
+     * @return allaProjekt
+     */
+    public ArrayList<HashMap<String, String>> getAllaProjektFranAid(int aid)
+    {
+        ArrayList<HashMap<String, String>> allaProjekt = new ArrayList<>();
+        try
+        {
+            String sqlfråga = "SELECT * FROM projekt where pid in (select pid from ans_proj where aid =" + aid + ");";
+            allaProjekt = idb.fetchRows(sqlfråga);
+        }
+        catch(InfException e)
+        {
+            System.out.println("Kunde inte hämta projekt.\n" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt.");
+        }
+        return allaProjekt;
+    }
+    /**
+     * Hämtar alla projekt i databasen
+     * @return allaProjekt
+     */
+    public ArrayList<HashMap<String, String>> getAllaProjektSomProjektChef(int aid)
+    {
+        ArrayList<HashMap<String, String>> allaProjekt = new ArrayList<>();
+        try
+        {
+            String sqlfråga = "SELECT * FROM projekt where projektchef =" + aid;
+            allaProjekt = idb.fetchRows(sqlfråga);
+        }
+        catch(InfException e)
+        {
+            System.out.println("Kunde inte hämta projekt.\n" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt.");
+        }
+        return allaProjekt;
+    }
     /**
      * Hämtar alla projekt i databasen
      * @return allaProjekt
@@ -313,7 +363,6 @@ public class Projekt {
         {
             System.out.println("Kunde inte hämta projekt.\n" + e.getMessage());
             JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt.");
-            allaProjekt = null;
         }
         return allaProjekt;
     }
@@ -513,6 +562,19 @@ public class Projekt {
         {
             System.out.println("Databasen har inte uppdaterats. \n" + e.getMessage());
             JOptionPane.showMessageDialog(null, "Databasen har inte uppdaterats.");
+        }
+    }
+    public void taBortProjekt(int pid)
+    {
+        try {
+            String sqlFråga = "delete from projekt where pid = " + pid;
+            idb.delete(sqlFråga);
+            JOptionPane.showMessageDialog(null, "Projekt har tagits bort.");
+        }
+        catch (InfException e) 
+        {
+            System.out.println("Databasen har inte uppdaterats. \n" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Projekt har inte tagits bort.");
         }
     }
 }
