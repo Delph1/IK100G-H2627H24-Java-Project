@@ -17,12 +17,16 @@ import oru.inf.InfException;
  */
 public class AvdelningMeny extends javax.swing.JFrame {
 
-    private InfDB idb; 
+    private InfDB idb;
+    private Stad stad; 
+    private Anstalld anstalld;
     /**
      * Creates new form AvdelningMeny
      */
     public AvdelningMeny(InfDB idb) {
         this.idb = idb;
+        this.stad = new Stad(idb);
+        this.anstalld = new Anstalld(idb);
         initComponents();
         setLocationRelativeTo(null);
         getAvdelningar();
@@ -44,24 +48,33 @@ public class AvdelningMeny extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                formWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
+
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Namn", "Beskrivning", "Adress", "E-post", "Telefon", "Stad", "Chef"
+                "ID", "Namn", "Beskrivning", "Adress", "E-post", "Telefon", "Stad Id", "Chef Id", "Stad", "Chef"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, true, true
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -73,6 +86,14 @@ public class AvdelningMeny extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(6).setMinWidth(0);
+            jTable1.getColumnModel().getColumn(6).setPreferredWidth(0);
+            jTable1.getColumnModel().getColumn(6).setMaxWidth(0);
+            jTable1.getColumnModel().getColumn(7).setMinWidth(0);
+            jTable1.getColumnModel().getColumn(7).setPreferredWidth(0);
+            jTable1.getColumnModel().getColumn(7).setMaxWidth(0);
+        }
 
         jButton1.setText("Uppdatera");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -96,6 +117,11 @@ public class AvdelningMeny extends javax.swing.JFrame {
         });
 
         jButton4.setText("Ny Avdelning");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -134,18 +160,27 @@ public class AvdelningMeny extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       //new EditAvdelning(idb, null).setVisible(true);
+        editAvdelning();        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         raderaAvdelning();
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        new EditAvdelning(idb, null).setVisible(true);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+
+    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+        getAvdelningar();
+    }//GEN-LAST:event_formWindowGainedFocus
+
+
     private void getAvdelningar()
     {
         try {
             String query = "SELECT * FROM avdelning";
-            System.out.println(query);
             ArrayList<HashMap<String, String>> resultat = idb.fetchRows(query);
             
             if(resultat != null)
@@ -159,7 +194,8 @@ public class AvdelningMeny extends javax.swing.JFrame {
                 tableModel.addColumn("Adress");
                 tableModel.addColumn("Epost");
                 tableModel.addColumn("Telefon");
-                tableModel.addColumn("Anställningsdatum");
+                tableModel.addColumn("Stad Id");
+                tableModel.addColumn("Chef Id");
                 tableModel.addColumn("Stad");
                 tableModel.addColumn("Chef");
                 
@@ -173,10 +209,25 @@ public class AvdelningMeny extends javax.swing.JFrame {
                     rad.get("telefon"),
                     rad.get("stad"),
                     rad.get("chef")
-                });
+                }
+                );
+                
+                for (int i = 0; i < tableModel.getRowCount() ; i++)
+                {
+                    String stadId = tableModel.getValueAt(i, 6).toString();
+                    Object stadNamn = stad.getNamn(Integer.parseInt(stadId));
+                    tableModel.setValueAt(stadNamn, i, 8);
+                    
+                    String chefId = tableModel.getValueAt(i, 7).toString();
+                    Object chefNamn = anstalld.getChefNamn(chefId); 
+                    tableModel.setValueAt(chefNamn, i, 9);
+                }
             }
             jTable1.setModel(tableModel);
-            }
+            jTable1.getColumnModel().getColumn(6).setMinWidth(0);
+            jTable1.getColumnModel().getColumn(6).setMaxWidth(0);
+            jTable1.getColumnModel().getColumn(7).setMinWidth(0);
+            jTable1.getColumnModel().getColumn(7).setMaxWidth(0);            }
             else
             {
                 JOptionPane.showMessageDialog(this, "Inga avdelningar hittades.");
@@ -187,30 +238,31 @@ public class AvdelningMeny extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Fel vid hämtning av avdelningar: " + e.getMessage());
         }
     }
+    
     private void raderaAvdelning()
     {
         int selectedRow = jTable1.getSelectedRow();
         if (selectedRow != -1)
         {
             Object avdelning = jTable1.getValueAt(selectedRow, 0);
-            int queryAid = (int) avdelning;
+            String queryAid = avdelning.toString();
 
             //Först kollar vi om anställda finns vid den avdelning som ska raderas och tar bort dem från avdelningen.
             try {
-                String query1 = "UPDATE anstalld SET avdelning = null WHERE avdelning = " + queryAid;
+                String query1 = "UPDATE anstalld SET avdelning = null WHERE avdelning = '" + queryAid + "'";
                 idb.update(query1);
                 
                 //Sedan raderar vi kopplingen mellan avdelningen och hållbarhetsmålen.
                 try
                 {
-                    String query2 = "DELETE FROM avd_hallbarhet WHERE avdid = " + queryAid;
+                    String query2 = "DELETE FROM avd_hallbarhet WHERE avdid = '" + queryAid + "'";
                     idb.delete(query2);
 
                     //Sist raderar vi själva avdelningen.
                     try
                     {
-                        String query3 = "DELETE FROM avdelning WHERE avdid = " + queryAid;
-                        idb.delete(query2);
+                        String query3 = "DELETE FROM avdelning WHERE avdid = '" + queryAid + "'";
+                        idb.delete(query3);
                     }
                     catch (InfException e)
                     {
@@ -228,6 +280,7 @@ public class AvdelningMeny extends javax.swing.JFrame {
             {
                 System.out.println(e.getMessage());
             }
+        getAvdelningar();
         }
         else 
         {
@@ -235,21 +288,21 @@ public class AvdelningMeny extends javax.swing.JFrame {
         }
     }
     
-    private void EditAvdelning()
+    private void editAvdelning()
     {
         int selectedRow = jTable1.getSelectedRow();
         if (selectedRow != -1)
         {
             Object avdelning = jTable1.getValueAt(selectedRow, 0);
-            int queryAid = (int) avdelning;
-            //new EditAvdelning(idb, queryAid).setVisible(true);
+            String queryAid = avdelning.toString();
+            new EditAvdelning(idb, queryAid).setVisible(true);
         }
         else
         {
             JOptionPane.showMessageDialog(null, "Ingen rad är markerad");
         }
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
