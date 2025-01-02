@@ -227,7 +227,8 @@ public class AvdelningMeny extends javax.swing.JFrame {
             jTable1.getColumnModel().getColumn(6).setMinWidth(0);
             jTable1.getColumnModel().getColumn(6).setMaxWidth(0);
             jTable1.getColumnModel().getColumn(7).setMinWidth(0);
-            jTable1.getColumnModel().getColumn(7).setMaxWidth(0);            }
+            jTable1.getColumnModel().getColumn(7).setMaxWidth(0);            
+            }
             else
             {
                 JOptionPane.showMessageDialog(this, "Inga avdelningar hittades.");
@@ -235,7 +236,7 @@ public class AvdelningMeny extends javax.swing.JFrame {
         }
         catch (InfException e) 
         {
-        JOptionPane.showMessageDialog(null, "Fel vid hämtning av avdelningar: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Fel vid hämtning av avdelningar: " + e.getMessage());
         }
     }
     

@@ -226,6 +226,11 @@ public class Huvudmeny extends javax.swing.JFrame {
         menyAdministration.add(mvadnProjekt);
 
         mvadnPartners.setText("Partners");
+        mvadnPartners.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mvadnPartnersActionPerformed(evt);
+            }
+        });
         menyAdministration.add(mvadnPartners);
 
         mvadnHallbarhetsmal.setText("Hållbarhetsmål");
@@ -321,7 +326,7 @@ public class Huvudmeny extends javax.swing.JFrame {
     }//GEN-LAST:event_mvprojAllaProjektActionPerformed
 
     private void mvadnHallbarhetsmalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvadnHallbarhetsmalActionPerformed
-        // TODO add your handling code here:
+        new HallbarhetsmalMeny(idb).setVisible(true);
     }//GEN-LAST:event_mvadnHallbarhetsmalActionPerformed
 
     private void mvadnLandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvadnLandActionPerformed
@@ -331,6 +336,10 @@ public class Huvudmeny extends javax.swing.JFrame {
     private void mvpersPersonalPaMinAvdelningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvpersPersonalPaMinAvdelningActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_mvpersPersonalPaMinAvdelningActionPerformed
+
+    private void mvadnPartnersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvadnPartnersActionPerformed
+        new PartnerMeny(idb).setVisible(true);
+    }//GEN-LAST:event_mvadnPartnersActionPerformed
 
 
 
