@@ -40,8 +40,7 @@ public class EditPartner extends javax.swing.JFrame {
             lblId.setVisible(false);
             txtId.setVisible(false);
         }
-//        txtStadId.setVisible(false);
-//        txtChefId.setVisible(false);
+        txtStadId.setVisible(false);
         populeraCbStad();
     }
     
