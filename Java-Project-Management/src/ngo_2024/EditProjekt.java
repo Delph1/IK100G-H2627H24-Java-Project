@@ -6,6 +6,7 @@ package ngo_2024;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import oru.inf.InfDB;
@@ -20,8 +21,9 @@ public class EditProjekt extends javax.swing.JFrame {
     private InfDB idb;
     private boolean nyttProjekt;
     
+    
     /**
-     * Creates new form EditProjekt
+     * Creates new form EditProjekt, för att skapa helt nya projekt
      */
     public EditProjekt(InfDB idb) {
         this.idb = idb;
@@ -31,6 +33,31 @@ public class EditProjekt extends javax.swing.JFrame {
         fyllCmbPrioritet();
         fyllCmbProjektChef();
         fyllCmbLand();
+        lblProjektID.setVisible(false);
+        txtProjektID.setVisible(false);
+        btnSökPID.setVisible(false);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        
+    }
+    
+    /**
+     * Konstruktor för att editera redan existerande projekt, med PID som parameter
+     * @param idb
+     * @param pid 
+     */
+        public EditProjekt(InfDB idb, int pid) {
+        setLocationRelativeTo(null);
+        this.idb = idb;
+        nyttProjekt = true;
+        initComponents();
+        fyllCmbStatus();
+        fyllCmbPrioritet();
+        fyllCmbProjektChef();
+        fyllCmbLand();
+        txtProjektID.setText(""+pid);
+        editProjekt(txtProjektID);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     /**
@@ -64,8 +91,8 @@ public class EditProjekt extends javax.swing.JFrame {
         lblProjektID = new javax.swing.JLabel();
         txtProjektID = new javax.swing.JTextField();
         btnSökPID = new javax.swing.JButton();
-        lblTommaFalt = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
+        btnRensaFält = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -85,7 +112,6 @@ public class EditProjekt extends javax.swing.JFrame {
 
         lblPrioritet.setText("Prioritet");
 
-        cmbPrioritet.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cmbPrioritet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbPrioritetActionPerformed(evt);
@@ -94,14 +120,12 @@ public class EditProjekt extends javax.swing.JFrame {
 
         lblProjektChef.setText("Projektchef");
 
-        cmbProjektChef.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cmbProjektChef.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbProjektChefActionPerformed(evt);
             }
         });
 
-        cmbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cmbStatus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbStatusActionPerformed(evt);
@@ -110,7 +134,6 @@ public class EditProjekt extends javax.swing.JFrame {
 
         lblLand.setText("Land");
 
-        cmbLand.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cmbLand.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbLandActionPerformed(evt);
@@ -133,71 +156,73 @@ public class EditProjekt extends javax.swing.JFrame {
             }
         });
 
-        lblTommaFalt.setForeground(new java.awt.Color(255, 0, 0));
-        lblTommaFalt.setText("Ett eller flera fält är tomma och projektet kunde därför inte sparas");
-        lblTommaFalt.setVisible(false);
+        btnRensaFält.setText("Återställ");
+        btnRensaFält.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRensaFältActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblTommaFalt)
-                .addGap(62, 62, 62))
             .addGroup(layout.createSequentialGroup()
                 .addGap(51, 51, 51)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jSeparator1)
-                    .addComponent(lblPrioritet)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(lblBeskrivning)
-                            .addGap(18, 18, 18)
-                            .addComponent(txtBeskrivning))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblProjektChef)
-                                .addComponent(lblLand))
-                            .addGap(18, 18, 18)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(cmbProjektChef, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(cmbLand, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(0, 0, Short.MAX_VALUE))))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(lblStartDatum)
-                                    .addGap(20, 20, 20)
-                                    .addComponent(txtStartDatum, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(lblSlutDatum)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(txtSlutDatum, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(lblKostnad)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(lblStatus)
-                                    .addGap(46, 46, 46)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(cmbPrioritet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblBeskrivning)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtBeskrivning))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblProjektChef)
+                            .addComponent(lblLand))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cmbProjektChef, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(cmbLand, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblPrioritet)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblStartDatum)
+                                .addGap(20, 20, 20)
+                                .addComponent(txtStartDatum, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblSlutDatum)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtSlutDatum, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblKostnad)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblStatus)
+                                .addGap(46, 46, 46)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cmbPrioritet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(txtKostnad, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(btnSpara))))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(lblProjektNamn)
-                                        .addComponent(lblProjektID))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(txtProjektID, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(btnSökPID))
-                                        .addComponent(txtProjektNamn, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGap(26, 26, 26))))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(15, 15, 15)
+                                                .addComponent(btnRensaFält)))
+                                        .addGap(53, 53, 53)
+                                        .addComponent(btnSpara))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblProjektNamn)
+                                    .addComponent(lblProjektID))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtProjektID, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnSökPID))
+                                    .addComponent(txtProjektNamn, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(26, 26, 26)))
                 .addContainerGap(49, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -245,10 +270,10 @@ public class EditProjekt extends javax.swing.JFrame {
                     .addComponent(lblLand)
                     .addComponent(cmbLand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(btnSpara)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblTommaFalt)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSpara)
+                    .addComponent(btnRensaFält))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         lblProjektNamn.getAccessibleContext().setAccessibleName("lblProjektNamn");
@@ -260,6 +285,7 @@ public class EditProjekt extends javax.swing.JFrame {
     private void fyllCmbStatus() {
         String sqlfråga = "select distinct status from projekt;";
         ArrayList<String> allaStatus;
+        cmbStatus.addItem("");
         try {
             allaStatus = idb.fetchColumn(sqlfråga);
             for (String status : allaStatus)
@@ -269,11 +295,13 @@ public class EditProjekt extends javax.swing.JFrame {
             System.out.println(e.getMessage());
             JOptionPane.showMessageDialog(null, "Databasfel");
         }
+
     }
     
     private void fyllCmbPrioritet() {
         String sqlfråga = "select distinct prioritet from projekt;";
         ArrayList<String> allaPrioritet;
+        cmbPrioritet.addItem("");
         try {
             allaPrioritet = idb.fetchColumn(sqlfråga);
             for (String prioritet : allaPrioritet)
@@ -290,12 +318,12 @@ public class EditProjekt extends javax.swing.JFrame {
         String sqlEfternamn = "select efternamn from anstalld, handlaggare where anstalld.aid = handlaggare.aid;";
         ArrayList<String> allaFörnamn;
         ArrayList<String> allaEfternamn;
-        
+        cmbProjektChef.addItem("");
         try {
             allaFörnamn = idb.fetchColumn(sqlFörnamn);
             allaEfternamn = idb.fetchColumn(sqlEfternamn);
             for (int i = 0; i < allaFörnamn.size(); i++) {
-                String fulltNamn = allaFörnamn.get(i) + allaEfternamn.get(i);
+                String fulltNamn = allaFörnamn.get(i) + " "+ allaEfternamn.get(i);
                 cmbProjektChef.addItem(fulltNamn);
             }
         }
@@ -308,7 +336,7 @@ public class EditProjekt extends javax.swing.JFrame {
     private void fyllCmbLand() {
         String sqlfråga = "select distinct namn from land;";
         ArrayList<String> allaLänder;
-        
+        cmbLand.addItem("");
         try {
             allaLänder = idb.fetchColumn(sqlfråga);
             for (String land : allaLänder)
@@ -321,34 +349,60 @@ public class EditProjekt extends javax.swing.JFrame {
     }
     
     public void editProjekt(JTextField projektID) {
-            int pid = Integer.parseInt(projektID.getText());
-            try {
-                String query = "SELECT projektnamn, beskrivning, startdatum, slutdatum, kostnad, status, prioritet, projektchef, land FROM projekt WHERE pid = " + pid;
-                HashMap<String, String> resultat = idb.fetchRow(query); // Hämta rad som en HashMap
+        int pid = 0;
+        try {   //Byt ut mot validering
+            pid = Integer.parseInt(projektID.getText());
+        }
+        catch (NumberFormatException ex) {
+            System.out.println("Saknas värde i pid");
+        }
+        try {
+            String query = "SELECT projektnamn, beskrivning, startdatum, slutdatum, kostnad, status, prioritet, projektchef, land FROM projekt WHERE pid = " + pid;
+            HashMap<String, String> resultat = idb.fetchRow(query); // Hämta rad som en HashMap
 
-                if (resultat != null) {
-                    // Hämta och sätt värden i motsvarande textfält
-                    nyttProjekt = false;
-                    txtProjektNamn.setText(resultat.get("projektnamn"));          // Projektnamn
-                    txtBeskrivning.setText(resultat.get("beskrivning"));        // Beskrivning
-                    txtStartDatum.setText(resultat.get("startdatum"));           // Startdatum
-                    txtSlutDatum.setText(resultat.get("slutdatum"));            // Slutdatum
-                    txtKostnad.setText(resultat.get("kostnad"));            // kostnad
-                    
-                    //Sätta nedan comboboxar till det alternativ från databasen hur? För ProjektChef och Land även omvandla från id till namn?
-//                    cmbStatus. ;
-//                    cmbPrioritet. ; // Anställningsdatum
-//                    cmbProjektChef. );         // Lösenord
-//                    cmbLand. );        // Avdelning
-                } else {
-                    JOptionPane.showMessageDialog(null, "Inget projekt hittades med det angivna ID:t.");
-                    txtProjektID.requestFocus();
-                }
+            // Hämta och sätt värden i motsvarande textfält
+            nyttProjekt = false;
+            txtProjektNamn.setText(resultat.get("projektnamn"));          // Projektnamn
+            txtBeskrivning.setText(resultat.get("beskrivning"));        // Beskrivning
+            txtStartDatum.setText(resultat.get("startdatum"));           // Startdatum
+            txtSlutDatum.setText(resultat.get("slutdatum"));            // Slutdatum
+            txtKostnad.setText(resultat.get("kostnad"));            // kostnad
+
+            String sqlFörnamn = "select fornamn from anstalld where aid = " + resultat.get("projektchef");
+            String sqlEfternamn = "select efternamn from anstalld where aid = " + resultat.get("projektchef");
+            String fulltNamn = "";
+            try {
+                String förnamn = idb.fetchSingle(sqlFörnamn);
+                String efternamn = idb.fetchSingle(sqlEfternamn);
+                fulltNamn = förnamn + " " + efternamn;
             } catch (InfException e) {
-                System.out.println("Ett fel inträffade: " + e.getMessage());
+                System.out.println(e.getMessage());
+                JOptionPane.showMessageDialog(null, "Databasfel");
             }
+            cmbProjektChef.setSelectedItem(fulltNamn);                  //Projektchef
+
+            String sqlLand = "select namn from land where lid = " + resultat.get("land");
+            String land = "";
+            try {
+                land = idb.fetchSingle(sqlLand);
+            } catch (InfException e) {
+                System.out.println(e.getMessage());
+                JOptionPane.showMessageDialog(null, "Databasfel");
+            }
+            cmbLand.setSelectedItem(land);
+            cmbStatus.setSelectedItem(resultat.get("status"));          //Status         
+            cmbPrioritet.setSelectedItem(resultat.get("prioritet")); // Prioritet
+
+        } catch (InfException e) {
+            System.out.println("Ett fel inträffade: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Databasfel");
+            txtProjektID.requestFocus();
+        } catch (Exception ex) {
+            System.out.println("Annat fel"+ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Annat fel");
+        }
     }
-    
+
     private void cmbStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbStatusActionPerformed
         //Ersätt med vad som händer när de väljer
         String status = cmbStatus.getSelectedItem().toString();
@@ -371,36 +425,84 @@ public class EditProjekt extends javax.swing.JFrame {
 
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
         // Lägg till korrekt input från fälten som kan läggas till databasen
-        if (Validering.faltEjTomtKontroll(txtProjektNamn) && Validering.faltEjTomtKontroll(txtBeskrivning) &&
-            Validering.faltEjTomtKontroll(txtStartDatum) && Validering.faltEjTomtKontroll(txtSlutDatum) && Validering.faltEjTomtKontroll(txtKostnad)) {
-            lblTommaFalt.setVisible(true);
-        }
-        //Hur felmeddela och popupa alla nedan valideringar vid ett spara-knapptryck?
-//        Validering.datumKontroll(txtStartDatum);
-//        Validering.datumKontroll(txtSlutDatum);
-//        Validering.datumEfterKontroll(txtStartDatum.getText(), txtSlutDatum);
-//        Validering.datumFöreKontroll(txtSlutDatum.getText(), txtStartDatum);
-//        Validering.arHeltal(txtKostnad);
-//        Validering.positivtVarde(txtKostnad);
-        if (nyttProjekt) {
-            String sqlFråga = "insert into projekt (projektnamn, beskrivning, startdatum, slutdatum, kostnad, status, prioritet, projektchef, land) values ()";
-        }
-        else {
-            String sqlFråga = "update projekt set (projektnamn, beskrivning, startdatum, slutdatum, kostnad, status, prioritet, projektchef, land) values () where pid = '"+txtProjektID.getText()+"'";
+        if (Validering.faltEjTomtKontroll(txtProjektNamn)
+                && Validering.faltEjTomtKontroll(txtBeskrivning)
+                && Validering.faltEjTomtKontroll(txtStartDatum)
+                && Validering.faltEjTomtKontroll(txtSlutDatum)
+                && Validering.faltEjTomtKontroll(txtKostnad)
+                && //Hur felmeddela och popupa alla nedan valideringar vid ett spara-knapptryck?
+                Validering.datumKontroll(txtStartDatum)
+                && Validering.datumKontroll(txtSlutDatum)
+                && Validering.datumEfterKontroll(txtStartDatum.getText(), txtSlutDatum)
+                && Validering.datumFöreKontroll(txtSlutDatum.getText(), txtStartDatum)
+                && Validering.arDecimal(txtKostnad)
+                && Validering.positivtVarde(txtKostnad)) 
+        {
+
+            String projektnamn = txtProjektNamn.getText();
+            String beskrivning = txtBeskrivning.getText();
+            String startdatum = txtStartDatum.getText();
+            String slutdatum = txtSlutDatum.getText();
+            String status = cmbStatus.getSelectedItem().toString();
+            String prioritet = cmbPrioritet.getSelectedItem().toString();
+            double kostnad = Double.parseDouble(txtKostnad.getText());
+            Anstalld nyAnstalld = new Anstalld(idb);
+            int projektchef = nyAnstalld.aidFrånFulltNamn(cmbProjektChef.getSelectedItem().toString());
+            int land = 0;
+            try {
+                String sqlLand = "select lid from land where namn = '" + cmbLand.getSelectedItem().toString()+"'";
+                land = Integer.parseInt(idb.fetchSingle(sqlLand));
+            } catch (InfException e) {
+                System.out.println(e.getMessage());
+            }
+            if (nyttProjekt) {
+                String sqlFråga = "insert into projekt (projektnamn, beskrivning, startdatum, slutdatum, kostnad, status, prioritet, projektchef, land) values ('"+projektnamn+
+                        "', '"+beskrivning+"', '"+startdatum+"', '"+slutdatum+"', "+kostnad+", '"+status+"', '"+prioritet+"', "+projektchef+", "+land+")";
+                System.out.println(sqlFråga);
+            } else {
+                String sqlFråga = "update projekt set (projektnamn = '"+projektnamn+"', beskrivning = '"+beskrivning+"', startdatum = '"+startdatum+"', slutdatum = '"+slutdatum+
+                        "', kostnad = "+kostnad+", status = '"+status+"', prioritet = '"+prioritet+"', projektchef = "+projektchef+", land = "+land+") where pid = " + Integer.valueOf(txtProjektID.getText());
+                System.out.println(sqlFråga);
+            }
+            
+        } else {
+            JOptionPane.showMessageDialog(null, "Fel vid inmatning");
         }
     }//GEN-LAST:event_btnSparaActionPerformed
 
     private void btnSökPIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSökPIDActionPerformed
-        // TODO add your handling code here:
         boolean validering = Validering.faltEjTomtKontroll(txtProjektID);
         if (!validering) {
             txtProjektID.requestFocus();
         }
-        editProjekt(txtProjektID);
+        else {
+            editProjekt(txtProjektID);
+        }
     }//GEN-LAST:event_btnSökPIDActionPerformed
+
+    private void btnRensaFältActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRensaFältActionPerformed
+        // TODO add your handling code here:
+        boolean validering = Validering.faltEjTomtKontroll(txtProjektID);
+        if (validering)
+        {
+            editProjekt(txtProjektID);
+        }
+        else {
+            txtProjektNamn.setText("");
+            txtBeskrivning.setText("");
+            txtStartDatum.setText("");
+            txtSlutDatum.setText("");
+            txtKostnad.setText("");
+            cmbStatus.setSelectedIndex(0);
+            cmbPrioritet.setSelectedIndex(0);
+            cmbProjektChef.setSelectedIndex(0);
+            cmbLand.setSelectedIndex(0);
+        }
+    }//GEN-LAST:event_btnRensaFältActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRensaFält;
     private javax.swing.JButton btnSpara;
     private javax.swing.JButton btnSökPID;
     private javax.swing.JComboBox<String> cmbLand;
@@ -418,7 +520,6 @@ public class EditProjekt extends javax.swing.JFrame {
     private javax.swing.JLabel lblSlutDatum;
     private javax.swing.JLabel lblStartDatum;
     private javax.swing.JLabel lblStatus;
-    private javax.swing.JLabel lblTommaFalt;
     private javax.swing.JTextField txtBeskrivning;
     private javax.swing.JTextField txtKostnad;
     private javax.swing.JTextField txtProjektID;

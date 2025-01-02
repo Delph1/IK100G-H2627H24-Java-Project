@@ -66,11 +66,10 @@ public class Validering {
     
     public static boolean positivtVarde(JTextField param) {
         boolean resultat = true;
-        int värde = Integer.parseInt(param.getText());
+        double värde = Double.parseDouble(param.getText());
         if (värde < 0 ) {
             JOptionPane.showMessageDialog(null, "Fältet innehåller negativt tal. \nVar vänlig välj värde 0 eller högre.");
             resultat = false;
-            param.requestFocus();
         }
         return resultat;
     }
