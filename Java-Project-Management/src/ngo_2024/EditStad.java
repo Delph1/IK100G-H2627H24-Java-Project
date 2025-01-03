@@ -74,22 +74,30 @@ public class EditStad extends javax.swing.JFrame {
     }
 
     private void uppdateraStad() {
-        try {
-            String nyttNamn = tfNamn.getText().trim();
-            String valtLand = cbLand.getSelectedItem().toString();
-            String landId = valtLand.split(" - ")[0]; // Extraherar landets ID
+        if(Validering.faltEjTomtKontroll(tfNamn) &&
+           Validering.comboBoxInteTom(cbLand.getSelectedItem()))
+        {
+            try {
+                String nyttNamn = tfNamn.getText().trim();
+                String valtLand = cbLand.getSelectedItem().toString();
+                String landId = valtLand.split(" - ")[0]; // Extraherar landets ID
 
-            if (nyttNamn.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Stadens namn får inte vara tomt.");
-                return;
+                if (nyttNamn.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Stadens namn får inte vara tomt.");
+                    return;
+                }
+
+                String query = "UPDATE stad SET namn = '" + nyttNamn + "', land = " + landId + " WHERE sid = " + stadId;
+                idb.update(query);
+                JOptionPane.showMessageDialog(this, "Staden har uppdaterats!");
+                dispose(); // Stänger fönstret efter uppdatering
+            } catch (InfException e) {
+                JOptionPane.showMessageDialog(this, "Fel vid uppdatering av stad: " + e.getMessage());
             }
-
-            String query = "UPDATE stad SET namn = '" + nyttNamn + "', land = " + landId + " WHERE sid = " + stadId;
-            idb.update(query);
-            JOptionPane.showMessageDialog(this, "Staden har uppdaterats!");
-            dispose(); // Stänger fönstret efter uppdatering
-        } catch (InfException e) {
-            JOptionPane.showMessageDialog(this, "Fel vid uppdatering av stad: " + e.getMessage());
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Staden har inte uppdaterats.");
         }
     }
 
