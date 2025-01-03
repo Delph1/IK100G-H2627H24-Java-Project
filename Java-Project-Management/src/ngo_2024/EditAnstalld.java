@@ -21,27 +21,27 @@ public class EditAnstalld extends javax.swing.JFrame {
     private String queryAid;
     private String avdId;
     private String admins;
+    private String anvandare;
     private HashMap<String, String> avdelningMap;
     
     /**
      * Creates new form EditAnstalld
      */
 
-    public EditAnstalld(InfDB idb, String queryAid, String admins) {
+    public EditAnstalld(InfDB idb, String queryAid, String admins, String anvandare) {
         initComponents();
         setLocationRelativeTo(null); //Den här koden sätter fönstret i mitten av skärmen.
-     this.idb = idb;
-     this.admins = admins;
-     this.queryAid = queryAid;
-     this.avdelningMap = new HashMap<>();
-     
-        jComboBox1.setVisible(false);
-        jLabel10.setVisible(false);
-         jComboBox2.setVisible(true);
-      fyllComboBox();
+        this.idb = idb;
+        this.admins = admins;
+        this.queryAid = queryAid;
+        this.anvandare = anvandare;
+        this.avdelningMap = new HashMap<>();
+
+        jComboBox2.setVisible(true);
+        fyllComboBox();
       
-         if (queryAid != null && !queryAid.isEmpty()) {   
-try {
+         if (queryAid != null && !queryAid.isEmpty()) {
+try {          
     String query = "SELECT fornamn, efternamn, adress, epost, telefon, anstallningsdatum, losenord, avdelning FROM anstalld WHERE aid = '" + queryAid + "'";
 
     HashMap<String, String> resultat = idb.fetchRow(query); // Hämta rad som en HashMap
@@ -67,25 +67,42 @@ try {
 } catch (InfException e) {
     System.out.println("Ett fel inträffade: " + e.getMessage());
 }
-        try {
-            String sqlFrågaAdmin = "Select behorighetsniva FROM admin WHERE aid = '" + admins + "'";
-            String adminst = idb.fetchSingle(sqlFrågaAdmin);
+             try {
+                 // Kontrollera om admins är null
+                 if (admins != null) {
+                     jCheckBox1.setEnabled(true); // Gör checkboxen klickbar
+                 } else {
+                     jCheckBox1.setEnabled(false); // Gör checkboxen oklickbar
+                 }
 
-            if (adminst != null) {
+                 // SQL-frågan för att hämta behörighetsnivån
+                 String sqlFrågaAdmin = "Select behorighetsniva FROM admin WHERE aid = '" + queryAid + "'";
+                 String adminst = idb.fetchSingle(sqlFrågaAdmin); // Hämtar resultatet
+                 System.out.println(adminst);
 
-                jComboBox1.setVisible(true);
-                jLabel10.setVisible(true);
-                jComboBox1.setSelectedIndex(2);
-               
-            } else {
+                 // Kontrollera om det är den inloggade användaren
+                 if (queryAid.equals(anvandare)) {
+                     jCheckBox1.setEnabled(false); // Gör checkboxen oklickbar
+                 } else {
+                     // Kontrollera om admins är null
+                     if (admins != null) {
+                         jCheckBox1.setEnabled(true); // Gör checkboxen klickbar
+                     } else {
+                         jCheckBox1.setEnabled(false); // Gör checkboxen oklickbar
+                     }
+                 }
 
-            }
+                 // Kontrollera om SQL-frågan returnerar ett resultat
+                 if (adminst != null) {
+                     jCheckBox1.setSelected(true); // Markera checkboxen
+                 } else {
+                     jCheckBox1.setSelected(false); // Avmarkera checkboxen
+                 }
 
-        } catch (InfException e) {
-            System.out.println("Ett fel inträffade: " + e.getMessage());
-        }
-
-    
+             } catch (InfException e) {
+                 System.out.println("Ett fel inträffade: " + e.getMessage());
+             }
+ 
 
     }
         } 
@@ -141,10 +158,9 @@ try {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jLabel10 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jComboBox2 = new javax.swing.JComboBox<>();
+        jCheckBox1 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -178,16 +194,14 @@ try {
 
         jLabel8.setText("Avdelning:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Handläggare", "Projektchef", "Administratör" }));
-
-        jLabel10.setText("Roll:");
-
         jButton1.setText("Spara");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
+
+        jCheckBox1.setText("Administratör");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -197,14 +211,6 @@ try {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -232,7 +238,13 @@ try {
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jCheckBox1)
+                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addComponent(jButton1))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
@@ -272,12 +284,10 @@ try {
                     .addComponent(jLabel8)
                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addComponent(jCheckBox1)
+                .addGap(14, 14, 14)
                 .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         pack();
@@ -299,7 +309,7 @@ try {
         
         try
         {
-            if(queryAid == "")
+            if (queryAid == null || queryAid.isEmpty())
             {
             int aid = Integer.parseInt(idb.getAutoIncrement("anstalld", "aid"));
             String query = "INSERT INTO anstalld (aid, fornamn, efternamn, adress, epost, telefon, anstallningsdatum, losenord, avdelning)"
@@ -315,7 +325,7 @@ try {
                     + avdelningId + ")";
             System.out.println(query);
             idb.insert(query);
-                
+            queryAid = String.valueOf(aid);    
             }
             else
             {
@@ -334,6 +344,27 @@ try {
 
             }
 
+                    if (jCheckBox1.isEnabled()) {
+            String sqlFrågaAdmin = "SELECT behorighetsniva FROM admin WHERE aid = '" + queryAid + "'";
+            String adminst = idb.fetchSingle(sqlFrågaAdmin);
+
+            if (jCheckBox1.isSelected()) {
+                // Om checkboxen är markerad och det inte redan finns en rad i admin
+                if (adminst == null) {
+                    String insertAdmin = "INSERT INTO admin (aid, behorighetsniva) VALUES ('" + queryAid + "', 1)";
+                    System.out.println(insertAdmin);
+                    idb.insert(insertAdmin);
+                }
+            } else {
+                // Om checkboxen är avmarkerad och det finns en rad i admin
+                if (adminst != null) {
+                    String deleteAdmin = "DELETE FROM admin WHERE aid = '" + queryAid + "'";
+                    System.out.println(deleteAdmin);
+                    idb.delete(deleteAdmin);
+                }
+            }
+        }
+            
         JOptionPane.showMessageDialog(null, "Anställd har sparats.");
         this.setVisible(false);
         
@@ -384,10 +415,9 @@ try {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
