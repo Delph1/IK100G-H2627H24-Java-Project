@@ -11,7 +11,7 @@ import oru.inf.InfDB;
 import oru.inf.InfException;
 
 /**
- *
+ * Klass för att spara och skapa ny Partner.
  * @author Andreas Galistel
  */
 public class EditPartner extends javax.swing.JFrame {
@@ -44,7 +44,11 @@ public class EditPartner extends javax.swing.JFrame {
         populeraCbStad();
     }
     
-        private void populeraCbStad()
+    /**
+     * Metod för att skapa upp listan med städer i comboboxen.
+     */
+    
+    private void populeraCbStad()
     {
         allaStader = stad.getAllaStader();
         //Lägger till nuvarande staden först i listan
@@ -263,58 +267,72 @@ public class EditPartner extends javax.swing.JFrame {
     }//GEN-LAST:event_cbStadNamnActionPerformed
 
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
-        System.out.println("Namn: " + txtNamn.getText());
-
-        String namn = txtNamn.getText();
-        String kontaktperson = txtKontaktperson.getText();
-        String kontaktepost = txtKontaktepost.getText();
-        String telefon = txtTelefon.getText();
-        String adress = txtAdress.getText();
-        String branch = txtBranch.getText();
-        int stad = Integer.parseInt(txtStadId.getText());
-
-        try
+        if (Validering.faltEjTomtKontroll(txtNamn) &&
+            Validering.faltEjTomtKontroll(txtKontaktperson) &&
+            Validering.faltEjTomtKontroll(txtKontaktepost) &&
+            Validering.faltEjTomtKontroll(txtTelefon) &&
+            Validering.faltEjTomtKontroll(txtAdress) &&
+            Validering.faltEjTomtKontroll(txtBranch) &&
+            Validering.faltEjTomtKontroll(txtStadId) &&
+            Validering.comboBoxInteTom(cbStadNamn.getSelectedItem()) &&
+            Validering.arHeltal(txtStadId) &&
+            Validering.positivtVarde(txtStadId))
         {
-            if(queryAid == null)
+            String namn = txtNamn.getText();
+            String kontaktperson = txtKontaktperson.getText();
+            String kontaktepost = txtKontaktepost.getText();
+            String telefon = txtTelefon.getText();
+            String adress = txtAdress.getText();
+            String branch = txtBranch.getText();
+            int stad = Integer.parseInt(txtStadId.getText());
+
+            try
             {
-                int pid = Integer.parseInt(idb.getAutoIncrement("partner", "pid"));
-                String query = "INSERT INTO partner (pid, namn, kontaktperson, kontaktepost, telefon, adress, branch, stad)"
-                + " VALUES ("
-                + pid + ", '"
-                + namn + "', '"
-                + kontaktperson + "', '"
-                + kontaktepost + "', '"
-                + telefon + "', '"
-                + adress + "', '"
-                + branch + "', "
-                + stad + ")";
-                System.out.println(query);
-                idb.insert(query);
+                if(queryAid == null)
+                {
+                    int pid = Integer.parseInt(idb.getAutoIncrement("partner", "pid"));
+                    String query = "INSERT INTO partner (pid, namn, kontaktperson, kontaktepost, telefon, adress, branch, stad)"
+                    + " VALUES ("
+                    + pid + ", '"
+                    + namn + "', '"
+                    + kontaktperson + "', '"
+                    + kontaktepost + "', '"
+                    + telefon + "', '"
+                    + adress + "', '"
+                    + branch + "', "
+                    + stad + ")";
+                    System.out.println(query);
+                    idb.insert(query);
+
+                }
+                else
+                {
+                    String query = "UPDATE partner "
+                    + "SET namn = '" + namn + "', "
+                    + "kontaktperson = '" + kontaktperson + "', "
+                    + "kontaktepost = '" + kontaktepost + "', "
+                    + "adress = '" + adress + "', "
+                    + "telefon = '" + telefon + "', "
+                    + "stad = " + stad + ", "
+                    + "branch = '" + branch
+                    + "' WHERE pid = " + queryAid;
+                    System.out.println(query);
+                    idb.update(query);
+
+                }
+
+                JOptionPane.showMessageDialog(null, "Partnern har sparats.");
+                this.setVisible(false);
 
             }
-            else
+            catch(InfException e)
             {
-                String query = "UPDATE partner "
-                + "SET namn = '" + namn + "', "
-                + "kontaktperson = '" + kontaktperson + "', "
-                + "kontaktepost = '" + kontaktepost + "', "
-                + "adress = '" + adress + "', "
-                + "telefon = '" + telefon + "', "
-                + "stad = " + stad + ", "
-                + "branch = '" + branch
-                + "' WHERE pid = " + queryAid;
-                System.out.println(query);
-                idb.update(query);
-
+                System.out.println("Ett fel inträffade: " + e.getMessage());
             }
-
-            JOptionPane.showMessageDialog(null, "Partnern har sparats.");
-            this.setVisible(false);
-
         }
-        catch(InfException e)
+        else
         {
-            System.out.println("Ett fel inträffade: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Partnern har inte sparats.");
         }
     }//GEN-LAST:event_btnSparaActionPerformed
 
