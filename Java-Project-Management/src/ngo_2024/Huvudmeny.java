@@ -195,6 +195,11 @@ public class Huvudmeny extends javax.swing.JFrame {
         menyProjektledning.add(mvproledAndrahandlaggare);
 
         mvproledStatistik.setText("Statistik");
+        mvproledStatistik.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mvproledStatistikActionPerformed(evt);
+            }
+        });
         menyProjektledning.add(mvproledStatistik);
 
         jMenuBar1.add(menyProjektledning);
@@ -313,13 +318,12 @@ public class Huvudmeny extends javax.swing.JFrame {
     }//GEN-LAST:event_mvadnProjektActionPerformed
 
     private void mvprojMinaProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvprojMinaProjektActionPerformed
-        new ProjektMeny(idb).setVisible(true);
-        //hamtaProjekt(queryAid);
+        new ProjektMeny(idb, queryAid).setVisible(true);
     }//GEN-LAST:event_mvprojMinaProjektActionPerformed
 
     private void mvproledMinaProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvproledMinaProjektActionPerformed
-        new ProjektMeny(idb).setVisible(true);
-        //hamtaProjektSomProjektChef(queryAid);
+        new ProjektMeny(idb, queryAid).setVisible(true);
+        //Sätter just nu inte som chef, bara de projekt de är med i. Ny konstruktor med roll?
     }//GEN-LAST:event_mvproledMinaProjektActionPerformed
 
     private void mvprojAllaProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvprojAllaProjektActionPerformed
@@ -341,6 +345,10 @@ public class Huvudmeny extends javax.swing.JFrame {
     private void mvadnPartnersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvadnPartnersActionPerformed
         new PartnerMeny(idb).setVisible(true);
     }//GEN-LAST:event_mvadnPartnersActionPerformed
+
+    private void mvproledStatistikActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvproledStatistikActionPerformed
+        new Statistik(idb, queryAid).setVisible(true);
+    }//GEN-LAST:event_mvproledStatistikActionPerformed
 
 
 

@@ -47,10 +47,10 @@ public class EditProjekt extends javax.swing.JFrame {
      * @param pid 
      */
         public EditProjekt(InfDB idb, int pid) {
-        setLocationRelativeTo(null);
         this.idb = idb;
         nyttProjekt = true;
         initComponents();
+        setLocationRelativeTo(null);
         fyllCmbStatus();
         fyllCmbPrioritet();
         fyllCmbProjektChef();
