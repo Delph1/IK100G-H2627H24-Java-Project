@@ -62,12 +62,6 @@ public class EditLand extends javax.swing.JFrame {
                 String politiskStruktur = txtPolitiskstruktur.getText();
                 String ekonomi = txtEkonomi.getText();
 
-                // Kontrollerar att fälten inte är tomma
-                if (namn.isEmpty() || sprak.isEmpty() || valuta.isEmpty() || tidszon.isEmpty() || politiskStruktur.isEmpty() || ekonomi.isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "Alla fält måste fyllas i!");
-                    return;
-                }
-
                 // Uppdatera landets data i databasen
                 String query = "UPDATE land SET " +
                                "namn = '" + namn + "', " +
