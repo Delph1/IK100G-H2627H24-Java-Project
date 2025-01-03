@@ -26,24 +26,32 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane1" max="32767" attributes="0"/>
-                  <Group type="102" attributes="0">
+                  <Component id="jScrollPane1" alignment="0" pref="802" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
                       <Component id="btnLäggTillProjekt" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btnÄndraProjekt" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                       <Component id="btnTaBortProjekt" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="lblSokDatum" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="txtStartdatumSök" min="-2" pref="70" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblBindeStreck" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="txtSlutdatumSök" min="-2" pref="74" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="btnDatumSök" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       <Component id="cmbAvdelningsVal" min="-2" pref="162" max="-2" attributes="0"/>
-                      <EmptySpace pref="40" max="32767" attributes="0"/>
-                      <Component id="lblSökPerson" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="txtSökPerson" min="-2" pref="64" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="btnSökPerson" min="-2" pref="72" max="-2" attributes="0"/>
+                      <Component id="cmbStatus" min="-2" pref="86" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -58,13 +66,19 @@
                   <Component id="btnÄndraProjekt" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnTaBortProjekt" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnLäggTillProjekt" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="cmbAvdelningsVal" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtSökPerson" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnSökPerson" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblSökPerson" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnDatumSök" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblSokDatum" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtStartdatumSök" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblBindeStreck" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtSlutdatumSök" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
-              <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="16" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="cmbAvdelningsVal" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cmbStatus" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="389" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -193,25 +207,40 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JTextField" name="txtS&#xf6;kPerson">
-      <Properties>
-        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[100, 24]"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnS&#xf6;kPerson">
+    <Component class="javax.swing.JButton" name="btnDatumS&#xf6;k">
       <Properties>
         <Property name="text" type="java.lang.String" value="S&#xf6;k"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnS&#xf6;kPersonActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDatumS&#xf6;kActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="lblS&#xf6;kPerson">
+    <Component class="javax.swing.JTextField" name="txtSlutdatumS&#xf6;k">
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtStartdatumS&#xf6;k">
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblSokDatum">
       <Properties>
-        <Property name="text" type="java.lang.String" value="S&#xf6;k personID:"/>
+        <Property name="text" type="java.lang.String" value="Filtrera p&#xe5; datum"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblBindeStreck">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="-"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cmbStatus">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="0"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbStatusActionPerformed"/>
+      </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>
