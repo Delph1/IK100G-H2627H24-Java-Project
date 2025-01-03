@@ -20,16 +20,18 @@ public class EditAnstalld extends javax.swing.JFrame {
     private InfDB idb;
     private String queryAid;
     private String avdId;
+    private String admins;
     private HashMap<String, String> avdelningMap;
     
     /**
      * Creates new form EditAnstalld
      */
 
-    public EditAnstalld(InfDB idb, String queryAid) {
+    public EditAnstalld(InfDB idb, String queryAid, String admins) {
         initComponents();
         setLocationRelativeTo(null); //Den här koden sätter fönstret i mitten av skärmen.
      this.idb = idb;
+     this.admins = admins;
      this.queryAid = queryAid;
      this.avdelningMap = new HashMap<>();
      
@@ -66,10 +68,10 @@ try {
     System.out.println("Ett fel inträffade: " + e.getMessage());
 }
         try {
-            String sqlFrågaAdmin = "Select behorighetsniva FROM admin WHERE aid = '" + queryAid + "'";
-            String admins = idb.fetchSingle(sqlFrågaAdmin);
+            String sqlFrågaAdmin = "Select behorighetsniva FROM admin WHERE aid = '" + admins + "'";
+            String adminst = idb.fetchSingle(sqlFrågaAdmin);
 
-            if (admins != null) {
+            if (adminst != null) {
 
                 jComboBox1.setVisible(true);
                 jLabel10.setVisible(true);

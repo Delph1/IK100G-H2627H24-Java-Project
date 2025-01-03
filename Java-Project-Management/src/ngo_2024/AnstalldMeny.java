@@ -16,12 +16,14 @@ import javax.swing.table.DefaultTableModel;
  */
 public class AnstalldMeny extends javax.swing.JFrame {
      private InfDB idb;
+     private String admins;
 
     /**
      * Creates new form Anstallda
      */
-    public AnstalldMeny(InfDB idb) {
+    public AnstalldMeny(InfDB idb, String admins) {
          this.idb = idb;
+         this.admins = admins;
         initComponents();
         setLocationRelativeTo(null); //Den här koden sätter fönstret i mitten av skärmen.
         hamtaAnstallda();
@@ -130,7 +132,7 @@ public class AnstalldMeny extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         String empty = "";
-        new EditAnstalld(idb, empty).setVisible(true);    //fulkod för att kunna öppna EditAnstalld som ett tomt formulär
+        new EditAnstalld(idb, empty, admins).setVisible(true);    //fulkod för att kunna öppna EditAnstalld som ett tomt formulär
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -231,7 +233,7 @@ taBortAnstalld();        // TODO add your handling code here:
         if (selectedRow != -1) {
             Object anstalld = jTable1.getValueAt(selectedRow, 0); // Hämta värde från kolumn 0
             String queryAid = anstalld.toString(); // Konvertera till String
-            new EditAnstalld(idb, queryAid).setVisible(true); //öppnar nytt fönster, skickar med den anställde via AID från databasen
+            new EditAnstalld(idb, queryAid, admins).setVisible(true); //öppnar nytt fönster, skickar med den anställde via AID från databasen
 
             // JOptionPane.showMessageDialog(this, "Valt ID: " + anstalld);
         } else {

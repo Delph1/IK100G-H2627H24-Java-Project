@@ -27,6 +27,7 @@ public class Huvudmeny extends javax.swing.JFrame {
         this.idb = idb;
         this.admins = admins;
         this.queryAid = queryAid;
+        this.projl = projl;
         lblInloggadAnvändare.setText(queryAid);
         jLabel1.setText(admins);
         jLabel2.setText(projl);
@@ -292,7 +293,7 @@ public class Huvudmeny extends javax.swing.JFrame {
     }//GEN-LAST:event_mvminLoggaUtActionPerformed
 
     private void mvadnPersonalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvadnPersonalActionPerformed
-        new AnstalldMeny(idb).setVisible(true);
+        new AnstalldMeny(idb, admins).setVisible(true);
     }//GEN-LAST:event_mvadnPersonalActionPerformed
 
     private void mvhjOmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvhjOmActionPerformed
@@ -300,7 +301,7 @@ public class Huvudmeny extends javax.swing.JFrame {
     }//GEN-LAST:event_mvhjOmActionPerformed
 
     private void mvminMinaUppgifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvminMinaUppgifterActionPerformed
-        new EditAnstalld(idb, queryAid).setVisible(true);
+        new EditAnstalld(idb, queryAid, admins).setVisible(true);
     }//GEN-LAST:event_mvminMinaUppgifterActionPerformed
 
     private void mvadnAvdelningarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvadnAvdelningarActionPerformed
