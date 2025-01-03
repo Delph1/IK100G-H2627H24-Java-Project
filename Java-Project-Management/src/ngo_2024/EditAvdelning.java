@@ -11,8 +11,8 @@ import oru.inf.InfDB;
 import oru.inf.InfException;
 
 /**
- *
- * @author andre
+ * Klass för att ändra eller skapa en ny avdelning.
+ * @author Andreas Galistel
  */
 public class EditAvdelning extends javax.swing.JFrame {
     
