@@ -17,47 +17,70 @@ import oru.inf.InfException;
  * @author Märta Sjöblom
  */
 public class EditProjekt extends javax.swing.JFrame {
-    
+
     private InfDB idb;
     private boolean nyttProjekt;
-    
-    
+    private boolean admin;  //Ska användas för att kunna ändra projektchef, bara för admin, just nu kan alla
+
     /**
-     * Creates new form EditProjekt, för att skapa helt nya projekt
+     * För att skapa nya projekt, bara admin som kan?
      */
-    public EditProjekt(InfDB idb) {
+    public EditProjekt(InfDB idb, boolean admin) {
         this.idb = idb;
         nyttProjekt = true;
+        this.admin = admin; 
         initComponents();
-        fyllCmbStatus();
-        fyllCmbPrioritet();
-        fyllCmbProjektChef();
-        fyllCmbLand();
+        fyllCmbStatus();    //Fyller Status-comboboxen
+        fyllCmbPrioritet(); //Fyller Prioritet-comboboxen
+        fyllCmbProjektChef();   //Fyller ProjektChef-comboboxen med namn
+        fyllCmbLand();  //Fyller Land-comboboxen med namn
         lblProjektID.setVisible(false);
         txtProjektID.setVisible(false);
         btnSökPID.setVisible(false);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        
+        this.setTitle("Nytt projekt");
+        setLocationRelativeTo(null);    //Sätter rutan mitt i skärmen
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  //Stänger fönstret men inte programmet vid kryssad ruta
+    }
+
+    /**
+     * Konstruktor för att editera redan existerande projekt, med projektID som
+     * parameter. Kan användas av projektchef, alltså kan inte projektchef ändras
+     *
+     * @param idb
+     * @param pid
+     */
+    public EditProjekt(InfDB idb, int pid) {
+        this.idb = idb;
+        initComponents();
+        setLocationRelativeTo(null);    //Sätter rutan mitt i skärmen
+        fyllCmbStatus();    //Fyller Status-comboboxen
+        fyllCmbPrioritet(); //Fyller Prioritet-comboboxen
+        fyllCmbProjektChef();   //Fyller ProjektChef-comboboxen med namn
+        fyllCmbLand();  //Fyller Land-comboboxen med namn
+        txtProjektID.setText("" + pid);   //Sätter projekt-id i rutan vid redigering av projekt
+        editProjekt(txtProjektID);  //Redigerar projekt utifrån projektID
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  //Stänger fönstret men inte programmet vid kryssad ruta
     }
     
     /**
-     * Konstruktor för att editera redan existerande projekt, med PID som parameter
+     * Konstruktor för Admin för att editera redan existerande projekt, med projektID som
+     * projektID som parameter. Projektchef kan alltså redigeras. 
+     *
      * @param idb
-     * @param pid 
+     * @param pid
      */
-        public EditProjekt(InfDB idb, int pid) {
+    public EditProjekt(InfDB idb, int pid, boolean admin) {
         this.idb = idb;
-        nyttProjekt = true;
+        this.admin = admin;
         initComponents();
-        setLocationRelativeTo(null);
-        fyllCmbStatus();
-        fyllCmbPrioritet();
-        fyllCmbProjektChef();
-        fyllCmbLand();
-        txtProjektID.setText(""+pid);
-        editProjekt(txtProjektID);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);    //Sätter rutan mitt i skärmen
+        fyllCmbStatus();    //Fyller Status-comboboxen
+        fyllCmbPrioritet(); //Fyller Prioritet-comboboxen
+        fyllCmbProjektChef();   //Fyller ProjektChef-comboboxen med namn
+        fyllCmbLand();  //Fyller Land-comboboxen med namn
+        txtProjektID.setText("" + pid);   //Sätter projekt-id i rutan vid redigering av projekt
+        editProjekt(txtProjektID);  //Redigerar projekt utifrån projektID
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  //Stänger fönstret men inte programmet vid kryssad ruta
     }
 
     /**
@@ -95,6 +118,7 @@ public class EditProjekt extends javax.swing.JFrame {
         btnRensaFält = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Redigera projekt");
 
         lblProjektNamn.setText("Projektnamn");
 
@@ -177,14 +201,13 @@ public class EditProjekt extends javax.swing.JFrame {
                         .addComponent(txtBeskrivning))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblProjektChef)
-                            .addComponent(lblLand))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cmbProjektChef, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(cmbLand, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                                .addComponent(lblLand)
+                                .addGap(52, 52, 52))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(lblProjektChef)
+                                .addGap(18, 18, 18)))
+                        .addComponent(cmbProjektChef, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblPrioritet)
@@ -202,7 +225,6 @@ public class EditProjekt extends javax.swing.JFrame {
                                 .addGap(46, 46, 46)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cmbPrioritet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(txtKostnad, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -210,7 +232,10 @@ public class EditProjekt extends javax.swing.JFrame {
                                                 .addGap(15, 15, 15)
                                                 .addComponent(btnRensaFält)))
                                         .addGap(53, 53, 53)
-                                        .addComponent(btnSpara))))
+                                        .addComponent(btnSpara))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(cmbLand, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(cmbPrioritet, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblProjektNamn)
@@ -263,12 +288,12 @@ public class EditProjekt extends javax.swing.JFrame {
                     .addComponent(cmbPrioritet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblProjektChef)
-                    .addComponent(cmbProjektChef, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbLand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblLand))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblLand)
-                    .addComponent(cmbLand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbProjektChef, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblProjektChef))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSpara)
@@ -281,38 +306,38 @@ public class EditProjekt extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void fyllCmbStatus() {
         String sqlfråga = "select distinct status from projekt;";
         ArrayList<String> allaStatus;
         cmbStatus.addItem("");
         try {
             allaStatus = idb.fetchColumn(sqlfråga);
-            for (String status : allaStatus)
+            for (String status : allaStatus) {
                 cmbStatus.addItem(status);
-        }
-        catch (InfException e) {
+            }
+        } catch (InfException e) {
             System.out.println(e.getMessage());
             JOptionPane.showMessageDialog(null, "Databasfel");
         }
 
     }
-    
+
     private void fyllCmbPrioritet() {
         String sqlfråga = "select distinct prioritet from projekt;";
         ArrayList<String> allaPrioritet;
         cmbPrioritet.addItem("");
         try {
             allaPrioritet = idb.fetchColumn(sqlfråga);
-            for (String prioritet : allaPrioritet)
+            for (String prioritet : allaPrioritet) {
                 cmbPrioritet.addItem(prioritet);
-        }
-        catch (InfException e) {
+            }
+        } catch (InfException e) {
             System.out.println(e.getMessage());
             JOptionPane.showMessageDialog(null, "Databasfel");
         }
     }
-    
+
     private void fyllCmbProjektChef() {
         String sqlFörnamn = "select fornamn from anstalld, handlaggare where anstalld.aid = handlaggare.aid;";
         String sqlEfternamn = "select efternamn from anstalld, handlaggare where anstalld.aid = handlaggare.aid;";
@@ -323,37 +348,35 @@ public class EditProjekt extends javax.swing.JFrame {
             allaFörnamn = idb.fetchColumn(sqlFörnamn);
             allaEfternamn = idb.fetchColumn(sqlEfternamn);
             for (int i = 0; i < allaFörnamn.size(); i++) {
-                String fulltNamn = allaFörnamn.get(i) + " "+ allaEfternamn.get(i);
+                String fulltNamn = allaFörnamn.get(i) + " " + allaEfternamn.get(i);
                 cmbProjektChef.addItem(fulltNamn);
             }
-        }
-        catch (InfException e) {
+        } catch (InfException e) {
             System.out.println(e.getMessage());
             JOptionPane.showMessageDialog(null, "Databasfel");
         }
     }
-    
+
     private void fyllCmbLand() {
         String sqlfråga = "select distinct namn from land;";
         ArrayList<String> allaLänder;
         cmbLand.addItem("");
         try {
             allaLänder = idb.fetchColumn(sqlfråga);
-            for (String land : allaLänder)
+            for (String land : allaLänder) {
                 cmbLand.addItem(land);
-        }
-        catch (InfException e) {
+            }
+        } catch (InfException e) {
             System.out.println(e.getMessage());
             JOptionPane.showMessageDialog(null, "Databasfel");
         }
     }
-    
+
     public void editProjekt(JTextField projektID) {
         int pid = 0;
         try {   //Byt ut mot validering
             pid = Integer.parseInt(projektID.getText());
-        }
-        catch (NumberFormatException ex) {
+        } catch (NumberFormatException ex) {
             System.out.println("Saknas värde i pid");
         }
         try {
@@ -367,20 +390,23 @@ public class EditProjekt extends javax.swing.JFrame {
             txtStartDatum.setText(resultat.get("startdatum"));           // Startdatum
             txtSlutDatum.setText(resultat.get("slutdatum"));            // Slutdatum
             txtKostnad.setText(resultat.get("kostnad"));            // kostnad
-
-            String sqlFörnamn = "select fornamn from anstalld where aid = " + resultat.get("projektchef");
-            String sqlEfternamn = "select efternamn from anstalld where aid = " + resultat.get("projektchef");
-            String fulltNamn = "";
-            try {
-                String förnamn = idb.fetchSingle(sqlFörnamn);
-                String efternamn = idb.fetchSingle(sqlEfternamn);
-                fulltNamn = förnamn + " " + efternamn;
-            } catch (InfException e) {
-                System.out.println(e.getMessage());
-                JOptionPane.showMessageDialog(null, "Databasfel");
+            if (admin) {
+                String sqlFörnamn = "select fornamn from anstalld where aid = " + resultat.get("projektchef");
+                String sqlEfternamn = "select efternamn from anstalld where aid = " + resultat.get("projektchef");
+                String fulltNamn = "";
+                try {
+                    String förnamn = idb.fetchSingle(sqlFörnamn);
+                    String efternamn = idb.fetchSingle(sqlEfternamn);
+                    fulltNamn = förnamn + " " + efternamn;
+                } catch (InfException e) {
+                    System.out.println(e.getMessage());
+                    JOptionPane.showMessageDialog(null, "Databasfel");
+                }
+                cmbProjektChef.setSelectedItem(fulltNamn);                  //Projektchef
+            } else {
+                lblProjektChef.setVisible(false);
+                cmbProjektChef.setVisible(false); //Visar inte ProjektChef om det inte är admin som redigerar
             }
-            cmbProjektChef.setSelectedItem(fulltNamn);                  //Projektchef
-
             String sqlLand = "select namn from land where lid = " + resultat.get("land");
             String land = "";
             try {
@@ -398,7 +424,7 @@ public class EditProjekt extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Databasfel");
             txtProjektID.requestFocus();
         } catch (Exception ex) {
-            System.out.println("Annat fel"+ex.getMessage());
+            System.out.println("Annat fel" + ex.getMessage());
             JOptionPane.showMessageDialog(null, "Annat fel");
         }
     }
@@ -436,8 +462,7 @@ public class EditProjekt extends javax.swing.JFrame {
                 && Validering.datumEfterKontroll(txtStartDatum.getText(), txtSlutDatum)
                 && Validering.datumFöreKontroll(txtSlutDatum.getText(), txtStartDatum)
                 && Validering.arDecimal(txtKostnad)
-                && Validering.positivtVarde(txtKostnad)) 
-        {
+                && Validering.positivtVarde(txtKostnad)) {
 
             String projektnamn = txtProjektNamn.getText();
             String beskrivning = txtBeskrivning.getText();
@@ -450,21 +475,45 @@ public class EditProjekt extends javax.swing.JFrame {
             int projektchef = nyAnstalld.aidFrånFulltNamn(cmbProjektChef.getSelectedItem().toString());
             int land = 0;
             try {
-                String sqlLand = "select lid from land where namn = '" + cmbLand.getSelectedItem().toString()+"'";
+                String sqlLand = "select lid from land where namn = '" + cmbLand.getSelectedItem().toString() + "'";
                 land = Integer.parseInt(idb.fetchSingle(sqlLand));
             } catch (InfException e) {
                 System.out.println(e.getMessage());
+                JOptionPane.showMessageDialog(null, "Kunde inte hitta land");
             }
             if (nyttProjekt) {
-                String sqlFråga = "insert into projekt (projektnamn, beskrivning, startdatum, slutdatum, kostnad, status, prioritet, projektchef, land) values ('"+projektnamn+
-                        "', '"+beskrivning+"', '"+startdatum+"', '"+slutdatum+"', "+kostnad+", '"+status+"', '"+prioritet+"', "+projektchef+", "+land+")";
+                String sqlFråga = "insert into projekt (projektnamn, beskrivning, startdatum, slutdatum, kostnad, status, prioritet, projektchef, land) values ('" + projektnamn
+                        + "', '" + beskrivning + "', '" + startdatum + "', '" + slutdatum + "', " + kostnad + ", '" + status + "', '" + prioritet + "', " + projektchef + ", " + land + ")";
                 System.out.println(sqlFråga);
+                try {
+                    idb.insert(sqlFråga);
+                    JOptionPane.showMessageDialog(null, "Projektet har lagts till!");
+                    dispose(); //Stänger fönstret efter projektet lagts till
+                } catch (InfException e) {
+                    System.out.println(e.getMessage());
+                    JOptionPane.showMessageDialog(null, "Kunde inte lägga till projekt");
+                }
             } else {
-                String sqlFråga = "update projekt set (projektnamn = '"+projektnamn+"', beskrivning = '"+beskrivning+"', startdatum = '"+startdatum+"', slutdatum = '"+slutdatum+
-                        "', kostnad = "+kostnad+", status = '"+status+"', prioritet = '"+prioritet+"', projektchef = "+projektchef+", land = "+land+") where pid = " + Integer.valueOf(txtProjektID.getText());
-                System.out.println(sqlFråga);
+                String sqlFråga;
+                if (admin) {
+                    sqlFråga = "update projekt set (projektnamn = '" + projektnamn + "', beskrivning = '" + beskrivning + "', startdatum = '" + startdatum + "', slutdatum = '" + slutdatum
+                            + "', kostnad = " + kostnad + ", status = '" + status + "', prioritet = '" + prioritet + "', projektchef = " + projektchef + ", land = " + land + ") where pid = " + Integer.valueOf(txtProjektID.getText());
+                    System.out.println(sqlFråga);
+                } else {
+                    sqlFråga = "update projekt set (projektnamn = '" + projektnamn + "', beskrivning = '" + beskrivning + "', startdatum = '" + startdatum + "', slutdatum = '" + slutdatum
+                            + "', kostnad = " + kostnad + ", status = '" + status + "', prioritet = '" + prioritet + "', land = " + land + ") where pid = " + Integer.valueOf(txtProjektID.getText());
+                    System.out.println(sqlFråga);
+                }
+                try {
+                    idb.update(sqlFråga);
+                    JOptionPane.showMessageDialog(null, "Projektet har uppdaterats!");
+                    dispose(); //Stänger fönstret efter projektet uppdaterats
+                } catch (InfException e) {
+                    System.out.println(e.getMessage());
+                    JOptionPane.showMessageDialog(null, "Kunde inte uppdatera projekt");
+                }
+
             }
-            
         } else {
             JOptionPane.showMessageDialog(null, "Fel vid inmatning");
         }
@@ -474,20 +523,15 @@ public class EditProjekt extends javax.swing.JFrame {
         boolean validering = Validering.faltEjTomtKontroll(txtProjektID);
         if (!validering) {
             txtProjektID.requestFocus();
-        }
-        else {
+        } else {
             editProjekt(txtProjektID);
         }
     }//GEN-LAST:event_btnSökPIDActionPerformed
 
     private void btnRensaFältActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRensaFältActionPerformed
         // TODO add your handling code here:
-        boolean validering = Validering.faltEjTomtKontroll(txtProjektID);
-        if (validering)
-        {
-            editProjekt(txtProjektID);
-        }
-        else {
+        boolean validering = txtProjektID.getText().isBlank();
+        if (validering) {
             txtProjektNamn.setText("");
             txtBeskrivning.setText("");
             txtStartDatum.setText("");
@@ -497,6 +541,8 @@ public class EditProjekt extends javax.swing.JFrame {
             cmbPrioritet.setSelectedIndex(0);
             cmbProjektChef.setSelectedIndex(0);
             cmbLand.setSelectedIndex(0);
+        } else {
+            editProjekt(txtProjektID);
         }
     }//GEN-LAST:event_btnRensaFältActionPerformed
 

@@ -324,8 +324,13 @@ public class Huvudmeny extends javax.swing.JFrame {
     }//GEN-LAST:event_mvprojMinaProjektActionPerformed
 
     private void mvproledMinaProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvproledMinaProjektActionPerformed
-        new ProjektMeny(idb, queryAid).setVisible(true);
-        //Sätter just nu inte som chef, bara de projekt de är med i. Ny konstruktor med roll?
+        if (projl != null) {
+            new ProjektMeny(idb, queryAid, true).setVisible(true);
+        }
+        else {
+            new ProjektMeny(idb, queryAid).setVisible(true);
+        }
+        //Tror den kollar om chef? Oklar hur variablerna fungerar.
     }//GEN-LAST:event_mvproledMinaProjektActionPerformed
 
     private void mvprojAllaProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvprojAllaProjektActionPerformed
