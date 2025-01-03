@@ -44,7 +44,14 @@ public class LandMeny extends javax.swing.JFrame {
         spTabell = new javax.swing.JScrollPane();
         jtTabell = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                formWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
 
         btnUppdatera.setText("Uppdatera");
         btnUppdatera.addActionListener(new java.awt.event.ActionListener() {
@@ -61,8 +68,18 @@ public class LandMeny extends javax.swing.JFrame {
         });
 
         btnRadera.setText("Radera");
+        btnRadera.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRaderaActionPerformed(evt);
+            }
+        });
 
         btnNyttLand.setText("Nytt Land");
+        btnNyttLand.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNyttLandActionPerformed(evt);
+            }
+        });
 
         jtTabell.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -125,27 +142,24 @@ public class LandMeny extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnUppdateraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUppdateraActionPerformed
-        // TODO add your handling code here:
+        getLand();
     }//GEN-LAST:event_btnUppdateraActionPerformed
 
     private void btnÄndraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnÄndraActionPerformed
-        // TODO add your handling code here:
+        editLand();
     }//GEN-LAST:event_btnÄndraActionPerformed
-private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        getLand();
-    }                                        
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-       //new EditLand(idb, null).setVisible(true);
-    }                                        
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+    private void btnRaderaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRaderaActionPerformed
         raderaLand();
-    }                                        
+    }//GEN-LAST:event_btnRaderaActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        //new NyLand(idb).setVisible(true);
-    }                                        
+    private void btnNyttLandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNyttLandActionPerformed
+        new EditLand(idb, null).setVisible(true);
+    }//GEN-LAST:event_btnNyttLandActionPerformed
+
+    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+        getLand();
+    }//GEN-LAST:event_formWindowGainedFocus
 
     private void getLand()
     {
@@ -195,17 +209,18 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         int selectedRow = jtTabell.getSelectedRow();
         if (selectedRow != -1)
         {
-            Object land = jtTabell.getValueAt(selectedRow, 0);
-            int queryLid = (int) land;
+            String land = jtTabell.getValueAt(selectedRow, 0).toString();
+            int queryLid = Integer.parseInt(land);
 
             // Först kollar vi om det finns några beroenden innan vi tar bort landet.
             try {
-                String query1 = "UPDATE anstalld SET land = null WHERE land = " + queryLid;
+                String query1 = "UPDATE stad SET land = null WHERE land = " + queryLid;
                 idb.update(query1);
                 
                 // Radera landet
-                String query2 = "DELETE FROM land WHERE id = " + queryLid;
+                String query2 = "DELETE FROM land WHERE lid = " + queryLid;
                 idb.delete(query2);
+                getLand();
             }
             catch (InfException e)
             {
@@ -218,14 +233,13 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         }
     }
     
-    private void EditLand()
+    private void editLand()
     {
         int selectedRow = jtTabell.getSelectedRow();
         if (selectedRow != -1)
         {
-            Object land = jtTabell.getValueAt(selectedRow, 0);
-            int queryLid = (int) land;
-            //new EditLand(idb, queryLid).setVisible(true);
+            String land = jtTabell.getValueAt(selectedRow, 0).toString();
+            new EditLand(idb, land).setVisible(true);
         }
         else
         {
