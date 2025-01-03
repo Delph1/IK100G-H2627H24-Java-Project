@@ -11,8 +11,8 @@ import oru.inf.InfDB;
 import oru.inf.InfException;
 
 /**
- *
- * @author andre
+ * Klass för att ändra eller skapa en ny avdelning.
+ * @author Andreas Galistel
  */
 public class EditAvdelning extends javax.swing.JFrame {
     
@@ -313,60 +313,69 @@ public class EditAvdelning extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        System.out.println("Namn: " + txtNamn.getText());
-        System.out.println("Beskrivning: " + txtBeskrivning.getText());
         
-        String namn = txtNamn.getText();
-        String beskrivning = txtBeskrivning.getText();
-        String adress = txtAdress.getText();
-        String epost = txtEpost.getText();
-        String telefon = txtTelefon.getText();
-        int stad = Integer.parseInt(txtStadId.getText());
-        int chef = Integer.parseInt(txtChefId.getText());
-        
-        try
+        //Validering nedan
+        if (Validering.faltEjTomtKontroll(txtNamn) &&
+            Validering.faltEjTomtKontroll(txtBeskrivning) &&
+            Validering.faltEjTomtKontroll(txtAdress) &&
+            Validering.faltEjTomtKontroll(txtEpost) &&
+            Validering.faltEjTomtKontroll(txtTelefon) &&
+            Validering.faltEjTomtKontroll(txtStadId) &&
+            Validering.faltEjTomtKontroll(txtChefId))
         {
-            if(queryAid == null)
+            
+            try
             {
-            int avdid = Integer.parseInt(idb.getAutoIncrement("avdelning", "avdid"));
-            String query = "INSERT INTO avdelning (avdid, namn, beskrivning, adress, epost, telefon, stad, chef)"
-                    + " VALUES ("
-                    + avdid + ", '"
-                    + namn + "', '"
-                    + beskrivning + "', '"
-                    + adress + "', '"
-                    + epost + "', '"
-                    + telefon + "', " 
-                    + stad + ", "
-                    + chef + ")";
-            System.out.println(query);
-            idb.insert(query);
-                
+                String namn = txtNamn.getText();
+                String beskrivning = txtBeskrivning.getText();
+                String adress = txtAdress.getText();
+                String epost = txtEpost.getText();
+                String telefon = txtTelefon.getText();
+                int stad = Integer.parseInt(txtStadId.getText());
+                int chef = Integer.parseInt(txtChefId.getText());
+
+                if(queryAid == null)
+                {
+                int avdid = Integer.parseInt(idb.getAutoIncrement("avdelning", "avdid"));
+                String query = "INSERT INTO avdelning (avdid, namn, beskrivning, adress, epost, telefon, stad, chef)"
+                        + " VALUES ("
+                        + avdid + ", '"
+                        + namn + "', '"
+                        + beskrivning + "', '"
+                        + adress + "', '"
+                        + epost + "', '"
+                        + telefon + "', " 
+                        + stad + ", "
+                        + chef + ")";
+                System.out.println(query);
+                idb.insert(query);
+
+                }
+                else
+                {
+                String query = "UPDATE avdelning "
+                        + "SET namn = '" + namn + "', "
+                        + "beskrivning = '" + beskrivning + "', " 
+                        + "adress = '" + adress + "', "
+                        + "epost = '" + epost + "', "
+                        + "telefon = '" + telefon + "', " 
+                        + "stad = " + stad + ", "
+                        + "chef = " + chef
+                        + " WHERE avdid = " + queryAid;
+                System.out.println(query);
+                idb.update(query);
+
+                }
+
+            JOptionPane.showMessageDialog(null, "Avdelningen har sparats.");
+            this.setVisible(false);
+
+
             }
-            else
+            catch(InfException e)
             {
-            String query = "UPDATE avdelning "
-                    + "SET namn = '" + namn + "', "
-                    + "beskrivning = '" + beskrivning + "', " 
-                    + "adress = '" + adress + "', "
-                    + "epost = '" + epost + "', "
-                    + "telefon = '" + telefon + "', " 
-                    + "stad = " + stad + ", "
-                    + "chef = " + chef
-                    + " WHERE avdid = " + queryAid;
-            System.out.println(query);
-            idb.update(query);
-                    
+                System.out.println("Ett fel inträffade: " + e.getMessage());
             }
-
-        JOptionPane.showMessageDialog(null, "Avdelningen har sparats.");
-        this.setVisible(false);
-        
-
-        }
-        catch(InfException e)
-        {
-            System.out.println("Ett fel inträffade: " + e.getMessage());
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
