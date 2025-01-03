@@ -24,58 +24,108 @@ public class EditLand extends javax.swing.JFrame {
 
     // Hämtar och visar landets data i fälten
     private void laddaLandData() {
-        try {
-            String query = "SELECT namn, sprak, valuta, tidszon, politisk_struktur, ekonomi FROM land WHERE lid = '" + lid + "'";
-            HashMap<String, String> resultat = idb.fetchRow(query);
+        
+        if(lid != null)
+        {
+            try {
+                String query = "SELECT namn, sprak, valuta, tidszon, politisk_struktur, ekonomi FROM land WHERE lid = '" + lid + "'";
+                HashMap<String, String> resultat = idb.fetchRow(query);
 
-            if (resultat != null) {
-                jTextField1.setText(resultat.get("namn"));
-                jTextField2.setText(resultat.get("sprak"));
-                jTextField3.setText(resultat.get("valuta"));
-                jTextField4.setText(resultat.get("tidszon"));
-                jTextField5.setText(resultat.get("politisk_struktur"));
-                jTextField6.setText(resultat.get("ekonomi"));
-            } else {
-                JOptionPane.showMessageDialog(null, "Inget land hittades med ID: " + lid);
-                dispose(); // Stäng fönstret om inget land hittas
+                if (resultat != null) {
+                    txtNamn.setText(resultat.get("namn"));
+                    txtSprak.setText(resultat.get("sprak"));
+                    txtValuta.setText(resultat.get("valuta"));
+                    txtTidszon.setText(resultat.get("tidszon"));
+                    txtPolitiskstruktur.setText(resultat.get("politisk_struktur"));
+                    txtEkonomi.setText(resultat.get("ekonomi"));
+                } else {
+                    JOptionPane.showMessageDialog(null, "Inget land hittades med ID: " + lid);
+                    dispose(); // Stäng fönstret om inget land hittas
+                }
+            } catch (InfException e) {
+                JOptionPane.showMessageDialog(null, "Fel vid hämtning av landdata: " + e.getMessage());
             }
-        } catch (InfException e) {
-            JOptionPane.showMessageDialog(null, "Fel vid hämtning av landdata: " + e.getMessage());
         }
     }
 
     // Uppdaterar landets data i databasen
     private void sparaLandData() {
-        try {
-            // Hämta värden från textfälten
-            String namn = jTextField1.getText();
-            String sprak = jTextField2.getText();
-            String valuta = jTextField3.getText();
-            String tidszon = jTextField4.getText();
-            String politiskStruktur = jTextField5.getText();
-            String ekonomi = jTextField6.getText();
+        if(Validering.faltEjTomtKontroll(txtNamn) &&
+                Validering.faltEjTomtKontroll(txtSprak) &&
+                Validering.faltEjTomtKontroll(txtValuta) &&
+                Validering.faltEjTomtKontroll(txtTidszon) &&
+                Validering.faltEjTomtKontroll(txtPolitiskstruktur) &&
+                Validering.faltEjTomtKontroll(txtEkonomi) &&
+                Validering.arDecimal(txtValuta))
+        {
+            if(lid == null)
+            {
+                try
+                {
+                    String nyttLandId = idb.getAutoIncrement("land", "lid");
+                    try {
+                        // Hämta värden från textfälten
+                        String namn = txtNamn.getText();
+                        String sprak = txtSprak.getText();
+                        String valuta = txtValuta.getText();
+                        String tidszon = txtTidszon.getText();
+                        String politiskStruktur = txtPolitiskstruktur.getText();
+                        String ekonomi = txtEkonomi.getText();
 
-            // Kontrollerar att fälten inte är tomma
-            if (namn.isEmpty() || sprak.isEmpty() || valuta.isEmpty() || tidszon.isEmpty() || politiskStruktur.isEmpty() || ekonomi.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Alla fält måste fyllas i!");
-                return;
+                        // Uppdatera landets data i databasen
+                        String query = "INSERT INTO land (lid, namn, sprak, valuta, tidszon, politisk_struktur, ekonomi ) VALUES ('" +
+                                nyttLandId + "', '" +
+                                namn + "', '" +
+                                sprak + "', '" +
+                                valuta + "', '" +
+                                tidszon + "', '" +
+                                politiskStruktur + "', '" + 
+                                ekonomi + "')";
+                        System.out.println(query);
+                        idb.insert(query);
+                        JOptionPane.showMessageDialog(this, "Landdata har uppdaterats!");
+                        dispose(); // Stänger fönstret efter uppdatering
+                    } catch (InfException e) {
+                        JOptionPane.showMessageDialog(this, "Fel vid uppdatering: " + e.getMessage());
+                    }
+                }
+                catch(InfException e)
+                {
+                    JOptionPane.showMessageDialog(this, "Fel vid hämtning av nästa ID-nummer: " + e.getMessage());
+                }
             }
+            else
+            {
+                try {
+                    // Hämta värden från textfälten
+                    String namn = txtNamn.getText();
+                    String sprak = txtSprak.getText();
+                    String valuta = txtValuta.getText();
+                    String tidszon = txtTidszon.getText();
+                    String politiskStruktur = txtPolitiskstruktur.getText();
+                    String ekonomi = txtEkonomi.getText();
 
-            // Uppdatera landets data i databasen
-            String query = "UPDATE land SET " +
-                           "namn = '" + namn + "', " +
-                           "sprak = '" + sprak + "', " +
-                           "valuta = '" + valuta + "', " +
-                           "tidszon = '" + tidszon + "', " +
-                           "politisk_struktur = '" + politiskStruktur + "', " +
-                           "ekonomi = '" + ekonomi + "' " +
-                           "WHERE lid = '" + lid + "'";
+                    // Uppdatera landets data i databasen
+                    String query = "UPDATE land SET " +
+                                   "namn = '" + namn + "', " +
+                                   "sprak = '" + sprak + "', " +
+                                   "valuta = '" + valuta + "', " +
+                                   "tidszon = '" + tidszon + "', " +
+                                   "politisk_struktur = '" + politiskStruktur + "', " +
+                                   "ekonomi = '" + ekonomi + "' " +
+                                   "WHERE lid = '" + lid + "'";
 
-            idb.update(query);
-            JOptionPane.showMessageDialog(this, "Landdata har uppdaterats!");
-            dispose(); // Stänger fönstret efter uppdatering
-        } catch (InfException e) {
-            JOptionPane.showMessageDialog(this, "Fel vid uppdatering: " + e.getMessage());
+                    idb.update(query);
+                    JOptionPane.showMessageDialog(this, "Landdata har uppdaterats!");
+                    dispose(); // Stänger fönstret efter uppdatering
+                } catch (InfException e) {
+                    JOptionPane.showMessageDialog(this, "Fel vid uppdatering: " + e.getMessage());
+                }
+            }
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Landdata har inte uppdaterats!");
         }
     }
     
@@ -89,37 +139,25 @@ public class EditLand extends javax.swing.JFrame {
     private void initComponents() {
 
         lbNamn = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtNamn = new javax.swing.JTextField();
         lbSprak = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtSprak = new javax.swing.JTextField();
         lbValuta = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txtValuta = new javax.swing.JTextField();
         lbTidszon = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txtTidszon = new javax.swing.JTextField();
         lbPolitiskStruktur = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        txtPolitiskstruktur = new javax.swing.JTextField();
         lbEkonomi = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        txtEkonomi = new javax.swing.JTextField();
         btSpara = new javax.swing.JButton();
         btAvbryt = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         lbNamn.setText("Namn");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-
         lbSprak.setText("Språk");
-
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
 
         lbValuta.setText("Valuta");
 
@@ -164,12 +202,12 @@ public class EditLand extends javax.swing.JFrame {
                     .addComponent(lbEkonomi, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTextField1)
-                    .addComponent(jTextField2)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTidszon, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtPolitiskstruktur, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtEkonomi, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtNamn)
+                    .addComponent(txtSprak)
+                    .addComponent(txtValuta, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(172, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -178,27 +216,27 @@ public class EditLand extends javax.swing.JFrame {
                 .addGap(49, 49, 49)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbNamn)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbSprak)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtSprak, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbValuta)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtValuta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbTidszon)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTidszon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbPolitiskStruktur)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPolitiskstruktur, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbEkonomi)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtEkonomi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btSpara)
@@ -209,20 +247,12 @@ public class EditLand extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
-
     private void btAvbrytActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAvbrytActionPerformed
-        // TODO add your handling code here:
+        dispose();
     }//GEN-LAST:event_btAvbrytActionPerformed
 
     private void btSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSparaActionPerformed
-        // TODO add your handling code here:
+        sparaLandData();
     }//GEN-LAST:event_btSparaActionPerformed
 
     /**
@@ -238,17 +268,17 @@ public class EditLand extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btAvbryt;
     private javax.swing.JButton btSpara;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
     private javax.swing.JLabel lbEkonomi;
     private javax.swing.JLabel lbNamn;
     private javax.swing.JLabel lbPolitiskStruktur;
     private javax.swing.JLabel lbSprak;
     private javax.swing.JLabel lbTidszon;
     private javax.swing.JLabel lbValuta;
+    private javax.swing.JTextField txtEkonomi;
+    private javax.swing.JTextField txtNamn;
+    private javax.swing.JTextField txtPolitiskstruktur;
+    private javax.swing.JTextField txtSprak;
+    private javax.swing.JTextField txtTidszon;
+    private javax.swing.JTextField txtValuta;
     // End of variables declaration//GEN-END:variables
 }
