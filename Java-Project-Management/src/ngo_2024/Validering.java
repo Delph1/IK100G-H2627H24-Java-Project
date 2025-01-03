@@ -6,6 +6,7 @@ package ngo_2024;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.JOptionPane;
 
@@ -141,5 +142,12 @@ public class Validering {
         return resultat;
     }
             
-            
+    public static boolean comboBoxInteTom(Object param)
+    {
+        boolean resultat = true;
+        if (param.toString().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Fältet är tomt.\nVar vänlig fyll i fältet.");
+            resultat = false;           
+        }       return resultat;
+    }
 }

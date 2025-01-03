@@ -87,7 +87,7 @@ public class EditHallbarhetsmal extends javax.swing.JFrame {
         txtMalnummer = new javax.swing.JTextField();
         txtBeskrivning = new javax.swing.JTextField();
         cbPrioritet = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        btnSpara = new javax.swing.JButton();
         lblId = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
 
@@ -110,10 +110,10 @@ public class EditHallbarhetsmal extends javax.swing.JFrame {
 
         cbPrioritet.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Låg", "Mellan", "Hög" }));
 
-        jButton1.setText("Spara");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnSpara.setText("Spara");
+        btnSpara.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnSparaActionPerformed(evt);
             }
         });
 
@@ -156,19 +156,20 @@ public class EditHallbarhetsmal extends javax.swing.JFrame {
                         .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
+                        .addComponent(btnSpara)))
                 .addGap(16, 16, 16))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(9, 9, 9)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblNamn)
-                    .addComponent(txtNamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblId)
-                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblNamn)
+                        .addComponent(txtNamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblMalnummer)
@@ -182,70 +183,78 @@ public class EditHallbarhetsmal extends javax.swing.JFrame {
                     .addComponent(cbPrioritet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblPrioritet))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(btnSpara)
                 .addGap(15, 15, 15))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        System.out.println("Namn: " + txtNamn.getText());
-        System.out.println("Beskrivning: " + txtBeskrivning.getText());
+    private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
 
-        String namn = txtNamn.getText();
-        String malnummer = txtMalnummer.getText();
-        String beskrivning = txtBeskrivning.getText();
-        int prio = cbPrioritet.getSelectedIndex();
-        String prioritet;
-        prioritet = switch (prio) {
-            case 0 -> "Låg";
-            case 1 -> "Medel";
-            default -> "Hög";
-        };
-        try
+        if(Validering.faltEjTomtKontroll(txtNamn) &&
+                Validering.faltEjTomtKontroll(txtMalnummer) &&
+                Validering.faltEjTomtKontroll(txtBeskrivning) &&
+                Validering.comboBoxInteTom(cbPrioritet.getSelectedItem()))
         {
-            if(queryAid == null)
+            String namn = txtNamn.getText();
+            String malnummer = txtMalnummer.getText();
+            String beskrivning = txtBeskrivning.getText();
+            int prio = cbPrioritet.getSelectedIndex();
+            String prioritet;
+            prioritet = switch (prio) {
+                case 0 -> "Låg";
+                case 1 -> "Medel";
+                default -> "Hög";
+            };
+            try
             {
-                int hid = Integer.parseInt(idb.getAutoIncrement("hallbarhetsmal", "hid"));
-                String query = "INSERT INTO hallbarhetsmal (hid, namn, malnummer, beskrivning, prioritet)"
-                + " VALUES ("
-                + hid + ", '"
-                + namn + "', '"
-                + malnummer + "', '"
-                + beskrivning + "', '"
-                + prioritet + "')";
-                System.out.println(query);
-                idb.insert(query);
+                if(queryAid == null)
+                {
+                    int hid = Integer.parseInt(idb.getAutoIncrement("hallbarhetsmal", "hid"));
+                    String query = "INSERT INTO hallbarhetsmal (hid, namn, malnummer, beskrivning, prioritet)"
+                    + " VALUES ("
+                    + hid + ", '"
+                    + namn + "', '"
+                    + malnummer + "', '"
+                    + beskrivning + "', '"
+                    + prioritet + "')";
+                    System.out.println(query);
+                    idb.insert(query);
+
+                }
+                else
+                {
+                    String query = "UPDATE hallbarhetsmal "
+                    + "SET namn = '" + namn + "', "
+                    + "malnummer = '" + malnummer + "', "
+                    + "beskrivning = '" + beskrivning + "', "
+                    + "prioritet = '" + prioritet 
+                    + "' WHERE hid = " + queryAid;
+                    System.out.println(query);
+                    idb.update(query);
+
+                }
+
+                JOptionPane.showMessageDialog(null, "Hållbarhetsmålet har sparats.");
+                this.setVisible(false);
 
             }
-            else
+            catch(InfException e)
             {
-                String query = "UPDATE hallbarhetsmal "
-                + "SET namn = '" + namn + "', "
-                + "malnummer = '" + malnummer + "', "
-                + "beskrivning = '" + beskrivning + "', "
-                + "prioritet = '" + prioritet 
-                + "' WHERE hid = " + queryAid;
-                System.out.println(query);
-                idb.update(query);
-
+                System.out.println("Ett fel inträffade: " + e.getMessage());
             }
-
-            JOptionPane.showMessageDialog(null, "Hållbarhetsmålet har sparats.");
-            this.setVisible(false);
-
         }
-        catch(InfException e)
+        else
         {
-            System.out.println("Ett fel inträffade: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Hållbarhetsmålet har inte sparats.");
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnSparaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSpara;
     private javax.swing.JComboBox<String> cbPrioritet;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel lblBeskrivning;
     private javax.swing.JLabel lblId;
     private javax.swing.JLabel lblMalnummer;
