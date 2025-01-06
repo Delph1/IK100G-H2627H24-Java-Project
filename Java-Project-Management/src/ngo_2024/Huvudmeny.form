@@ -52,7 +52,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="mvprojMinaProjekt">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Mina projekt"/>
+                <Property name="text" type="java.lang.String" value="Mitt deltagande"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mvprojMinaProjektActionPerformed"/>
@@ -60,7 +60,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mvprojAllaProjekt">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Alla projekt"/>
+                <Property name="text" type="java.lang.String" value="Avdelningens projekt"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mvprojAllaProjektActionPerformed"/>
@@ -120,11 +120,6 @@
             <MenuItem class="javax.swing.JMenuItem" name="mvproledAndraPartnersForProjekt">
               <Properties>
                 <Property name="text" type="java.lang.String" value="&#xc4;ndra partners f&#xf6;r projekt"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mvproledAndrahandlaggare">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="&#xc4;ndra handl&#xe4;ggare"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mvproledStatistik">
