@@ -17,17 +17,17 @@ import oru.inf.InfException;
 public class Statistik extends javax.swing.JFrame {
     
     private InfDB idb;
-    private int aid;
+    private String aid;
     private Projekt nyttProjekt;
     /**
      * Creates new form Statistik
      */
     public Statistik(InfDB idb, String aid) {
         this.idb = idb;
-        this.aid = Integer.parseInt(aid);
+        this.aid = aid;
         initComponents();
         setLocationRelativeTo(null);
-        nyttProjekt = new Projekt(idb);
+        nyttProjekt = new Projekt(idb); //Skapar nytt projekt-objekt för att kalla metoder
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE );
         setMinaKostnader();
         setAvdelningsKostnader();
@@ -149,6 +149,10 @@ public class Statistik extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
+    /**
+     * Räknar ut kostnaden för inloggad användare, och delar upp på pågående och
+     * avslutade projekt
+     */
     private void setMinaKostnader() {
         try {
             double minKostnad = 0;
@@ -173,6 +177,9 @@ public class Statistik extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Räknar ut kostnader för avdelningen som inloggad person jobbar vid
+     */
     private void setAvdelningsKostnader(){
         double avdSumma = 0;
         String sqlAvdKost = "select kostnad from projekt where pid in (select pid from ans_proj where aid in (select aid from anstalld where avdelning = (select avdelning from anstalld where aid = "+aid+")));";
@@ -189,6 +196,9 @@ public class Statistik extends javax.swing.JFrame {
         txtTotalKostnadAvd.setText(""+avdSumma);
     }
     
+    /**
+     * Räknar ut kostnaden för alla projekt i systemet
+     */
     private void setTotalaKostnader(){
         double totSumma = 0;
         String sqlTotKost = "select kostnad from projekt;";
@@ -203,40 +213,6 @@ public class Statistik extends javax.swing.JFrame {
             totSumma += Double.parseDouble(enKostnad);
         }
         txtTotalKostnadAlla.setText(""+totSumma);
-    }
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Statistik.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Statistik.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Statistik.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Statistik.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                //new Statistik().setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
