@@ -19,6 +19,7 @@ public class PartnerMeny extends javax.swing.JFrame {
 
     private InfDB idb;
     private StadMeny stad;
+    private String aid;
     /**
      * Creates new form PartnerMeny
      */
@@ -28,6 +29,78 @@ public class PartnerMeny extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         getPartners();
+    }
+    
+    public PartnerMeny(InfDB idb, String aid) {
+        this.idb = idb;
+        this.stad = new StadMeny(idb);
+        this.aid = aid;
+        initComponents();
+        setLocationRelativeTo(null);
+        getPartnersVidMinaProjekt();
+        btnÄndra.setVisible(false);
+        btnTaBort.setVisible(false);
+        btnUppdatera.setVisible(false);
+        btnNyPartner.setVisible(false);
+    }
+
+    private void getPartnersVidMinaProjekt()
+    {
+        try
+        {
+            String query = "SELECT * FROM partner WHERE pid IN (SELECT partner_pid FROM projekt_partner WHERE pid IN (SELECT pid FROM ans_proj WHERE aid = '" + aid + "'))";
+            ArrayList<HashMap<String, String>> resultat = idb.fetchRows(query);
+            
+            if (resultat != null)
+            {
+                DefaultTableModel tableModel = new DefaultTableModel();
+                tableModel.setRowCount(0);
+                
+                tableModel.addColumn("ID");
+                tableModel.addColumn("Namn");
+                tableModel.addColumn("Kontaktperson");
+                tableModel.addColumn("Kontakt epost");
+                tableModel.addColumn("Telefon");
+                tableModel.addColumn("Adress");
+                tableModel.addColumn("Branch");
+                tableModel.addColumn("Stad Id");
+                tableModel.addColumn("Stad");
+
+
+                for (HashMap<String, String> rad : resultat)
+                {
+                    tableModel.addRow(new Object[]{
+                    rad.get("pid"),
+                    rad.get("namn"),
+                    rad.get("kontaktperson"),
+                    rad.get("kontaktepost"),
+                    rad.get("telefon"),
+                    rad.get("adress"),
+                    rad.get("branch"),
+                    rad.get("stad")
+                    }
+                    );
+                    
+                for (int i = 0; i < tableModel.getRowCount() ; i++)
+                {
+                    String stadId = tableModel.getValueAt(i, 7).toString();
+                    Object stadNamn = stad.getNamn(Integer.parseInt(stadId));
+                    tableModel.setValueAt(stadNamn, i, 8);
+                }
+            }
+            jTable1.setModel(tableModel);
+            jTable1.getColumnModel().getColumn(7).setMinWidth(0);
+            jTable1.getColumnModel().getColumn(7).setMaxWidth(0);
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(this, "Inga partners hittades.");
+            }
+        }
+        catch(InfException e)
+        {
+            JOptionPane.showMessageDialog(null, "Fel vid hämtning av partners: " + e.getMessage());
+        }
     }
     
     private void getPartners()
@@ -269,7 +342,11 @@ public class PartnerMeny extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNyPartnerActionPerformed
 
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
-        getPartners();
+        //Uppdaterar fönstret om det får fokus och aid inte är satt. Om aid är satt ska det bara visa partners som är relevanta för den användaren och behöver således inte uppdateras automatiskt.
+        if(this.aid.isEmpty())
+        {
+            getPartners();
+        }
     }//GEN-LAST:event_formWindowGainedFocus
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

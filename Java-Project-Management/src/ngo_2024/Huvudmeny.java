@@ -157,6 +157,11 @@ public class Huvudmeny extends javax.swing.JFrame {
         menyProjekt.add(mvprojAllaProjekt);
 
         mvprojProjektPartners.setText("Projektpartners");
+        mvprojProjektPartners.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mvprojProjektPartnersActionPerformed(evt);
+            }
+        });
         menyProjekt.add(mvprojProjektPartners);
 
         mvprojHallarbhetsmal.setText("Hållbarhetsmål");
@@ -364,6 +369,10 @@ public class Huvudmeny extends javax.swing.JFrame {
     private void mvprojHallarbhetsmalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvprojHallarbhetsmalActionPerformed
         new HallbarhetsmalMeny(idb, true).setVisible(true);
     }//GEN-LAST:event_mvprojHallarbhetsmalActionPerformed
+
+    private void mvprojProjektPartnersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvprojProjektPartnersActionPerformed
+        new PartnerMeny(idb, queryAid).setVisible(true);
+    }//GEN-LAST:event_mvprojProjektPartnersActionPerformed
 
 
 
