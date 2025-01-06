@@ -13,11 +13,10 @@ import oru.inf.InfException;
 public class Huvudmeny extends javax.swing.JFrame {
     
     private InfDB idb;
-    private String aid;
     private String admins;
     private String projl;
     private String anvandare;
-    public String queryAid;
+    private String queryAid;
 
     /**
      * Creates new form Huvudmeny
