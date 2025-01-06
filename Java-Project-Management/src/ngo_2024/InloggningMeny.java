@@ -5,6 +5,7 @@
 package ngo_2024;
 
 import java.awt.event.KeyEvent;
+import javax.swing.JOptionPane;
 import oru.inf.InfDB;
 import oru.inf.InfException;
 
@@ -15,12 +16,14 @@ import oru.inf.InfException;
 public class InloggningMeny extends javax.swing.JFrame {
 
     private InfDB idb;
+    private AnstalldMeny anstalld;
     
     /**
      * Creates new form Inloggning
      */
     public InloggningMeny( InfDB idb) {
         this.idb = idb;
+        this.anstalld = new AnstalldMeny(idb);
         initComponents();
         lblMeddelande.setVisible(false);
         String nivå;
@@ -46,6 +49,7 @@ public class InloggningMeny extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         txtLösenord = new javax.swing.JPasswordField();
+        btnÅterställLösenord = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Inloggning");
@@ -94,6 +98,13 @@ public class InloggningMeny extends javax.swing.JFrame {
             }
         });
 
+        btnÅterställLösenord.setText("Glömt Lösenord?");
+        btnÅterställLösenord.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnÅterställLösenordActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -104,27 +115,27 @@ public class InloggningMeny extends javax.swing.JFrame {
                         .addGap(60, 60, 60)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblMeddelande)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblAnvändarnamn)
-                                    .addComponent(lblLösenord))
-                                .addGap(18, 18, 18)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblAnvändarnamn)
+                                        .addComponent(lblLösenord))
+                                    .addGap(18, 18, 18)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(txtAnvändarnamn, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
+                                        .addComponent(txtLösenord)))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtAnvändarnamn, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
-                                    .addComponent(txtLösenord)))))
+                                    .addComponent(btnÅterställLösenord, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
+                                    .addComponent(btnLoggaIn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
+                        .addContainerGap()
                         .addComponent(jButton1)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(68, 68, 68)
-                                .addComponent(btnLoggaIn))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(26, 26, 26)
-                                .addComponent(jButton2)
-                                .addGap(33, 33, 33)
-                                .addComponent(jButton3)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jButton3)))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -137,16 +148,19 @@ public class InloggningMeny extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblLösenord)
                     .addComponent(txtLösenord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblMeddelande)
-                .addGap(24, 24, 24)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnLoggaIn)
-                .addGap(32, 32, 32)
+                .addGap(5, 5, 5)
+                .addComponent(btnÅterställLösenord)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
-                .addContainerGap(17, Short.MAX_VALUE))
+                    .addComponent(jButton2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton3)
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         pack();
@@ -234,9 +248,21 @@ public class InloggningMeny extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtLösenordKeyPressed
 
+    private void btnÅterställLösenordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnÅterställLösenordActionPerformed
+        String dialog = "Ange din e-postadress i rutan nedan,";
+        JOptionPane.showInputDialog(this, dialog);
+        boolean finns = anstalld.finnsEpost(dialog);
+        if (finns)
+        {
+            //Funktion för att slumpa fram ett nytt lösenord.
+            JOptionPane.showMessageDialog(this, "Ditt lösenord har återställts");
+        }
+    }//GEN-LAST:event_btnÅterställLösenordActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLoggaIn;
+    private javax.swing.JButton btnÅterställLösenord;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
