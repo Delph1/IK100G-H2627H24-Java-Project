@@ -171,7 +171,7 @@ public class InloggningMeny extends javax.swing.JFrame {
                     String admins = idb.fetchSingle(sqlFrågaAdmin);
                     
                     
-                   String sqlFrågaHand = "Select projektchef FROM projekt WHERE pid = '" + queryAid + "'";
+                   String sqlFrågaHand = "Select projektchef FROM projekt WHERE projektchef = '" + queryAid + "'";
                     String projl = idb.fetchSingle(sqlFrågaHand);
 
                     new Huvudmeny(idb, queryAid, admins, projl).setVisible(true);
@@ -206,8 +206,8 @@ public class InloggningMeny extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        txtAnvändarnamn.setText("ahmed.khan@example.com");
-        txtLösenord.setText("password789");
+        txtAnvändarnamn.setText("chen.wei@example.com");
+        txtLösenord.setText("passwordabc");
         
         String användarnamn = txtAnvändarnamn.getText();
         String lösenord = new String(txtLösenord.getPassword());
