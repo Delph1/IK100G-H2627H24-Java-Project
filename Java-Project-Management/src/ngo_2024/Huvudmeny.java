@@ -13,11 +13,10 @@ import oru.inf.InfException;
 public class Huvudmeny extends javax.swing.JFrame {
     
     private InfDB idb;
-    private String aid;
     private String admins;
     private String projl;
     private String anvandare;
-    public String queryAid;
+    private String queryAid;
 
     /**
      * Creates new form Huvudmeny
@@ -65,7 +64,6 @@ public class Huvudmeny extends javax.swing.JFrame {
         menyProjektledning = new javax.swing.JMenu();
         mvproledMinaProjekt = new javax.swing.JMenuItem();
         mvproledAndraPartnersForProjekt = new javax.swing.JMenuItem();
-        mvproledAndrahandlaggare = new javax.swing.JMenuItem();
         mvproledStatistik = new javax.swing.JMenuItem();
         menyAdministration = new javax.swing.JMenu();
         mvadnPersonal = new javax.swing.JMenuItem();
@@ -141,7 +139,7 @@ public class Huvudmeny extends javax.swing.JFrame {
 
         menyProjekt.setText("Projekt");
 
-        mvprojMinaProjekt.setText("Mina projekt");
+        mvprojMinaProjekt.setText("Mitt deltagande");
         mvprojMinaProjekt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mvprojMinaProjektActionPerformed(evt);
@@ -149,7 +147,7 @@ public class Huvudmeny extends javax.swing.JFrame {
         });
         menyProjekt.add(mvprojMinaProjekt);
 
-        mvprojAllaProjekt.setText("Alla projekt");
+        mvprojAllaProjekt.setText("Avdelningens projekt");
         mvprojAllaProjekt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mvprojAllaProjektActionPerformed(evt);
@@ -158,9 +156,19 @@ public class Huvudmeny extends javax.swing.JFrame {
         menyProjekt.add(mvprojAllaProjekt);
 
         mvprojProjektPartners.setText("Projektpartners");
+        mvprojProjektPartners.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mvprojProjektPartnersActionPerformed(evt);
+            }
+        });
         menyProjekt.add(mvprojProjektPartners);
 
         mvprojHallarbhetsmal.setText("Hållbarhetsmål");
+        mvprojHallarbhetsmal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mvprojHallarbhetsmalActionPerformed(evt);
+            }
+        });
         menyProjekt.add(mvprojHallarbhetsmal);
 
         jMenuBar1.add(menyProjekt);
@@ -192,9 +200,6 @@ public class Huvudmeny extends javax.swing.JFrame {
 
         mvproledAndraPartnersForProjekt.setText("Ändra partners för projekt");
         menyProjektledning.add(mvproledAndraPartnersForProjekt);
-
-        mvproledAndrahandlaggare.setText("Ändra handläggare");
-        menyProjektledning.add(mvproledAndrahandlaggare);
 
         mvproledStatistik.setText("Statistik");
         mvproledStatistik.addActionListener(new java.awt.event.ActionListener() {
@@ -324,21 +329,15 @@ public class Huvudmeny extends javax.swing.JFrame {
     }//GEN-LAST:event_mvprojMinaProjektActionPerformed
 
     private void mvproledMinaProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvproledMinaProjektActionPerformed
-        if (projl != null) {
-            new ProjektMeny(idb, queryAid, true).setVisible(true);
-        }
-        else {
-            new ProjektMeny(idb, queryAid).setVisible(true);
-        }
-        //Tror den kollar om chef? Oklar hur variablerna fungerar.
+        new ProjektMeny(idb, queryAid, true).setVisible(true);
     }//GEN-LAST:event_mvproledMinaProjektActionPerformed
 
     private void mvprojAllaProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvprojAllaProjektActionPerformed
-        new ProjektMeny(idb).setVisible(true);
+        new ProjektMeny(idb, true, queryAid).setVisible(true);
     }//GEN-LAST:event_mvprojAllaProjektActionPerformed
 
     private void mvadnHallbarhetsmalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvadnHallbarhetsmalActionPerformed
-        new HallbarhetsmalMeny(idb).setVisible(true);
+        new HallbarhetsmalMeny(idb, false).setVisible(true);
     }//GEN-LAST:event_mvadnHallbarhetsmalActionPerformed
 
     private void mvadnLandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvadnLandActionPerformed
@@ -356,6 +355,14 @@ public class Huvudmeny extends javax.swing.JFrame {
     private void mvproledStatistikActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvproledStatistikActionPerformed
         new Statistik(idb, queryAid).setVisible(true);
     }//GEN-LAST:event_mvproledStatistikActionPerformed
+
+    private void mvprojHallarbhetsmalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvprojHallarbhetsmalActionPerformed
+        new HallbarhetsmalMeny(idb, true).setVisible(true);
+    }//GEN-LAST:event_mvprojHallarbhetsmalActionPerformed
+
+    private void mvprojProjektPartnersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvprojProjektPartnersActionPerformed
+        new PartnerMeny(idb, queryAid).setVisible(true);
+    }//GEN-LAST:event_mvprojProjektPartnersActionPerformed
 
 
 
@@ -390,7 +397,6 @@ public class Huvudmeny extends javax.swing.JFrame {
     private javax.swing.JMenuItem mvprojMinaProjekt;
     private javax.swing.JMenuItem mvprojProjektPartners;
     private javax.swing.JMenuItem mvproledAndraPartnersForProjekt;
-    private javax.swing.JMenuItem mvproledAndrahandlaggare;
     private javax.swing.JMenuItem mvproledMinaProjekt;
     private javax.swing.JMenuItem mvproledStatistik;
     // End of variables declaration//GEN-END:variables
