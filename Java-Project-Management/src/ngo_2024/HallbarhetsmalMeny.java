@@ -18,16 +18,25 @@ import oru.inf.InfException;
 public class HallbarhetsmalMeny extends javax.swing.JFrame {
 
     private InfDB idb;
-    
+    private boolean endastVisa;
     /**
      * Creates new form HallbarhetsmalMeny
      */
-    public HallbarhetsmalMeny(InfDB idb) {
+    public HallbarhetsmalMeny(InfDB idb, boolean endastVisa) {
         this.idb = idb;
+        this.endastVisa = endastVisa;
         initComponents();
         setLocationRelativeTo(null);
         getHallbarhetsmal();
-    }
+        
+        if(this.endastVisa)
+        {
+            btnÄndra.setVisible(false);
+            btnNyttMal.setVisible(false);
+            btnUppdatera.setVisible(false);
+            btnTaBort.setVisible(false);
+        }
+    }    
 
     private void getHallbarhetsmal()
     {
@@ -213,18 +222,20 @@ public class HallbarhetsmalMeny extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 25, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnUppdatera)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnÄndra)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnTaBort)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnNyttMal)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnUppdatera)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnÄndra)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnTaBort)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnNyttMal)))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -235,8 +246,8 @@ public class HallbarhetsmalMeny extends javax.swing.JFrame {
                     .addComponent(btnÄndra)
                     .addComponent(btnTaBort)
                     .addComponent(btnNyttMal))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
