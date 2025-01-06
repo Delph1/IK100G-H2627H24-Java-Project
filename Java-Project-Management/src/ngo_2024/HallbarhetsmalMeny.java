@@ -12,15 +12,15 @@ import oru.inf.InfDB;
 import oru.inf.InfException;
 
 /**
- *
- * @author andre
+ * Klass för HallbarhetsmalMeny
+ * @author Andreas Galistel
  */
 public class HallbarhetsmalMeny extends javax.swing.JFrame {
 
     private InfDB idb;
     private boolean endastVisa;
     /**
-     * Creates new form HallbarhetsmalMeny
+     * Konstruktor för HallbarhetsmalMeny
      */
     public HallbarhetsmalMeny(InfDB idb, boolean endastVisa) {
         this.idb = idb;
@@ -29,6 +29,7 @@ public class HallbarhetsmalMeny extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         getHallbarhetsmal();
         
+        //Parametern endastVisa används för att dölja knapparna om den sätts till true. Eftersom åtkomst till denna meny styrs av vilken meny de kan se.
         if(this.endastVisa)
         {
             btnÄndra.setVisible(false);
@@ -38,6 +39,9 @@ public class HallbarhetsmalMeny extends javax.swing.JFrame {
         }
     }    
 
+    /**
+     * Hämtar ut alla Hållbarhetsmål och populerar tabellen som visas. 
+     */
     private void getHallbarhetsmal()
     {
         try {
@@ -79,6 +83,9 @@ public class HallbarhetsmalMeny extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Raderar valt mål.
+     */
     private void raderaHallbarhetsmal()
     {
         int selectedRow = jTable1.getSelectedRow();
@@ -127,8 +134,11 @@ public class HallbarhetsmalMeny extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Ingen rad är markerad!");
         }
     }
-    
-        private void editHallbarhetsmal()
+
+    /**
+     * Metod för att redigera valt hållbarhetsmål.
+     */
+    private void editHallbarhetsmal()
     {
         int selectedRow = jTable1.getSelectedRow();
         if (selectedRow != -1)
@@ -254,6 +264,10 @@ public class HallbarhetsmalMeny extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Knappar följer nedan.
+     */
+    
     private void btnUppdateraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUppdateraActionPerformed
         getHallbarhetsmal();
     }//GEN-LAST:event_btnUppdateraActionPerformed
@@ -270,6 +284,7 @@ public class HallbarhetsmalMeny extends javax.swing.JFrame {
         new EditHallbarhetsmal(idb, null).setVisible(true);
     }//GEN-LAST:event_btnNyttMalActionPerformed
 
+    //Funktion som uppdaterar fönstret om det får fokus igen. Användbart framförallt för när man redigerat eller skapat ett nytt mål. 
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
         getHallbarhetsmal();
     }//GEN-LAST:event_formWindowGainedFocus
