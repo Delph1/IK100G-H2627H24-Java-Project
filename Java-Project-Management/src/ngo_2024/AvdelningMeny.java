@@ -13,15 +13,19 @@ import oru.inf.InfException;
 
 /**
  *
- * @author andre
+ * Klass för att hantera Avdelning
+ * 
+ * @author Andreas Galistel
  */
 public class AvdelningMeny extends javax.swing.JFrame {
 
     private InfDB idb;
     private StadMeny stad; 
     private Anstalld anstalld;
+    
     /**
-     * Creates new form AvdelningMeny
+     * Konstruktor för AvdelningMeny
+     * @param idb
      */
     public AvdelningMeny(InfDB idb) {
         this.idb = idb;
@@ -153,6 +157,10 @@ public class AvdelningMeny extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Knappar följer nedan.
+     */
+    
     private void btnUppdateraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUppdateraActionPerformed
         getAvdelningar();
     }//GEN-LAST:event_btnUppdateraActionPerformed
@@ -169,12 +177,17 @@ public class AvdelningMeny extends javax.swing.JFrame {
         new EditAvdelning(idb, null).setVisible(true);
     }//GEN-LAST:event_btnNyAvdelningActionPerformed
 
-
+    /**
+     * Funktionalitet för att när fönstret får fokus uppdateras det. Bra när man kommer från EditAvdelning och gjort ändringar som ska visas automagiskt.
+     */
+    
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
         getAvdelningar();
     }//GEN-LAST:event_formWindowGainedFocus
 
-
+    /**
+     * Metod som hämtar ut alla avdelningar och matar in dem i tabellen i fönstret. 
+     */
     private void getAvdelningar()
     {
         try {
@@ -238,6 +251,9 @@ public class AvdelningMeny extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Metod för att radera en vald avdelning. Utgår från den rad som är markerad i tabellen. 
+     */
     private void raderaAvdelning()
     {
         int selectedRow = jTable1.getSelectedRow();
@@ -279,6 +295,7 @@ public class AvdelningMeny extends javax.swing.JFrame {
             {
                 System.out.println(e.getMessage());
             }
+        //Uppdaterar tabellen efter att raden blivit raderad.
         getAvdelningar();
         }
         else 
@@ -286,7 +303,10 @@ public class AvdelningMeny extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Ingen rad är markerad!");
         }
     }
-    
+
+    /**
+     * Metod för att redigera en avdelning. Utgår från den rad i tabellen som är markerad.
+     */
     private void editAvdelning()
     {
         int selectedRow = jTable1.getSelectedRow();
