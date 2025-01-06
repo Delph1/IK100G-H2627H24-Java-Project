@@ -19,7 +19,6 @@ import oru.inf.InfException;
 public class ProjektMeny extends javax.swing.JFrame {
     
     private InfDB idb;
-    private Projekt nyttProjekt;
     private String aid;
     private boolean projCh;
     private boolean admin;
@@ -30,10 +29,10 @@ public class ProjektMeny extends javax.swing.JFrame {
     public ProjektMeny(InfDB idb) {
         this.idb = idb;
         initComponents();
-        nyttProjekt = new Projekt(idb);
         fyllCmbAvdelningar();
         fyllCmbStatus();
         hamtaProjekt();
+        admin = true;
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE );
     }
@@ -47,12 +46,11 @@ public class ProjektMeny extends javax.swing.JFrame {
         this.idb = idb;
         this.aid = aid;
         initComponents();
-        nyttProjekt = new Projekt(idb);
         fyllCmbAvdelningar();
         fyllCmbStatus();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE );
-        hamtaProjekt(Integer.parseInt(aid));
+        hamtaProjekt(aid);
     }
     
     /**
@@ -66,14 +64,16 @@ public class ProjektMeny extends javax.swing.JFrame {
         this.aid = aid;
         this.projCh = projCh;
         initComponents();
-        nyttProjekt = new Projekt(idb);
         fyllCmbAvdelningar();
         fyllCmbStatus();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE );
         hamtaProjektSomProjektChef(aid);
+        this.setTitle("Projektledare");
         btnTaBortProjekt.setVisible(false);     //Tolkar det som att ProjektChef inte ska kunna ta bort projekt
-        btnAllaProjekt.setVisible(false);   //Behöver inte kunna se dessa 
+        btnAllaProjekt.setVisible(false);   //Behöver inte kunna se dessa
+        btnMinaProjekt.setVisible(false); //Behöver inte se projekt de deltar på i denna vy
+        btnAvdProj.setVisible(false);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -100,6 +100,7 @@ public class ProjektMeny extends javax.swing.JFrame {
         lblAvdelning = new javax.swing.JLabel();
         lblStatus = new javax.swing.JLabel();
         btnMinaProjekt = new javax.swing.JButton();
+        btnAvdProj = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Projekt");
@@ -175,7 +176,7 @@ public class ProjektMeny extends javax.swing.JFrame {
             }
         });
 
-        lblAvdelning.setText("på avdelning");
+        lblAvdelning.setText("Filtrera på avdelning");
 
         lblStatus.setText("på status");
 
@@ -186,6 +187,13 @@ public class ProjektMeny extends javax.swing.JFrame {
             }
         });
 
+        btnAvdProj.setText("Visa projekt avd");
+        btnAvdProj.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAvdProjActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -193,11 +201,11 @@ public class ProjektMeny extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 802, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnLäggTillProjekt)
-                        .addGap(18, 18, 18)
                         .addComponent(btnÄndraProjekt)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnLäggTillProjekt)
                         .addGap(18, 18, 18)
                         .addComponent(btnTaBortProjekt)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -211,10 +219,12 @@ public class ProjektMeny extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnDatumSök))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnAllaProjekt)
-                        .addGap(18, 18, 18)
                         .addComponent(btnMinaProjekt)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAllaProjekt)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAvdProj)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
                         .addComponent(lblAvdelning)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cmbAvdelningsVal, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -244,7 +254,8 @@ public class ProjektMeny extends javax.swing.JFrame {
                     .addComponent(btnAllaProjekt)
                     .addComponent(lblAvdelning)
                     .addComponent(lblStatus)
-                    .addComponent(btnMinaProjekt))
+                    .addComponent(btnMinaProjekt)
+                    .addComponent(btnAvdProj))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -254,7 +265,12 @@ public class ProjektMeny extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnÄndraProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnÄndraProjektActionPerformed
-        editProjekt();
+        if (admin) {
+            editProjekt(admin);
+        }
+        else {
+            editProjekt();
+        }
     }//GEN-LAST:event_btnÄndraProjektActionPerformed
 
     private void btnLäggTillProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLäggTillProjektActionPerformed
@@ -266,10 +282,16 @@ public class ProjektMeny extends javax.swing.JFrame {
         if (selectedRow != -1) {
             int input = JOptionPane.showConfirmDialog(rootPane, "Är du säker på att du vill ta bort projektet?", "Ta bort projekt", JOptionPane.YES_NO_OPTION);
             if (input == 0) {
-                Object projekt = tblProjekt.getValueAt(selectedRow, 0); // Hämta värde från kolumn 0
-                int queryPid = Integer.parseInt(projekt.toString()); // Konvertera till String
-//                nyttProjekt.taBortProjekt(queryPid);    //metod för att faktiskt ta bort projekt från databasen
-                System.out.println("Projektet har tagits bort"); //Ta bort vid lansering
+                Object projekt = tblProjekt.getValueAt(selectedRow, 0); // Hämta pid-värde från kolumn 0
+                int queryPid = Integer.parseInt(projekt.toString()); // Konvertera till int
+                try {
+                    String sqlFråga = "delete from projekt where pid = " + queryPid;
+                    idb.delete(sqlFråga);
+                    JOptionPane.showMessageDialog(null, "Projekt har tagits bort.");
+                } catch (InfException e) {
+                    System.out.println("Databasen har inte uppdaterats. \n" + e.getMessage());
+                    JOptionPane.showMessageDialog(null, "Projekt har inte tagits bort.");
+                }
                 JOptionPane.showMessageDialog(null, "Projektet har tagits bort!");
             }
         } else {
@@ -371,7 +393,7 @@ public class ProjektMeny extends javax.swing.JFrame {
 
     private void btnMinaProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMinaProjektActionPerformed
         if (aid != null) {
-            hamtaProjekt(Integer.parseInt(aid));
+            hamtaProjekt(aid);
         }
         else {
             ingaProjekt();
@@ -379,6 +401,10 @@ public class ProjektMeny extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_btnMinaProjektActionPerformed
+
+    private void btnAvdProjActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvdProjActionPerformed
+        hamtaProjektAvdelning(aid);
+    }//GEN-LAST:event_btnAvdProjActionPerformed
 
     private void fyllCmbAvdelningar()
     {
@@ -445,19 +471,22 @@ public class ProjektMeny extends javax.swing.JFrame {
         }
     }
     private void hamtaProjekt() {
+        ArrayList<HashMap<String, String>> allaProjekt = new ArrayList<>();
         try {
-            ArrayList<HashMap<String, String>> resultat = nyttProjekt.getAllaProjekt();
-            formateraTabell(resultat);
+            String sqlfråga = "SELECT * FROM projekt";
+            allaProjekt = idb.fetchRows(sqlfråga);
+            formateraTabell(allaProjekt);
+        } catch (InfException e) {
+            System.out.println("Kunde inte hämta projekt.\n" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt.");
         }
-        catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
-    } 
+
+    }
     /**
      * Hämtar alla projekt för en viss anställd, tar bort alla funktioner att söka, lägga till, ta bort och redigera projekt
      * @param aid 
      */
-    private void hamtaProjekt(int aid) {
+    private void hamtaProjekt(String aid) {
         btnLäggTillProjekt.setVisible(false);
         btnÄndraProjekt.setVisible(false);
         btnTaBortProjekt.setVisible(false);
@@ -466,23 +495,43 @@ public class ProjektMeny extends javax.swing.JFrame {
         lblBindeStreck.setVisible(false);
         txtSlutdatumSök.setVisible(false);
         btnDatumSök.setVisible(false);
-        cmbAvdelningsVal.setVisible(false);
-        cmbStatus.setVisible(false);
-        lblAvdelning.setVisible(false);
-        lblStatus.setVisible(false);
+
+        ArrayList<HashMap<String, String>> allaProjekt = new ArrayList<>();
         try {
-            ArrayList<HashMap<String, String>> resultat = nyttProjekt.getAllaProjektFranAid(aid);
-            if (resultat.isEmpty()) {
-                ingaProjekt();
-                JOptionPane.showMessageDialog(null, "Du har inga projekt");
-            }
-            else {
-                this.setTitle("Mina projekt");
-                formateraTabell(resultat);
-            }
+            String sqlfråga = "SELECT * FROM projekt where pid in (select pid from ans_proj where aid =" + aid + ");";
+            allaProjekt = idb.fetchRows(sqlfråga);
+        } catch (InfException e) {
+            System.out.println("Kunde inte hämta projekt.\n" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt.");
         }
-        catch (Exception ex) {
-            System.out.println(ex.getMessage());
+        if (allaProjekt.isEmpty()) {
+            ingaProjekt();
+            JOptionPane.showMessageDialog(null, "Du har inga projekt");
+        } else {
+            this.setTitle("Mina projekt");
+            formateraTabell(allaProjekt);
+        }
+
+    }
+    
+    private void hamtaProjektAvdelning(String aid) {
+        String valdAvdelning = "Välj avdelning";
+        try {
+            String query = "Select namn from avdelning where avdid = (select avdelning from anstalld where aid = " + aid + ");";
+            valdAvdelning = idb.fetchSingle(query);
+        } catch (InfException e) {
+            System.out.println(e.getMessage());
+        }
+        cmbAvdelningsVal.setSelectedItem(valdAvdelning);
+        ArrayList<HashMap<String, String>> soktaProjekt;
+        try {
+            String fraga = "Select * from projekt where pid in (select pid from ans_proj where aid in (select aid from anstalld where avdelning in (select avdid from avdelning where avdelning.namn = '" + valdAvdelning + "')))";
+            soktaProjekt = idb.fetchRows(fraga);
+            formateraTabell(soktaProjekt);
+
+        } catch (InfException e) {
+            System.out.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, "Databasfel");
         }
     }
     
@@ -498,29 +547,45 @@ public class ProjektMeny extends javax.swing.JFrame {
         cmbStatus.setVisible(false);
         lblAvdelning.setVisible(false);
         lblStatus.setVisible(false);
-        int PCAid = Integer.parseInt(aid);
+        String PCAid = aid;
+
+        ArrayList<HashMap<String, String>> allaProjekt = new ArrayList<>();
         try {
-            ArrayList<HashMap<String, String>> resultat = nyttProjekt.getAllaProjektSomProjektChef(PCAid);
-            if (resultat.isEmpty()) {
-                ingaProjekt();
-                JOptionPane.showMessageDialog(null, "Du är inte projektchef för några projekt");
-            }
-            else {
-                this.setTitle("Mina projekt");
-                formateraTabell(resultat);
-            } 
+            String sqlfråga = "SELECT * FROM projekt where projektchef =" + PCAid;
+            allaProjekt = idb.fetchRows(sqlfråga);
+        } catch (InfException e) {
+            System.out.println("Kunde inte hämta projekt.\n" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt.");
         }
-        catch (Exception ex) {
-            System.out.println(ex.getMessage());
+        if (allaProjekt.isEmpty()) {
+            ingaProjekt();
+            JOptionPane.showMessageDialog(null, "Du är inte projektchef för några projekt");
+        } else {
+            this.setTitle("Mina projekt");
+            formateraTabell(allaProjekt);
         }
+
     }
-            
+
     private void editProjekt() {
         int selectedRow = tblProjekt.getSelectedRow();
         if (selectedRow != -1) {
             Object projekt = tblProjekt.getValueAt(selectedRow, 0); // Hämta värde från kolumn 0
             int queryPid = Integer.parseInt(projekt.toString()); // Konvertera till String
             new EditProjekt(idb, queryPid).setVisible(true); //öppnar nytt fönster, skickar med den projektets PID från databasen
+
+            // JOptionPane.showMessageDialog(this, "Valt ID: " + projekt);
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingen rad är markerad!");
+        }
+    }
+
+    private void editProjekt(boolean admin) {
+        int selectedRow = tblProjekt.getSelectedRow();
+        if (selectedRow != -1) {
+            Object projekt = tblProjekt.getValueAt(selectedRow, 0); // Hämta värde från kolumn 0
+            int queryPid = Integer.parseInt(projekt.toString()); // Konvertera till String
+            new EditProjekt(idb, queryPid, admin).setVisible(true); //öppnar nytt fönster, skickar med den projektets PID från databasen
 
             // JOptionPane.showMessageDialog(this, "Valt ID: " + projekt);
         } else {
@@ -549,6 +614,7 @@ public class ProjektMeny extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAllaProjekt;
+    private javax.swing.JButton btnAvdProj;
     private javax.swing.JButton btnDatumSök;
     private javax.swing.JButton btnLäggTillProjekt;
     private javax.swing.JButton btnMinaProjekt;
