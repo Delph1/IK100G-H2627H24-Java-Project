@@ -27,13 +27,13 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="51" pref="51" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="jSeparator1" max="32767" attributes="0"/>
+                  <Component id="sprStreck" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Component id="lblBeskrivning" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="txtBeskrivning" max="32767" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <Component id="lblLand" min="-2" max="-2" attributes="0"/>
@@ -44,7 +44,11 @@
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <Component id="cmbProjektChef" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="btnHandlaggare" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblHandläggare" min="-2" max="-2" attributes="0"/>
+                          <Component id="cmbProjektChef" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -64,17 +68,7 @@
                               <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="cmbStatus" min="-2" max="-2" attributes="0"/>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="txtKostnad" min="-2" pref="80" max="-2" attributes="0"/>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                                              <Component id="btnRensaFält" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
-                                      <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
-                                      <Component id="btnSpara" min="-2" max="-2" attributes="0"/>
-                                  </Group>
+                                  <Component id="txtKostnad" alignment="0" min="-2" pref="80" max="-2" attributes="0"/>
                                   <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
                                       <Component id="cmbLand" alignment="0" max="32767" attributes="0"/>
                                       <Component id="cmbPrioritet" alignment="0" max="32767" attributes="0"/>
@@ -96,6 +90,12 @@
                                   <Component id="txtProjektNamn" alignment="0" min="-2" pref="152" max="-2" attributes="0"/>
                               </Group>
                           </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="107" max="-2" attributes="0"/>
+                              <Component id="btnRensaFält" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+                              <Component id="btnSpara" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                   </Group>
@@ -114,7 +114,7 @@
                   <Component id="btnSökPID" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jSeparator1" min="-2" pref="12" max="-2" attributes="0"/>
+              <Component id="sprStreck" min="-2" pref="12" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblProjektNamn" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -157,12 +157,16 @@
                   <Component id="cmbProjektChef" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblProjektChef" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="lblHandläggare" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="btnHandlaggare" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnSpara" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnRensaFält" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnSpara" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="34" max="32767" attributes="0"/>
+              <EmptySpace pref="31" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -289,7 +293,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnS&#xf6;kPIDActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JSeparator" name="jSeparator1">
+    <Component class="javax.swing.JSeparator" name="sprStreck">
     </Component>
     <Component class="javax.swing.JButton" name="btnRensaF&#xe4;lt">
       <Properties>
@@ -298,6 +302,19 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRensaF&#xe4;ltActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnHandlaggare">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Hantera deltagande handl&#xe4;ggare"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHandlaggareActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblHandl&#xe4;ggare">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Handl&#xe4;ggare l&#xe4;ggs till separat via redigering"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>
