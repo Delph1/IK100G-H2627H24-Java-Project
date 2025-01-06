@@ -37,7 +37,7 @@
                       <Component id="btnLäggTillProjekt" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btnTaBortProjekt" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="99" max="32767" attributes="0"/>
                       <Component id="lblSokDatum" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="txtStartdatumSök" min="-2" pref="70" max="-2" attributes="0"/>
@@ -52,9 +52,7 @@
                       <Component id="btnMinaProjekt" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnAllaProjekt" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btnAvdProj" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="65" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Component id="lblAvdelning" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="cmbAvdelningsVal" min="-2" pref="162" max="-2" attributes="0"/>
@@ -90,7 +88,6 @@
                   <Component id="lblAvdelning" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblStatus" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnMinaProjekt" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnAvdProj" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="389" max="-2" attributes="0"/>
@@ -102,7 +99,7 @@
   <SubComponents>
     <Component class="javax.swing.JButton" name="btn&#xc4;ndraProjekt">
       <Properties>
-        <Property name="text" type="java.lang.String" value="&#xc4;ndra projekt"/>
+        <Property name="text" type="java.lang.String" value="Redigera projekt"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn&#xc4;ndraProjektActionPerformed"/>
@@ -281,14 +278,6 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnMinaProjektActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnAvdProj">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Visa projekt avd"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAvdProjActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

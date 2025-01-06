@@ -53,6 +53,34 @@ public class ProjektMeny extends javax.swing.JFrame {
         hamtaProjekt(aid);
     }
     
+    
+   /**
+    * Konstruktor för att visa avdelningsvy
+    * @param idb
+    * @param avdelning
+    * @param aid 
+    */
+    public ProjektMeny(InfDB idb, boolean avdelning, String aid)
+    {
+        this.idb = idb;
+        this.aid = aid;
+        initComponents();
+        fyllCmbAvdelningar();
+        fyllCmbStatus();
+        setLocationRelativeTo(null);
+        btnTaBortProjekt.setVisible(false);     //Tolkar det som att ProjektChef inte ska kunna ta bort projekt
+        btnMinaProjekt.setVisible(false); 
+        btnÄndraProjekt.setVisible(false);
+        btnLäggTillProjekt.setVisible(false);
+        lblSokDatum.setVisible(false);
+        txtStartdatumSök.setVisible(false);
+        lblBindeStreck.setVisible(false);
+        txtSlutdatumSök.setVisible(false);
+        btnDatumSök.setVisible(false);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE );
+        hamtaProjektAvdelning(aid);
+    }
+    
     /**
      * Konstruktor för Projektledare, tar bort och lägger till saker i menyn därefter
      * @param idb
@@ -73,7 +101,6 @@ public class ProjektMeny extends javax.swing.JFrame {
         btnTaBortProjekt.setVisible(false);     //Tolkar det som att ProjektChef inte ska kunna ta bort projekt
         btnAllaProjekt.setVisible(false);   //Behöver inte kunna se dessa
         btnMinaProjekt.setVisible(false); //Behöver inte se projekt de deltar på i denna vy
-        btnAvdProj.setVisible(false);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -100,13 +127,12 @@ public class ProjektMeny extends javax.swing.JFrame {
         lblAvdelning = new javax.swing.JLabel();
         lblStatus = new javax.swing.JLabel();
         btnMinaProjekt = new javax.swing.JButton();
-        btnAvdProj = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Projekt");
         setPreferredSize(new java.awt.Dimension(900, 480));
 
-        btnÄndraProjekt.setText("Ändra projekt");
+        btnÄndraProjekt.setText("Redigera projekt");
         btnÄndraProjekt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnÄndraProjektActionPerformed(evt);
@@ -187,13 +213,6 @@ public class ProjektMeny extends javax.swing.JFrame {
             }
         });
 
-        btnAvdProj.setText("Visa projekt avd");
-        btnAvdProj.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAvdProjActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -208,7 +227,7 @@ public class ProjektMeny extends javax.swing.JFrame {
                         .addComponent(btnLäggTillProjekt)
                         .addGap(18, 18, 18)
                         .addComponent(btnTaBortProjekt)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
                         .addComponent(lblSokDatum)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtStartdatumSök, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -222,9 +241,7 @@ public class ProjektMeny extends javax.swing.JFrame {
                         .addComponent(btnMinaProjekt)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAllaProjekt)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnAvdProj)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblAvdelning)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cmbAvdelningsVal, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -254,8 +271,7 @@ public class ProjektMeny extends javax.swing.JFrame {
                     .addComponent(btnAllaProjekt)
                     .addComponent(lblAvdelning)
                     .addComponent(lblStatus)
-                    .addComponent(btnMinaProjekt)
-                    .addComponent(btnAvdProj))
+                    .addComponent(btnMinaProjekt))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -389,11 +405,15 @@ public class ProjektMeny extends javax.swing.JFrame {
 
     private void btnAllaProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAllaProjektActionPerformed
         hamtaProjekt();
+        cmbAvdelningsVal.setSelectedIndex(0);
+        cmbStatus.setSelectedIndex(0);
     }//GEN-LAST:event_btnAllaProjektActionPerformed
 
     private void btnMinaProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMinaProjektActionPerformed
         if (aid != null) {
             hamtaProjekt(aid);
+            cmbAvdelningsVal.setSelectedIndex(0);
+            cmbStatus.setSelectedIndex(0);
         }
         else {
             ingaProjekt();
@@ -401,10 +421,6 @@ public class ProjektMeny extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_btnMinaProjektActionPerformed
-
-    private void btnAvdProjActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvdProjActionPerformed
-        hamtaProjektAvdelning(aid);
-    }//GEN-LAST:event_btnAvdProjActionPerformed
 
     private void fyllCmbAvdelningar()
     {
@@ -614,7 +630,6 @@ public class ProjektMeny extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAllaProjekt;
-    private javax.swing.JButton btnAvdProj;
     private javax.swing.JButton btnDatumSök;
     private javax.swing.JButton btnLäggTillProjekt;
     private javax.swing.JButton btnMinaProjekt;
