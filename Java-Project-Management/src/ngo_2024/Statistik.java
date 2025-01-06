@@ -7,6 +7,7 @@ package ngo_2024;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import oru.inf.InfDB;
 import oru.inf.InfException;
 
@@ -18,7 +19,6 @@ public class Statistik extends javax.swing.JFrame {
     
     private InfDB idb;
     private String aid;
-    private Projekt nyttProjekt;
     /**
      * Creates new form Statistik
      */
@@ -27,7 +27,6 @@ public class Statistik extends javax.swing.JFrame {
         this.aid = aid;
         initComponents();
         setLocationRelativeTo(null);
-        nyttProjekt = new Projekt(idb); //Skapar nytt projekt-objekt för att kalla metoder
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE );
         setMinaKostnader();
         setAvdelningsKostnader();
@@ -154,12 +153,18 @@ public class Statistik extends javax.swing.JFrame {
      * avslutade projekt
      */
     private void setMinaKostnader() {
+        double minKostnad = 0;
+        double pågåendeSumma = 0;
+        double avslutadeSumma = 0;
         try {
-            double minKostnad = 0;
-            double pågåendeSumma = 0;
-            double avslutadeSumma = 0;
-            
-            ArrayList<HashMap<String, String>> minaProjekt = nyttProjekt.getAllaProjektSomProjektChef(aid);
+            ArrayList<HashMap<String, String>> minaProjekt = new ArrayList<>();
+            try {
+                String sqlfråga = "SELECT * FROM projekt where projektchef =" + aid;
+                minaProjekt = idb.fetchRows(sqlfråga);
+            } catch (InfException e) {
+                System.out.println("Kunde inte hämta projekt.\n" + e.getMessage());
+                JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt.");
+            }
             for (HashMap<String, String> ettProjekt : minaProjekt) {
                 minKostnad += Double.parseDouble(ettProjekt.get("kostnad"));
                 String status = ettProjekt.get("status");
@@ -169,12 +174,12 @@ public class Statistik extends javax.swing.JFrame {
                     avslutadeSumma += Double.parseDouble(ettProjekt.get("kostnad"));
                 }
             }
-            txtTotalKostnadMina.setText("" + minKostnad);
-            txtPagaende.setText("" + pågåendeSumma);
-            txtAvslutade.setText("" + avslutadeSumma);
         } catch (Exception ex) {
-            System.out.println("Inga projekt på denna person"+ex.getMessage());
+            System.out.println("Inga projekt på denna person" + ex.getMessage());
         }
+        txtTotalKostnadMina.setText("" + minKostnad);
+        txtPagaende.setText("" + pågåendeSumma);
+        txtAvslutade.setText("" + avslutadeSumma);
     }
     
     /**
