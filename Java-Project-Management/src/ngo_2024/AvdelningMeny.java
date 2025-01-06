@@ -18,14 +18,14 @@ import oru.inf.InfException;
 public class AvdelningMeny extends javax.swing.JFrame {
 
     private InfDB idb;
-    private Stad stad; 
+    private StadMeny stad; 
     private Anstalld anstalld;
     /**
      * Creates new form AvdelningMeny
      */
     public AvdelningMeny(InfDB idb) {
         this.idb = idb;
-        this.stad = new Stad(idb);
+        this.stad = new StadMeny(idb);
         this.anstalld = new Anstalld(idb);
         initComponents();
         setLocationRelativeTo(null);

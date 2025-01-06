@@ -18,7 +18,7 @@ public class EditPartner extends javax.swing.JFrame {
 
     private InfDB idb;
     private String queryAid;
-    private Stad stad;
+    private StadMeny stad;
     private ArrayList<HashMap<String, String>> allaStader;
     /**
      * Creates new form EditPartner
@@ -26,7 +26,7 @@ public class EditPartner extends javax.swing.JFrame {
     public EditPartner(InfDB idb, String queryAid) {
         this.idb = idb;
         this.queryAid = queryAid;
-        this.stad = new Stad(idb);
+        this.stad = new StadMeny(idb);
         this.allaStader = new ArrayList<>();
         initComponents();
         setLocationRelativeTo(null);
