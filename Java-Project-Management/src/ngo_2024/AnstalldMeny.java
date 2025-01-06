@@ -31,6 +31,17 @@ public class AnstalldMeny extends javax.swing.JFrame {
         hamtaAnstallda();
 
     }
+    public AnstalldMeny(InfDB idb, String anvandare) {
+        this.idb = idb;
+        this.anvandare = anvandare;
+        initComponents();
+        setLocationRelativeTo(null); //Den här koden sätter fönstret i mitten av skärmen.
+        hamtaAnstalldaForAvdelning(anvandare);
+//döljer knappar om man öppnar via "personal på min avdelning"
+        editAnstalld.setVisible(false);
+        remAnstalld.setVisible(false);
+        newAnstalld.setVisible(false);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -41,19 +52,19 @@ public class AnstalldMeny extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        fetchanstallda = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        editAnstalld = new javax.swing.JButton();
+        remAnstalld = new javax.swing.JButton();
+        newAnstalld = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jButton1.setText("Hämta anställda");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        fetchanstallda.setText("Hämta anställda");
+        fetchanstallda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                fetchanstalldaActionPerformed(evt);
             }
         });
 
@@ -70,24 +81,24 @@ public class AnstalldMeny extends javax.swing.JFrame {
         jTable1.setShowGrid(true);
         jScrollPane1.setViewportView(jTable1);
 
-        jButton2.setText("Ändra anställd");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        editAnstalld.setText("Ändra anställd");
+        editAnstalld.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                editAnstalldActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Ta bort anställd");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        remAnstalld.setText("Ta bort anställd");
+        remAnstalld.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                remAnstalldActionPerformed(evt);
             }
         });
 
-        jButton4.setText("Ny anställd");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        newAnstalld.setText("Ny anställd");
+        newAnstalld.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                newAnstalldActionPerformed(evt);
             }
         });
 
@@ -100,13 +111,13 @@ public class AnstalldMeny extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(fetchanstallda)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton2)
+                        .addComponent(editAnstalld)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton3)
+                        .addComponent(remAnstalld)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton4)
+                        .addComponent(newAnstalld)
                         .addGap(0, 412, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -115,10 +126,10 @@ public class AnstalldMeny extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(fetchanstallda)
+                    .addComponent(editAnstalld)
+                    .addComponent(remAnstalld)
+                    .addComponent(newAnstalld))
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -128,23 +139,85 @@ public class AnstalldMeny extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        hamtaAnstallda();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void fetchanstalldaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fetchanstalldaActionPerformed
+        if (!newAnstalld.isVisible()) { // Kontrollera om knappen är dold
+            hamtaAnstalldaForAvdelning(anvandare); // Kör denna metod om newAnstalld är dold
+        } else {
+            hamtaAnstallda(); // Annars kör den vanliga metoden
+        }
+    }//GEN-LAST:event_fetchanstalldaActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void newAnstalldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newAnstalldActionPerformed
         String empty = "";
         new EditAnstalld(idb, empty, admins, anvandare).setVisible(true);    //fulkod för att kunna öppna EditAnstalld som ett tomt formulär
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_newAnstalldActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void editAnstalldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editAnstalldActionPerformed
         editAnstalld();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_editAnstalldActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-taBortAnstalld();        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void remAnstalldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remAnstalldActionPerformed
+        taBortAnstalld();        // TODO add your handling code here:
+    }//GEN-LAST:event_remAnstalldActionPerformed
 
+    private void hamtaAnstalldaForAvdelning(String queryAid) {
+    try {
+        // Hämta användarens avdelning
+        String sqlFragaAvdelning = "SELECT avdelning FROM anstalld WHERE aid = '" + queryAid + "'";
+        String avdelning = idb.fetchSingle(sqlFragaAvdelning);
+
+        if (avdelning != null && !avdelning.isEmpty()) {
+            // SQL-frågan för att hämta data från samma avdelning
+            String query = "SELECT aid, fornamn, efternamn, adress, epost, telefon, anstallningsdatum, losenord, avdelning " +
+                           "FROM anstalld WHERE avdelning = '" + avdelning + "'";
+            System.out.println("SQL-fråga: " + query); // Logga frågan Markera bort
+            ArrayList<HashMap<String, String>> resultat = idb.fetchRows(query);
+
+            if (resultat != null) {
+                // Skapa en tabellmodell
+                DefaultTableModel tableModel = new DefaultTableModel();
+                tableModel.setRowCount(0);
+
+                // Lägg till kolumnnamn i modellen
+                tableModel.addColumn("ID");
+                tableModel.addColumn("Förnamn");
+                tableModel.addColumn("Efternamn");
+                tableModel.addColumn("Adress");
+                tableModel.addColumn("Epost");
+                tableModel.addColumn("Telefon");
+                tableModel.addColumn("Anställningsdatum");
+                tableModel.addColumn("Lösenord");
+                tableModel.addColumn("Avdelning");
+
+                // Fyll tabellen med data från databasen
+                for (HashMap<String, String> rad : resultat) {
+                    tableModel.addRow(new Object[]{
+                        rad.get("aid"),
+                        rad.get("fornamn"),
+                        rad.get("efternamn"),
+                        rad.get("adress"),
+                        rad.get("epost"),
+                        rad.get("telefon"),
+                        rad.get("anstallningsdatum"),
+                        rad.get("losenord"),
+                        rad.get("avdelning")
+                    });
+                }
+
+                // Sätt modellen på JTable
+                jTable1.setModel(tableModel);
+            } else {
+                JOptionPane.showMessageDialog(this, "Inga anställda hittades för avdelning: " + avdelning);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Din avdelning kunde inte identifieras.");
+        }
+    } catch (InfException e) {
+        JOptionPane.showMessageDialog(null, "Fel vid hämtning av anställda för avdelning: " + e.getMessage());
+    }
+}
+
+    
  private void hamtaAnstallda() {
     try {
         // SQL-frågan för att hämta data
@@ -281,11 +354,11 @@ taBortAnstalld();        // TODO add your handling code here:
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton editAnstalld;
+    private javax.swing.JButton fetchanstallda;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JButton newAnstalld;
+    private javax.swing.JButton remAnstalld;
     // End of variables declaration//GEN-END:variables
 }

@@ -19,10 +19,8 @@ public class EditAnstalld extends javax.swing.JFrame {
 
     private InfDB idb;
     private String queryAid;
-    private String avdId;
-    private String admins;
-    private String anvandare;
     private HashMap<String, String> avdelningMap;
+    private final String anvandare;
     
     /**
      * Creates new form EditAnstalld
@@ -32,12 +30,11 @@ public class EditAnstalld extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null); //Den här koden sätter fönstret i mitten av skärmen.
         this.idb = idb;
-        this.admins = admins;
         this.queryAid = queryAid;
         this.anvandare = anvandare;
         this.avdelningMap = new HashMap<>();
 
-        jComboBox2.setVisible(true);
+        comboAvdelning.setVisible(true);
         fyllComboBox();
       
          if (queryAid != null && !queryAid.isEmpty()) {
@@ -49,17 +46,17 @@ try {
     if (resultat != null) {
         // Hämta och sätt värden i motsvarande textfält
 
-        jTextField1.setText(resultat.get("fornamn"));
-        jTextField2.setText(resultat.get("efternamn"));
-        jTextField3.setText(resultat.get("adress"));       
-        jTextField4.setText(resultat.get("epost"));         
-        jTextField5.setText(resultat.get("telefon"));
-        jTextField6.setText(resultat.get("anstallningsdatum"));
-        jTextField7.setText(resultat.get("losenord"));
+        txtFornamn.setText(resultat.get("fornamn"));
+        txtEfternamn.setText(resultat.get("efternamn"));
+        txtAdress.setText(resultat.get("adress"));       
+        txtEpost.setText(resultat.get("epost"));         
+        txtTelefonNr.setText(resultat.get("telefon"));
+        txtanstallningsDatum.setText(resultat.get("anstallningsdatum"));
+        txtLosen.setText(resultat.get("losenord"));
         String avdelning = resultat.get("avdelning");
         String avdelningsNamn = getAvdelningsNamnId(avdelning); // sätt motsvarande namn från avdelning
         if (avdelningsNamn != null) {
-            jComboBox2.setSelectedItem(avdelningsNamn); // om man valt en anställd som ska ändras, väljer rätt namn på avdelningen i comboboxen
+            comboAvdelning.setSelectedItem(avdelningsNamn); // om man valt en anställd som ska ändras, väljer rätt namn på avdelningen i comboboxen
         }
     } else {
         JOptionPane.showMessageDialog(null, "Ingen anställd hittades med det angivna ID:t.");
@@ -117,7 +114,7 @@ try {
                     String namn = avdelning.get("namn");
 
                     avdelningMap.put(namn, avdid);
-                    jComboBox2.addItem(namn); // Lägg till namnet i comboboxen
+                    comboAvdelning.addItem(namn); // Lägg till namnet i comboboxen
                 }
             }
         } catch (InfException e) {
@@ -143,13 +140,13 @@ try {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
+        txtFornamn = new javax.swing.JTextField();
+        txtEfternamn = new javax.swing.JTextField();
+        txtAdress = new javax.swing.JTextField();
+        txtEpost = new javax.swing.JTextField();
+        txtTelefonNr = new javax.swing.JTextField();
+        txtanstallningsDatum = new javax.swing.JTextField();
+        txtLosen = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -158,25 +155,30 @@ try {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        sparaKnapp = new javax.swing.JButton();
+        comboAvdelning = new javax.swing.JComboBox<>();
         jCheckBox1 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jTextField1.setActionCommand("<Not Set>");
+        txtFornamn.setActionCommand("<Not Set>");
 
-        jTextField2.setActionCommand("<Not Set>");
+        txtEfternamn.setActionCommand("<Not Set>");
 
-        jTextField3.setActionCommand("<Not Set>");
+        txtAdress.setActionCommand("<Not Set>");
 
-        jTextField4.setActionCommand("<Not Set>");
+        txtEpost.setActionCommand("<Not Set>");
 
-        jTextField5.setActionCommand("<Not Set>");
+        txtTelefonNr.setActionCommand("<Not Set>");
 
-        jTextField6.setActionCommand("<Not Set>");
+        txtanstallningsDatum.setActionCommand("<Not Set>");
 
-        jTextField7.setActionCommand("<Not Set>");
+        txtLosen.setActionCommand("<Not Set>");
+        txtLosen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtLosenActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Förnamn:");
 
@@ -194,10 +196,10 @@ try {
 
         jLabel8.setText("Avdelning:");
 
-        jButton1.setText("Spara");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        sparaKnapp.setText("Spara");
+        sparaKnapp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                sparaKnappActionPerformed(evt);
             }
         });
 
@@ -221,31 +223,31 @@ try {
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                     .addGap(18, 18, 18)
-                                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txtanstallningsDatum, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(layout.createSequentialGroup()
                                     .addGap(18, 18, 18)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                                .addComponent(txtEpost, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(txtAdress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(txtEfternamn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(txtFornamn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
-                            .addComponent(jTextField5))
+                            .addComponent(txtTelefonNr))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtLosen, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jCheckBox1)
-                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(jButton1))
+                                .addComponent(comboAvdelning, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(sparaKnapp))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -253,60 +255,69 @@ try {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFornamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtEfternamn, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtAdress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtEpost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTelefonNr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtanstallningsDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtLosen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comboAvdelning, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jCheckBox1)
                 .addGap(14, 14, 14)
-                .addComponent(jButton1)
+                .addComponent(sparaKnapp)
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void sparaKnappActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sparaKnappActionPerformed
 
-        String fornamn = jTextField1.getText();
-        String efternamn = jTextField2.getText();
-        String adress = jTextField3.getText();
-        String epost = jTextField4.getText();
-        String telefon = jTextField5.getText();
-        String ansdatum = jTextField6.getText();
-        String losen = jTextField7.getText();
-        //String avdelning = jTextField8.getText();
-        String avdelningsNamn = (String) jComboBox2.getSelectedItem(); // Hämta valt namn från combobox
+        String fornamn = txtFornamn.getText();
+        String efternamn = txtEfternamn.getText();
+        String adress = txtAdress.getText();
+        String epost = txtEpost.getText();
+        String telefon = txtTelefonNr.getText();
+        String ansdatum = txtanstallningsDatum.getText();
+        String losen = txtLosen.getText();
+        String avdelningsNamn = (String) comboAvdelning.getSelectedItem(); // Hämta valt namn från combobox
         String avdelningId = avdelningMap.get(avdelningsNamn);
 
-        
+        //validering av inmatad data
+        if (Validering.faltEjTomtKontroll(txtFornamn)
+                && Validering.faltEjTomtKontroll(txtEfternamn)
+                && Validering.faltEjTomtKontroll(txtAdress)
+                && Validering.faltEjTomtKontroll(txtEpost)
+                && Validering.emailKontroll(txtEpost)
+                && Validering.faltEjTomtKontroll(txtTelefonNr)
+                && Validering.faltEjTomtKontroll(txtanstallningsDatum)
+                && Validering.datumKontroll(txtanstallningsDatum)
+                && Validering.faltEjTomtKontroll(txtLosen)) {
+            
         try
         {
             if (queryAid == null || queryAid.isEmpty())
@@ -375,8 +386,12 @@ try {
             System.out.println("Ett fel inträffade: " + e.getMessage());
         }
         
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
+           }  
+    }//GEN-LAST:event_sparaKnappActionPerformed
+
+    private void txtLosenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLosenActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtLosenActionPerformed
 
     /**
      * @param args the command line arguments
@@ -414,9 +429,8 @@ try {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox<String> comboAvdelning;
     private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -425,12 +439,13 @@ try {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
+    private javax.swing.JButton sparaKnapp;
+    private javax.swing.JTextField txtAdress;
+    private javax.swing.JTextField txtEfternamn;
+    private javax.swing.JTextField txtEpost;
+    private javax.swing.JTextField txtFornamn;
+    private javax.swing.JTextField txtLosen;
+    private javax.swing.JTextField txtTelefonNr;
+    private javax.swing.JTextField txtanstallningsDatum;
     // End of variables declaration//GEN-END:variables
 }

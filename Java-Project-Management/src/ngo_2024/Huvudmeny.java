@@ -346,7 +346,7 @@ public class Huvudmeny extends javax.swing.JFrame {
     }//GEN-LAST:event_mvadnLandActionPerformed
 
     private void mvpersPersonalPaMinAvdelningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvpersPersonalPaMinAvdelningActionPerformed
-        // TODO add your handling code here:
+      new AnstalldMeny(idb, anvandare).setVisible(true);
     }//GEN-LAST:event_mvpersPersonalPaMinAvdelningActionPerformed
 
     private void mvadnPartnersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvadnPartnersActionPerformed
