@@ -17,15 +17,15 @@ import javax.swing.table.DefaultTableModel;
 public class AnstalldMeny extends javax.swing.JFrame {
      private InfDB idb;
      private String admins;
-    private final String anvandare;
+     private String anvandare;
 
     /**
      * Creates new form Anstallda
      */
     public AnstalldMeny(InfDB idb, String admins, String anvandare) {
-         this.idb = idb;
-         this.admins = admins;
-         this.anvandare = anvandare;
+        this.idb = idb;
+        this.admins = admins;
+        this.anvandare = anvandare;
         initComponents();
         setLocationRelativeTo(null); //Den här koden sätter fönstret i mitten av skärmen.
         hamtaAnstallda();
@@ -41,6 +41,16 @@ public class AnstalldMeny extends javax.swing.JFrame {
         editAnstalld.setVisible(false);
         remAnstalld.setVisible(false);
         newAnstalld.setVisible(false);
+    }
+    
+    /**
+     * Förenklad konstruktor som kan används för att anropa klassen från andra klasser. 
+     * @param idb 
+     */
+    
+    public AnstalldMeny(InfDB idb)
+    {
+        this.idb = idb;
     }
 
     /**
@@ -315,7 +325,22 @@ public class AnstalldMeny extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Ingen rad är markerad!");
         }
     }
-
+    
+    public boolean finnsEpost(String epost)
+    {
+        boolean epostFinns = false;
+        try
+        {
+            String query = "SELECT losenord FROM anstalld WHERE epost = '" + epost + "'";
+            idb.fetchSingle(query);
+            epostFinns = true;
+        }
+        catch(InfException e)
+        {
+            JOptionPane.showMessageDialog(null, "E-postadressen finns inte i datrabasen.");
+        }
+        return epostFinns;
+    }
   
     /**
      * @param args the command line arguments
