@@ -18,13 +18,13 @@ import oru.inf.InfException;
 public class PartnerMeny extends javax.swing.JFrame {
 
     private InfDB idb;
-    private Stad stad;
+    private StadMeny stad;
     /**
      * Creates new form PartnerMeny
      */
     public PartnerMeny(InfDB idb) {
         this.idb = idb;
-        this.stad = new Stad(idb);
+        this.stad = new StadMeny(idb);
         initComponents();
         setLocationRelativeTo(null);
         getPartners();

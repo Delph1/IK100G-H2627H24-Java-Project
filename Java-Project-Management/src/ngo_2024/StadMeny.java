@@ -68,7 +68,41 @@ public class StadMeny extends javax.swing.JFrame {
             return "Okänt land"; // Om något går fel, visa "Okänt land"
         }
     }
+    
+    public String getNamn(int sid)
+        {
+            String namn;
+            try
+            {
+                String query = "SELECT namn FROM stad WHERE sid = " + sid;
+                namn = idb.fetchSingle(query);
+            }
+            catch(InfException e)
+            {
+                System.out.println(e.getMessage());
+                namn = null;
+            }
+        return namn;
+    }
+    
+    public ArrayList<HashMap<String, String>> getAllaStader()
+    {
+        ArrayList<HashMap<String, String>> allaStäder = new ArrayList<>();
+        try
+        {
+            String sqlfråga = "SELECT * FROM stad";
+            allaStäder = idb.fetchRows(sqlfråga);
+        }
+        catch(InfException e)
+        {
+            System.out.println("Kunde inte hämta städer.");
+            JOptionPane.showMessageDialog(null, "Kunde inte hämta städer. \n" + e.getMessage());
+            allaStäder = null;
+        }
+        return allaStäder;
 
+    }
+        
     /**
      * Raderar den valda staden.
      */
