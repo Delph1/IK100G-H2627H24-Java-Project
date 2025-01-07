@@ -80,13 +80,13 @@ public class Validering {
      * @param param
      * @return 
      */
-    public static boolean datumKontroll(JTextField param) 
+    public static boolean datumKontroll(String param) 
     {
         boolean resultat = true;
 
         // Kontrolerar här om ett fält har korrekt datumformatering enligt yyyy-MM-dd
         try {
-            LocalDate ld = LocalDate.parse(param.getText());
+            LocalDate ld = LocalDate.parse(param);
         }
         catch (DateTimeParseException e) {
             JOptionPane.showMessageDialog(null, "Felaktigt datumformat. \nVar vänlig fyll i enligt ÅÅÅÅ-MM-DD");
