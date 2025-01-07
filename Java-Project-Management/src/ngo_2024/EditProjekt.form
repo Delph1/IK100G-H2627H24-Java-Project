@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <NonVisualComponents>
+    <Component class="com.toedter.calendar.JDateChooser" name="jDateStartdatumS&#xf6;k">
+      <Properties>
+        <Property name="dateFormatString" type="java.lang.String" value="yyyy-MM-dd"/>
+      </Properties>
+    </Component>
+    <Component class="com.toedter.calendar.JDateChooser" name="jDateSlutdatumS&#xf6;k">
+      <Properties>
+        <Property name="dateFormatString" type="java.lang.String" value="yyyy-MM-dd"/>
+      </Properties>
+    </Component>
+  </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
     <Property name="title" type="java.lang.String" value="Redigera projekt"/>
@@ -53,26 +65,17 @@
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="lblPrioritet" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="lblStartDatum" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                              <Component id="txtStartDatum" min="-2" pref="97" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="lblSlutDatum" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="txtSlutDatum" min="-2" pref="100" max="-2" attributes="0"/>
-                          </Group>
                           <Component id="lblKostnad" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="lblStatus" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="cmbStatus" min="-2" max="-2" attributes="0"/>
                                   <Component id="txtKostnad" alignment="0" min="-2" pref="80" max="-2" attributes="0"/>
                                   <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
                                       <Component id="cmbLand" alignment="0" max="32767" attributes="0"/>
                                       <Component id="cmbPrioritet" alignment="0" max="32767" attributes="0"/>
                                   </Group>
+                                  <Component id="cmbStatus" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -82,11 +85,7 @@
                               </Group>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Component id="txtProjektID" min="-2" pref="74" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="btnSökPID" min="-2" max="-2" attributes="0"/>
-                                  </Group>
+                                  <Component id="txtProjektID" min="-2" pref="74" max="-2" attributes="0"/>
                                   <Component id="txtProjektNamn" alignment="0" min="-2" pref="152" max="-2" attributes="0"/>
                               </Group>
                           </Group>
@@ -96,11 +95,20 @@
                               <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                               <Component id="btnSpara" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="lblStartDatum" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="jDateStartdatum" min="-2" pref="114" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="lblSlutDatum" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jDateSlutdatum" min="-2" pref="114" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="49" max="32767" attributes="0"/>
+              <EmptySpace pref="40" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -111,7 +119,6 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblProjektID" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtProjektID" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnSökPID" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="sprStreck" min="-2" pref="12" max="-2" attributes="0"/>
@@ -126,11 +133,13 @@
                   <Component id="txtBeskrivning" min="-2" pref="89" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="lblStartDatum" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtStartDatum" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblSlutDatum" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtSlutDatum" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="lblStartDatum" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblSlutDatum" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="jDateStartdatum" min="-2" max="-2" attributes="0"/>
+                  <Component id="jDateSlutdatum" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -166,7 +175,7 @@
                   <Component id="btnRensaFält" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnSpara" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="31" max="32767" attributes="0"/>
+              <EmptySpace pref="32" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -202,14 +211,10 @@
         <Property name="text" type="java.lang.String" value="Startdatum"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtStartDatum">
-    </Component>
     <Component class="javax.swing.JLabel" name="lblSlutDatum">
       <Properties>
         <Property name="text" type="java.lang.String" value="Slutdatum"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtSlutDatum">
     </Component>
     <Component class="javax.swing.JLabel" name="lblKostnad">
       <Properties>
@@ -229,9 +234,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="cmbPrioritet">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbPrioritetActionPerformed"/>
-      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
@@ -242,17 +244,11 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="cmbProjektChef">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbProjektChefActionPerformed"/>
-      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JComboBox" name="cmbStatus">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbStatusActionPerformed"/>
-      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
@@ -263,9 +259,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="cmbLand">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbLandActionPerformed"/>
-      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
@@ -284,14 +277,10 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtProjektID">
-    </Component>
-    <Component class="javax.swing.JButton" name="btnS&#xf6;kPID">
       <Properties>
-        <Property name="text" type="java.lang.String" value="S&#xf6;k projekt"/>
+        <Property name="enabled" type="boolean" value="false"/>
+        <Property name="requestFocusEnabled" type="boolean" value="false"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnS&#xf6;kPIDActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JSeparator" name="sprStreck">
     </Component>
@@ -314,6 +303,16 @@
     <Component class="javax.swing.JLabel" name="lblHandl&#xe4;ggare">
       <Properties>
         <Property name="text" type="java.lang.String" value="Handl&#xe4;ggare l&#xe4;ggs till separat via redigering"/>
+      </Properties>
+    </Component>
+    <Component class="com.toedter.calendar.JDateChooser" name="jDateStartdatum">
+      <Properties>
+        <Property name="dateFormatString" type="java.lang.String" value="yyyy-MM-dd"/>
+      </Properties>
+    </Component>
+    <Component class="com.toedter.calendar.JDateChooser" name="jDateSlutdatum">
+      <Properties>
+        <Property name="dateFormatString" type="java.lang.String" value="yyyy-MM-dd"/>
       </Properties>
     </Component>
   </SubComponents>

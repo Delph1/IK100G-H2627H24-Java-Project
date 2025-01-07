@@ -4,6 +4,8 @@
  */
 package ngo_2024;
 
+import java.util.HashMap;
+import javax.swing.JOptionPane;
 import oru.inf.InfDB;
 import oru.inf.InfException;
 /**
@@ -17,6 +19,7 @@ public class Huvudmeny extends javax.swing.JFrame {
     private String projl;
     private String anvandare;
     private String queryAid;
+    private AnstalldMeny anstalld;
 
     /**
      * Creates new form Huvudmeny
@@ -28,12 +31,12 @@ public class Huvudmeny extends javax.swing.JFrame {
         this.admins = admins;
         this.queryAid = queryAid;
         this.projl = projl;
-        this.anvandare = queryAid;
-        lblInloggadAnvändare.setText(queryAid);
-        jLabel1.setText(admins);
-        jLabel2.setText(projl);
-        
+        this.anvandare = queryAid
         kontrolleraBehorigheter();
+        this.anstalld = new AnstalldMeny(idb);
+        visaAnvandaresNamnOchEpost(queryAid);
+        this.setTitle("NGO-matic");
+
     }
 private void kontrolleraBehorigheter() {
     try {
@@ -74,9 +77,9 @@ private void kontrolleraBehorigheter() {
         jMenu1 = new javax.swing.JMenu();
         jMenu7 = new javax.swing.JMenu();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        lblInloggadAnvändare = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        lblNamn = new javax.swing.JLabel();
+        lblEpost = new javax.swing.JLabel();
+        lblRoll = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menyMinaUppgifter = new javax.swing.JMenu();
         mvminMinaUppgifter = new javax.swing.JMenuItem();
@@ -112,11 +115,11 @@ private void kontrolleraBehorigheter() {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jLabel1.setText("Inloggad användare");
+        lblNamn.setText("Inloggad användare");
 
-        lblInloggadAnvändare.setText("inloggadAnvändare");
+        lblEpost.setText("inloggadAnvändare");
 
-        jLabel2.setText("jLabel2");
+        lblRoll.setText("Administratör");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -126,11 +129,11 @@ private void kontrolleraBehorigheter() {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 209, Short.MAX_VALUE)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(lblNamn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 173, Short.MAX_VALUE)
+                        .addComponent(lblRoll))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblInloggadAnvändare)
+                        .addComponent(lblEpost)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -139,10 +142,10 @@ private void kontrolleraBehorigheter() {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
+                    .addComponent(lblNamn)
+                    .addComponent(lblRoll))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblInloggadAnvändare)
+                .addComponent(lblEpost)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -341,6 +344,19 @@ private void kontrolleraBehorigheter() {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void visaAnvandaresNamnOchEpost(String queryAid)
+    {
+        String roll = ((admins == null) ? "Handläggare" : "Administratör"); //Korthands-if
+        HashMap<String, String> resultat = anstalld.hamtaAnstalldsData(queryAid);
+        lblNamn.setText(resultat.get("fornamn") + " " + resultat.get("efternamn"));
+        lblEpost.setText(resultat.get("epost"));
+        lblRoll.setText(roll);
+    }
+    
+    /**
+     * Knappar följer nedan
+     */
+    
     private void mvminLoggaUtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvminLoggaUtActionPerformed
         new InloggningMeny(idb).setVisible (true);
         this.setVisible(false);
@@ -351,7 +367,10 @@ private void kontrolleraBehorigheter() {
     }//GEN-LAST:event_mvadnPersonalActionPerformed
 
     private void mvhjOmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvhjOmActionPerformed
-       // TODO add your handling code here:
+       
+        String titel = "Om programmet NGO-matic";
+        Object meddelande = "Ett program utvecklat för SDG Sweden som en del av kursen IK100G Informatik 30hp, delkursen Systemutvecklingsprojekt.\n\nUtvecklat av följande i bokstavsordning: Andreas Galistel, Claudia Kourieh, Fredrik Magnusson och Märta Sjöblom.";
+        JOptionPane.showMessageDialog(null, meddelande, titel, 1);
     }//GEN-LAST:event_mvhjOmActionPerformed
 
     private void mvminMinaUppgifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvminMinaUppgifterActionPerformed
@@ -418,13 +437,13 @@ private void kontrolleraBehorigheter() {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel lblInloggadAnvändare;
+    private javax.swing.JLabel lblEpost;
+    private javax.swing.JLabel lblNamn;
+    private javax.swing.JLabel lblRoll;
     private javax.swing.JMenu menyAdministration;
     private javax.swing.JMenu menyHjalp;
     private javax.swing.JMenu menyMinaUppgifter;

@@ -148,7 +148,260 @@ public class AnstalldMeny extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Metod som hämtar ut alla anställda för en viss avdelning och stoppar in det i tabellen. Denna skulle kunna skrivas om till en SQL-sats med sub-queries.
+     * @param queryAid 
+     */
+    private void hamtaAnstalldaForAvdelning(String queryAid) {
+        try {
+            // Hämta användarens avdelning
+            String sqlFragaAvdelning = "SELECT avdelning FROM anstalld WHERE aid = '" + queryAid + "'";
+            String avdelning = idb.fetchSingle(sqlFragaAvdelning);
+
+            if (avdelning != null && !avdelning.isEmpty()) {
+                // SQL-frågan för att hämta data från samma avdelning
+                String query = "SELECT aid, fornamn, efternamn, adress, epost, telefon, anstallningsdatum, losenord, avdelning "
+                        + "FROM anstalld WHERE avdelning = '" + avdelning + "'";
+                System.out.println("SQL-fråga: " + query); // Logga frågan Markera bort
+                ArrayList<HashMap<String, String>> resultat = idb.fetchRows(query);
+
+                if (resultat != null) {
+                    // Skapa en tabellmodell
+                    DefaultTableModel tableModel = new DefaultTableModel();
+                    tableModel.setRowCount(0);
+
+                    // Lägg till kolumnnamnen
+                    tableModel.addColumn("ID");
+                    tableModel.addColumn("Förnamn");
+                    tableModel.addColumn("Efternamn");
+                    tableModel.addColumn("Adress");
+                    tableModel.addColumn("Epost");
+                    tableModel.addColumn("Telefon");
+                    tableModel.addColumn("Anställningsdatum");
+                    tableModel.addColumn("Lösenord");
+                    tableModel.addColumn("Avdelning");
+
+                    // Fyll tabellen med data från databasen
+                    for (HashMap<String, String> rad : resultat) {
+                        tableModel.addRow(new Object[]{
+                            rad.get("aid"),
+                            rad.get("fornamn"),
+                            rad.get("efternamn"),
+                            rad.get("adress"),
+                            rad.get("epost"),
+                            rad.get("telefon"),
+                            rad.get("anstallningsdatum"),
+                            rad.get("losenord"),
+                            rad.get("avdelning")
+                        });
+                    }
+
+                    // Sätt modellen på JTable
+                    jTable1.setModel(tableModel);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Inga anställda hittades för avdelning: " + avdelning);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Din avdelning kunde inte identifieras.");
+            }
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(null, "Fel vid hämtning av anställda för avdelning: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Hämtar ut alla anstallda och sätter in dem i tabellen som visas. 
+     */
+    private void hamtaAnstallda() {
+        try {
+            // SQL-frågan för att hämta data
+            String query = "SELECT aid, fornamn, efternamn, adress, epost, telefon, anstallningsdatum, losenord, avdelning FROM anstalld";
+            System.out.println("SQL-fråga: " + query); // Logga frågan Markera bort
+            ArrayList<HashMap<String, String>> resultat = idb.fetchRows(query);
+
+            if (resultat != null) {
+                // Skapa en tabellmodell
+
+                DefaultTableModel tableModel = new DefaultTableModel();
+                tableModel.setRowCount(0);
+
+                // Lägg till kolumnnamn i modellen
+                tableModel.addColumn("ID");
+                tableModel.addColumn("Förnamn");
+                tableModel.addColumn("Efternamn");
+                tableModel.addColumn("Adress");
+                tableModel.addColumn("Epost");
+                tableModel.addColumn("Telefon");
+                tableModel.addColumn("Anställningsdatum");
+                tableModel.addColumn("Lösenord");
+                tableModel.addColumn("Avdelning");
+
+                // Fyller table med data från databasen
+                for (HashMap<String, String> rad : resultat) {
+                    tableModel.addRow(new Object[]{
+                        rad.get("aid"),
+                        rad.get("fornamn"),
+                        rad.get("efternamn"),
+                        rad.get("adress"),
+                        rad.get("epost"),
+                        rad.get("telefon"),
+                        rad.get("anstallningsdatum"),
+                        rad.get("losenord"),
+                        rad.get("avdelning")
+                    });
+                }
+
+                // Sätt modellen på JTable
+                jTable1.setModel(tableModel);
+            } else {
+                JOptionPane.showMessageDialog(this, "Inga anställda hittades.");
+            }
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(null, "Fel vid hämtning av anställda: " + e.getMessage());
+        }
+    }
+  
+    /**
+     * Raderar en i tabellen vald anställd.
+     */
+    private void taBortAnstalld() {
+
+        int selectedRow = jTable1.getSelectedRow();
+        if (selectedRow != -1) {
+            Object anstalld = jTable1.getValueAt(selectedRow, 0); // Hämta värde från kolumn 0
+            String queryAid = anstalld.toString(); // Konvertera till String
+            try {
+
+                String sqlfråga1 = "UPDATE projekt SET projektchef = NULL Where projektchef = '" + queryAid + "'";
+                idb.update(sqlfråga1);
+                String sqlfråga6 = "UPDATE avdelning SET chef = NULL Where chef = '" + queryAid + "'";
+                idb.update(sqlfråga6);
+                String sqlfråga4 = "DELETE FROM ans_proj WHERE aid = '" + queryAid + "'";
+                idb.delete(sqlfråga4);
+                String sqlfråga3 = "UPDATE handlaggare SET mentor = NULL Where mentor = '" + queryAid + "'";
+                idb.update(sqlfråga3);
+                String sqlfråga5 = "DELETE FROM admin WHERE aid = '" + queryAid + "'";
+                idb.delete(sqlfråga5);
+                String sqlfråga = "DELETE FROM handlaggare WHERE aid = '" + queryAid + "'";
+                idb.delete(sqlfråga);
+                String sqlfråga2 = "DELETE FROM anstalld WHERE aid = '" + queryAid + "'";
+                idb.delete(sqlfråga2);
+
+                hamtaAnstallda();
+
+            } catch (InfException e) {
+                System.out.println(e.getMessage());
+
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingen rad är markerad!");
+        }
+
+    }
+
+    /**
+     * Öppnar upp ett fönster för att redigera en i tabellen markerad anställd.
+     */
+    private void editAnstalld() {
+        int selectedRow = jTable1.getSelectedRow();
+        if (selectedRow != -1) {
+            Object anstalld = jTable1.getValueAt(selectedRow, 0); // Hämta värde från kolumn 0
+            String queryAid = anstalld.toString(); // Konvertera till String
+            new EditAnstalld(idb, queryAid, admins, anvandare).setVisible(true); //öppnar nytt fönster, skickar med den anställde via AID från databasen
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingen rad är markerad!");
+        }
+    }
+
     
+        public String getChefNamn(String aid)
+    {
+        String chefNamn;
+        try
+        {
+            String query = "SELECT CONCAT(fornamn, ' ', efternamn) as namn FROM anstalld WHERE aid = '" + aid + "'";
+            chefNamn = idb.fetchSingle(query);
+        }
+        catch (InfException e)
+        {
+            System.out.println(e.getMessage());
+            chefNamn = null;
+        }
+        return chefNamn;
+    }
+        
+    /**
+     * Metod för att hämta ut alla Anställd(a).
+     * @return 
+     */
+    public ArrayList<HashMap<String, String>> getAllaAnstallda()
+    {
+        ArrayList<HashMap<String, String>> allaAnstallda = new ArrayList<>();
+        try
+        {
+            String sqlfråga = "SELECT * FROM anstalld";
+            allaAnstallda = idb.fetchRows(sqlfråga);
+        }
+        catch(InfException e)
+        {
+            System.out.println("Kunde inte hämta städer.");
+            JOptionPane.showMessageDialog(null, "Kunde inte hämta städer. \n" + e.getMessage());
+            allaAnstallda = null;
+        }
+        return allaAnstallda;
+    }
+    
+     /**
+     * Metod för att hämta ut en Anställd via aid.
+     * @param aid
+     * @return 
+     */
+    
+    public HashMap<String, String> getEnAnstalld(int aid)
+    {
+        HashMap<String, String> enAnstalld = new HashMap<>();
+        try
+        {
+            String sqlfråga = "SELECT * FROM anstalld WHERE aid = '" + aid + "'";
+            enAnstalld = idb.fetchRow(sqlfråga);
+        }
+        catch(InfException e)
+        {
+            System.out.println("Kunde inte hämta användare.");
+            JOptionPane.showMessageDialog(null, "Kunde inte hämta användare. \n" + e.getMessage());
+            enAnstalld = null;
+        }
+        return enAnstalld;
+    }
+  
+  //ÄR DENNA NEDAN DUBBLETT??? FRÅN MERGE CONFLICT, LÅTER VARA KVAR. allt fram till variables declaration /MÄRTA
+
+    /**
+     * Funktion som hämtar ut en anstallds data ur databasen. 
+     * @param aid
+     * @return 
+     */
+    public HashMap<String, String> hamtaAnstalldsData(String aid)
+    {
+        HashMap<String, String> resultat;
+        String query = "SELECT * FROM anstalld WHERE aid = '" + aid + "'";
+        try 
+        {
+            resultat = idb.fetchRow(query);
+        }
+        catch(InfException idb)
+        {
+            JOptionPane.showMessageDialog(this, "Något fick fel när information om användaren skulle hämtas från databasen.");
+            resultat = null;
+        }
+        
+        return resultat;
+    }
+    
+    /**
+     * Knappar nedan.
+     */
     private void fetchanstalldaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fetchanstalldaActionPerformed
         if (!newAnstalld.isVisible()) { // Kontrollera om knappen är dold
             hamtaAnstalldaForAvdelning(anvandare); // Kör denna metod om newAnstalld är dold
@@ -169,213 +422,7 @@ public class AnstalldMeny extends javax.swing.JFrame {
         taBortAnstalld();        // TODO add your handling code here:
     }//GEN-LAST:event_remAnstalldActionPerformed
 
-    private void hamtaAnstalldaForAvdelning(String queryAid) {
-    try {
-        // Hämta användarens avdelning
-        String sqlFragaAvdelning = "SELECT avdelning FROM anstalld WHERE aid = '" + queryAid + "'";
-        String avdelning = idb.fetchSingle(sqlFragaAvdelning);
 
-        if (avdelning != null && !avdelning.isEmpty()) {
-            // SQL-frågan för att hämta data från samma avdelning
-            String query = "SELECT aid, fornamn, efternamn, adress, epost, telefon, anstallningsdatum, losenord, avdelning " +
-                           "FROM anstalld WHERE avdelning = '" + avdelning + "'";
-            System.out.println("SQL-fråga: " + query); // Logga frågan Markera bort
-            ArrayList<HashMap<String, String>> resultat = idb.fetchRows(query);
-
-            if (resultat != null) {
-                // Skapa en tabellmodell
-                DefaultTableModel tableModel = new DefaultTableModel();
-                tableModel.setRowCount(0);
-
-                // Lägg till kolumnnamnen
-                tableModel.addColumn("ID");
-                tableModel.addColumn("Förnamn");
-                tableModel.addColumn("Efternamn");
-                tableModel.addColumn("Adress");
-                tableModel.addColumn("Epost");
-                tableModel.addColumn("Telefon");
-                tableModel.addColumn("Anställningsdatum");
-                tableModel.addColumn("Lösenord");
-                tableModel.addColumn("Avdelning");
-
-                // Fyll tabellen med data från databasen
-                for (HashMap<String, String> rad : resultat) {
-                    tableModel.addRow(new Object[]{
-                        rad.get("aid"),
-                        rad.get("fornamn"),
-                        rad.get("efternamn"),
-                        rad.get("adress"),
-                        rad.get("epost"),
-                        rad.get("telefon"),
-                        rad.get("anstallningsdatum"),
-                        rad.get("losenord"),
-                        rad.get("avdelning")
-                    });
-                }
-
-                // Sätt modellen på JTable
-                jTable1.setModel(tableModel);
-            } else {
-                JOptionPane.showMessageDialog(this, "Inga anställda hittades för avdelning: " + avdelning);
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Din avdelning kunde inte identifieras.");
-        }
-    } catch (InfException e) {
-        JOptionPane.showMessageDialog(null, "Fel vid hämtning av anställda för avdelning: " + e.getMessage());
-    }
-}
-
-    
- private void hamtaAnstallda() {
-    try {
-        // SQL-frågan för att hämta data
-        String query = "SELECT aid, fornamn, efternamn, adress, epost, telefon, anstallningsdatum, losenord, avdelning FROM anstalld";
-        System.out.println("SQL-fråga: " + query); // Logga frågan Markera bort
-        ArrayList<HashMap<String, String>> resultat = idb.fetchRows(query);
-
-        if (resultat != null) {
-            // Skapa en tabellmodell
-            
-            DefaultTableModel tableModel = new DefaultTableModel();
-            tableModel.setRowCount(0);
-            
-            // Lägg till kolumnnamn i modellen
-            tableModel.addColumn("ID");
-            tableModel.addColumn("Förnamn");
-            tableModel.addColumn("Efternamn");
-            tableModel.addColumn("Adress");
-            tableModel.addColumn("Epost");
-            tableModel.addColumn("Telefon");
-            tableModel.addColumn("Anställningsdatum");
-            tableModel.addColumn("Lösenord");
-            tableModel.addColumn("Avdelning");
-
-            // Fyller table med data från databasen
-            for (HashMap<String, String> rad : resultat) {
-                tableModel.addRow(new Object[]{
-                    rad.get("aid"),
-                    rad.get("fornamn"),
-                    rad.get("efternamn"),
-                    rad.get("adress"),
-                    rad.get("epost"),
-                    rad.get("telefon"),
-                    rad.get("anstallningsdatum"),
-                    rad.get("losenord"),
-                    rad.get("avdelning")
-                });
-            }
-
-            // Sätt modellen på JTable
-            jTable1.setModel(tableModel);
-        } else {
-            JOptionPane.showMessageDialog(this, "Inga anställda hittades.");
-        }
-    } catch (InfException e) {
-        JOptionPane.showMessageDialog(null, "Fel vid hämtning av anställda: " + e.getMessage());
-    }
-}
-  
-     private void taBortAnstalld() {
-
-        int selectedRow = jTable1.getSelectedRow();
-        if (selectedRow != -1) {
-            Object anstalld = jTable1.getValueAt(selectedRow, 0); // Hämta värde från kolumn 0
-            String queryAid = anstalld.toString(); // Konvertera till String
-            try {
-               
-                String sqlfråga1 = "UPDATE projekt SET projektchef = NULL Where projektchef = '" + queryAid + "'";
-                idb.update(sqlfråga1);
-                String sqlfråga6 = "UPDATE avdelning SET chef = NULL Where chef = '" + queryAid + "'";
-                idb.update(sqlfråga6);
-                String sqlfråga4 = "DELETE FROM ans_proj WHERE aid = '" + queryAid + "'";
-                idb.delete(sqlfråga4);
-                String sqlfråga3 = "UPDATE handlaggare SET mentor = NULL Where mentor = '" + queryAid + "'";
-                idb.update(sqlfråga3);
-                String sqlfråga5 = "DELETE FROM admin WHERE aid = '" + queryAid + "'";
-                idb.delete(sqlfråga5);
-                String sqlfråga = "DELETE FROM handlaggare WHERE aid = '" + queryAid + "'";
-                idb.delete(sqlfråga);
-                String sqlfråga2 = "DELETE FROM anstalld WHERE aid = '" + queryAid + "'";
-                idb.delete(sqlfråga2);
-                
-              
-                hamtaAnstallda();
-            
-            } catch (InfException e) {
-                System.out.println(e.getMessage());
-
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Ingen rad är markerad!");
-        }
-
-    }
-
-    private void editAnstalld() {
-        int selectedRow = jTable1.getSelectedRow();
-        if (selectedRow != -1) {
-            Object anstalld = jTable1.getValueAt(selectedRow, 0); // Hämta värde från kolumn 0
-            String queryAid = anstalld.toString(); // Konvertera till String
-            new EditAnstalld(idb, queryAid, admins, anvandare).setVisible(true); //öppnar nytt fönster, skickar med den anställde via AID från databasen
-
-            // JOptionPane.showMessageDialog(this, "Valt ID: " + anstalld);
-        } else {
-            JOptionPane.showMessageDialog(null, "Ingen rad är markerad!");
-        }
-    }
-    
-    public boolean finnsEpost(String epost)
-    {
-        boolean epostFinns = false;
-        try
-        {
-            String query = "SELECT losenord FROM anstalld WHERE epost = '" + epost + "'";
-            idb.fetchSingle(query);
-            epostFinns = true;
-        }
-        catch(InfException e)
-        {
-            JOptionPane.showMessageDialog(null, "E-postadressen finns inte i datrabasen.");
-        }
-        return epostFinns;
-    }
-  
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AnstalldMeny.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AnstalldMeny.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AnstalldMeny.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AnstalldMeny.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-           //     new AnstalldMeny().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton editAnstalld;

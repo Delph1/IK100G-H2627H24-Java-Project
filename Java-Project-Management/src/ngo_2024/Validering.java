@@ -80,13 +80,13 @@ public class Validering {
      * @param param
      * @return 
      */
-    public static boolean datumKontroll(JTextField param) 
+    public static boolean datumKontroll(String param) 
     {
         boolean resultat = true;
 
         // Kontrolerar här om ett fält har korrekt datumformatering enligt yyyy-MM-dd
         try {
-            LocalDate ld = LocalDate.parse(param.getText());
+            LocalDate ld = LocalDate.parse(param);
         }
         catch (DateTimeParseException e) {
             JOptionPane.showMessageDialog(null, "Felaktigt datumformat. \nVar vänlig fyll i enligt ÅÅÅÅ-MM-DD");
@@ -102,14 +102,14 @@ public class Validering {
      * Ingen kontroll av korrekt formatering sker, använd gärna i kombination med metoden .datumKontroll() för fält
      * 
      * @param slutDatum
-     * @param param
+     * @param startDatum
      * @return resultat boolean
      */
-    public static boolean datumFöreKontroll (String slutDatum, JTextField param)
+    public static boolean datumFöreKontroll (String slutDatum, String startDatum)
     {
         boolean resultat = true;
         LocalDate slut = LocalDate.parse(slutDatum);
-        LocalDate start = LocalDate.parse(param.getText());
+        LocalDate start = LocalDate.parse(startDatum);
         
         if(start.isAfter(slut)) {
             resultat = false;
@@ -125,14 +125,14 @@ public class Validering {
      * Ingen kontroll av korrekt formatering sker, använd gärna i kombination med metoden .datumKontroll() för fält
      * 
      * @param startDatum
-     * @param param
+     * @param slutDatum
      * @return resultat boolean
      */
-    public static boolean datumEfterKontroll(String startDatum, JTextField param)
+    public static boolean datumEfterKontroll(String startDatum, String slutDatum)
     {
         boolean resultat = true;
         LocalDate start = LocalDate.parse(startDatum);
-        LocalDate slut = LocalDate.parse(param.getText());
+        LocalDate slut = LocalDate.parse(slutDatum);
         
         if(slut.isBefore(start)) {
             resultat = false;

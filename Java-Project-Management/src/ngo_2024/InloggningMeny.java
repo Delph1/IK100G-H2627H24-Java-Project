@@ -16,14 +16,14 @@ import oru.inf.InfException;
 public class InloggningMeny extends javax.swing.JFrame {
 
     private InfDB idb;
-    private AnstalldMeny anstalld;
+    private EditAnstalld anstalld;
     
     /**
      * Creates new form Inloggning
      */
     public InloggningMeny( InfDB idb) {
         this.idb = idb;
-        this.anstalld = new AnstalldMeny(idb);
+        this.anstalld = new EditAnstalld(idb);
         initComponents();
         lblMeddelande.setVisible(false);
         String nivå;
@@ -166,7 +166,7 @@ public class InloggningMeny extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-        private void loggaIn(String användarnamn, String lösenord)
+    private void loggaIn(String användarnamn, String lösenord)
     {
         if (Validering.faltEjTomtKontroll(txtAnvändarnamn) && Validering.emailKontroll(txtAnvändarnamn) && (Validering.faltEjTomtKontroll(txtLösenord))) {
 
@@ -250,12 +250,17 @@ public class InloggningMeny extends javax.swing.JFrame {
 
     private void btnÅterställLösenordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnÅterställLösenordActionPerformed
         String dialog = "Ange din e-postadress i rutan nedan,";
-        JOptionPane.showInputDialog(this, dialog);
+        String svar = JOptionPane.showInputDialog(this, dialog);
         boolean finns = anstalld.finnsEpost(dialog);
         if (finns)
         {
-            //Funktion för att slumpa fram ett nytt lösenord.
-            JOptionPane.showMessageDialog(this, "Ditt lösenord har återställts");
+            String nyttLosen = anstalld.genereraLösenord(10);
+            boolean uppdateraLosen = anstalld.uppdateraLosenord(svar, nyttLosen);
+            if (uppdateraLosen)
+            {
+                //Det nya lösenordet borde givetvis mejlas ut till användare egentligen, men att skriva en sådan funktion känns lite överkurs i detta skede när vi inte har tillgång till deras domän. 
+                JOptionPane.showMessageDialog(this, "Ett nytt lösenord har slumpats fram till dig: " + nyttLosen);
+            }
         }
     }//GEN-LAST:event_btnÅterställLösenordActionPerformed
 
