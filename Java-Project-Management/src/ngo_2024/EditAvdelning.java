@@ -22,10 +22,13 @@ public class EditAvdelning extends javax.swing.JFrame {
     private StadMeny stad;
     private HashMap<String, String> chefLista;
     private ArrayList<HashMap<String, String>> allaStader;
+
+
     /**
-     * Creates new form EditAvdelning
-     */
-    
+     * Konstruktor för EditAvdelning
+     * @param idb
+     * @param queryAid 
+     */    
     public EditAvdelning(InfDB idb, String queryAid) {
         this.idb = idb;
         this.queryAid = queryAid;
@@ -37,21 +40,29 @@ public class EditAvdelning extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         
+        //Kollar här om det finns en parameter satt för queryAid och i så fall hämtar den ut data för den avdelningen. 
         if (queryAid != null)
         {
             getAvdelningsdata(queryAid);
         }
         else
+            //Om det inte finns döljs fälten för ID, eftersom de är tomma värden och ska inte heller fyllas i.
         {
             lblId.setVisible(false);
             txtId.setVisible(false);
         }
+        //Döljer ID-fälten för Chef och Stad. Istället visar vi de utskrivna fälten som har de faktiska nämnen på chefen och staden. 
         txtStadId.setVisible(false);
         txtChefId.setVisible(false);
         populeraCbChefNamn(chefLista);
         populeraCbStad();
     }
     
+    /**
+     * Metod som hämtar ut en HashMap på alla anställda. Detta användes sedan vid val av Chef för en avdelning. 
+     * Första String är aid, det andra är en konkatenering av Förnamn och Efternamn.
+     * @return HashMap<String, String>
+     */
     private HashMap<String, String> skapaChefHashMap()
     {
         ArrayList<HashMap<String, String>> allaAnstallda = anstalld.getAllaAnstallda();
@@ -66,7 +77,11 @@ public class EditAvdelning extends javax.swing.JFrame {
         
         return chefLista;
     }
-    
+
+    /**
+     * Metod för att skapa upp alla val i komboboxen med Chefen, med dens namn. 
+     * @param chefLista 
+     */
     private void populeraCbChefNamn(HashMap<String, String> chefLista)
     {
         //Lägger till nuvarande chefen först i listan
@@ -82,6 +97,9 @@ public class EditAvdelning extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Metod som hämtar ut alla städer och sedan skapar upp en vallista i komboboxen för Stad. 
+     */
     private void populeraCbStad()
     {
         allaStader = stad.getAllaStader();
@@ -102,7 +120,11 @@ public class EditAvdelning extends javax.swing.JFrame {
             }
         }
     }
-    
+
+    /**
+     * Metod som hämtar ut avdelningsdata för en vald avdelning
+     * @param queryAid 
+     */
     private void getAvdelningsdata(String queryAid)
     {
         try {
@@ -158,6 +180,7 @@ public class EditAvdelning extends javax.swing.JFrame {
         cbChefNamn = new javax.swing.JComboBox<>();
         txtId = new javax.swing.JTextField();
         lblId = new javax.swing.JLabel();
+        btnAvbryt = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -213,6 +236,13 @@ public class EditAvdelning extends javax.swing.JFrame {
 
         lblId.setText("Id:");
 
+        btnAvbryt.setText("Avbryt");
+        btnAvbryt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAvbrytActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -231,6 +261,8 @@ public class EditAvdelning extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnAvbryt)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -296,7 +328,9 @@ public class EditAvdelning extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton1)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jButton1)
+                                    .addComponent(btnAvbryt))
                                 .addGap(14, 14, 14))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(24, 24, 24)
@@ -312,6 +346,10 @@ public class EditAvdelning extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Nedan följer knapparnas funktioner.
+     */
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         
         //Validering nedan
@@ -403,8 +441,13 @@ public class EditAvdelning extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cbStadNamnActionPerformed
 
+    private void btnAvbrytActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvbrytActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnAvbrytActionPerformed
+
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAvbryt;
     private javax.swing.JComboBox<String> cbChefNamn;
     private javax.swing.JComboBox<String> cbStadNamn;
     private javax.swing.JButton jButton1;
