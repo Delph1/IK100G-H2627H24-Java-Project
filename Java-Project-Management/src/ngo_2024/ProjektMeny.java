@@ -68,15 +68,10 @@ public class ProjektMeny extends javax.swing.JFrame {
         fyllCmbAvdelningar();
         fyllCmbStatus();
         setLocationRelativeTo(null);
-        btnTaBortProjekt.setVisible(false);     //Tolkar det som att ProjektChef inte ska kunna ta bort projekt
+        btnTaBortProjekt.setVisible(false);
         btnMinaProjekt.setVisible(false); 
         btnÄndraProjekt.setVisible(false);
         btnLäggTillProjekt.setVisible(false);
-        lblSokDatum.setVisible(false);
-        txtStartdatumSök.setVisible(false);
-        lblBindeStreck.setVisible(false);
-        txtSlutdatumSök.setVisible(false);
-        btnDatumSök.setVisible(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE );
         hamtaProjektAvdelning(aid);
     }
@@ -304,11 +299,11 @@ public class ProjektMeny extends javax.swing.JFrame {
                     String sqlFråga = "delete from projekt where pid = " + queryPid;
                     idb.delete(sqlFråga);
                     JOptionPane.showMessageDialog(null, "Projekt har tagits bort.");
+                    
                 } catch (InfException e) {
                     System.out.println("Databasen har inte uppdaterats. \n" + e.getMessage());
                     JOptionPane.showMessageDialog(null, "Projekt har inte tagits bort.");
                 }
-                JOptionPane.showMessageDialog(null, "Projektet har tagits bort!");
             }
         } else {
             JOptionPane.showMessageDialog(null, "Ingen rad är markerad!");
@@ -340,15 +335,21 @@ public class ProjektMeny extends javax.swing.JFrame {
         String slutDatum = "3000-12-31";
         
         if (!txtStartdatumSök.getText().isBlank()) {
-            startDatum = txtStartdatumSök.getText();
+            boolean valideringStart = Validering.datumKontroll(txtStartdatumSök);
+            if (valideringStart) {
+                startDatum = txtStartdatumSök.getText();
+            }
         }
         if (!txtSlutdatumSök.getText().isBlank()) {
-            slutDatum = txtSlutdatumSök.getText();
+            boolean valideringSlut = Validering.datumKontroll(txtSlutdatumSök);
+            if (valideringSlut) {
+                slutDatum = txtSlutdatumSök.getText();
+            }
         }
-        boolean valideringStart = Validering.datumKontroll(txtStartdatumSök) && Validering.datumFöreKontroll(slutDatum, txtStartdatumSök);
-        boolean valideringSlut = Validering.datumKontroll(txtSlutdatumSök) && Validering.datumEfterKontroll(startDatum, txtSlutdatumSök);
-        
-        if (valideringStart && valideringSlut) {
+        boolean validering = Validering.datumFöreKontroll(slutDatum, startDatum) &&
+                Validering.datumEfterKontroll(startDatum, slutDatum);
+
+        if (validering) {
             try {
                 String fraga = "Select * from projekt where startdatum >= '" + startDatum + "' AND slutdatum <= '" + slutDatum + "';";
                 ArrayList<HashMap<String, String>> soktaProjekt = idb.fetchRows(fraga);
