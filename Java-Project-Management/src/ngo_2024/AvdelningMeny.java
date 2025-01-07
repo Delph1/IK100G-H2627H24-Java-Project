@@ -21,7 +21,7 @@ public class AvdelningMeny extends javax.swing.JFrame {
 
     private InfDB idb;
     private StadMeny stad; 
-    private Anstalld anstalld;
+    private AnstalldMeny anstalld;
     
     /**
      * Konstruktor för AvdelningMeny
@@ -30,7 +30,7 @@ public class AvdelningMeny extends javax.swing.JFrame {
     public AvdelningMeny(InfDB idb) {
         this.idb = idb;
         this.stad = new StadMeny(idb);
-        this.anstalld = new Anstalld(idb);
+        this.anstalld = new AnstalldMeny(idb);
         initComponents();
         setLocationRelativeTo(null);
         getAvdelningar();

@@ -313,8 +313,72 @@ public class AnstalldMeny extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Ingen rad är markerad!");
         }
     }
+
+    
+        public String getChefNamn(String aid)
+    {
+        String chefNamn;
+        try
+        {
+            String query = "SELECT CONCAT(fornamn, ' ', efternamn) as namn FROM anstalld WHERE aid = '" + aid + "'";
+            chefNamn = idb.fetchSingle(query);
+        }
+        catch (InfException e)
+        {
+            System.out.println(e.getMessage());
+            chefNamn = null;
+        }
+        return chefNamn;
+    }
+        
     /**
-     * Funktion som hämtar ut en anstallds data ur databasen.
+     * Metod för att hämta ut alla Anställd(a).
+     * @return 
+     */
+    public ArrayList<HashMap<String, String>> getAllaAnstallda()
+    {
+        ArrayList<HashMap<String, String>> allaAnstallda = new ArrayList<>();
+        try
+        {
+            String sqlfråga = "SELECT * FROM anstalld";
+            allaAnstallda = idb.fetchRows(sqlfråga);
+        }
+        catch(InfException e)
+        {
+            System.out.println("Kunde inte hämta städer.");
+            JOptionPane.showMessageDialog(null, "Kunde inte hämta städer. \n" + e.getMessage());
+            allaAnstallda = null;
+        }
+        return allaAnstallda;
+    }
+    
+     /**
+     * Metod för att hämta ut en Anställd via aid.
+     * @param aid
+     * @return 
+     */
+    
+    public HashMap<String, String> getEnAnstalld(int aid)
+    {
+        HashMap<String, String> enAnstalld = new HashMap<>();
+        try
+        {
+            String sqlfråga = "SELECT * FROM anstalld WHERE aid = '" + aid + "'";
+            enAnstalld = idb.fetchRow(sqlfråga);
+        }
+        catch(InfException e)
+        {
+            System.out.println("Kunde inte hämta användare.");
+            JOptionPane.showMessageDialog(null, "Kunde inte hämta användare. \n" + e.getMessage());
+            enAnstalld = null;
+        }
+        return enAnstalld;
+    }
+  
+  //ÄR DENNA NEDAN DUBBLETT??? FRÅN MERGE CONFLICT, LÅTER VARA KVAR. allt fram till variables declaration /MÄRTA
+
+    /**
+     * Funktion som hämtar ut en anstallds data ur databasen. 
      * @param aid
      * @return 
      */
@@ -357,6 +421,7 @@ public class AnstalldMeny extends javax.swing.JFrame {
     private void remAnstalldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remAnstalldActionPerformed
         taBortAnstalld();        // TODO add your handling code here:
     }//GEN-LAST:event_remAnstalldActionPerformed
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

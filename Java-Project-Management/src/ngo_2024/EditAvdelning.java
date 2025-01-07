@@ -18,7 +18,7 @@ public class EditAvdelning extends javax.swing.JFrame {
     
     private InfDB idb;
     private String queryAid;
-    private Anstalld anstalld;
+    private AnstalldMeny anstalld;
     private StadMeny stad;
     private HashMap<String, String> chefLista;
     private ArrayList<HashMap<String, String>> allaStader;
@@ -32,7 +32,7 @@ public class EditAvdelning extends javax.swing.JFrame {
     public EditAvdelning(InfDB idb, String queryAid) {
         this.idb = idb;
         this.queryAid = queryAid;
-        this.anstalld = new Anstalld(idb);
+        this.anstalld = new AnstalldMeny(idb);
         this.stad = new StadMeny(idb);
         this.chefLista = new HashMap<>();
         this.allaStader = new ArrayList<>();
