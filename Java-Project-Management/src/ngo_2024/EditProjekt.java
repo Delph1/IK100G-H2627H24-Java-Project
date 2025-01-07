@@ -4,6 +4,7 @@
  */
 package ngo_2024;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JFrame;
@@ -21,6 +22,7 @@ public class EditProjekt extends javax.swing.JFrame {
     private InfDB idb;
     private boolean nyttProjekt;
     private boolean admin;  //Ska användas för att kunna ändra projektchef, bara för admin, just nu kan alla
+    private SimpleDateFormat datumformat;
 
     /**
      * För att skapa nya projekt, vilket bara admin kan, därav den parametervariabeln
@@ -29,6 +31,7 @@ public class EditProjekt extends javax.swing.JFrame {
      */
     public EditProjekt(InfDB idb, boolean admin) {
         this.idb = idb;
+        this.datumformat = new SimpleDateFormat("yyyy-MM-dd");
         nyttProjekt = true;
         this.admin = admin; 
         initComponents();
@@ -55,6 +58,7 @@ public class EditProjekt extends javax.swing.JFrame {
      */
     public EditProjekt(InfDB idb, int pid) {
         this.idb = idb;
+        this.datumformat = new SimpleDateFormat("yyyy-MM-dd");
         initComponents();
         setLocationRelativeTo(null);    //Sätter rutan mitt i skärmen
         fyllCmbStatus();    //Fyller Status-comboboxen
@@ -78,6 +82,7 @@ public class EditProjekt extends javax.swing.JFrame {
     public EditProjekt(InfDB idb, int pid, boolean admin) {
         this.idb = idb;
         this.admin = admin;
+        this.datumformat = new SimpleDateFormat("yyyy-MM-dd");
         initComponents();
         setLocationRelativeTo(null);    //Sätter rutan mitt i skärmen
         fyllCmbStatus();    //Fyller Status-comboboxen
@@ -99,14 +104,14 @@ public class EditProjekt extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jDateStartdatumSök = new com.toedter.calendar.JDateChooser();
+        jDateSlutdatumSök = new com.toedter.calendar.JDateChooser();
         txtProjektNamn = new javax.swing.JTextField();
         lblProjektNamn = new javax.swing.JLabel();
         lblBeskrivning = new javax.swing.JLabel();
         txtBeskrivning = new javax.swing.JTextField();
         lblStartDatum = new javax.swing.JLabel();
-        txtStartDatum = new javax.swing.JTextField();
         lblSlutDatum = new javax.swing.JLabel();
-        txtSlutDatum = new javax.swing.JTextField();
         lblKostnad = new javax.swing.JLabel();
         txtKostnad = new javax.swing.JTextField();
         lblStatus = new javax.swing.JLabel();
@@ -124,6 +129,12 @@ public class EditProjekt extends javax.swing.JFrame {
         btnRensaFält = new javax.swing.JButton();
         btnHandlaggare = new javax.swing.JButton();
         lblHandläggare = new javax.swing.JLabel();
+        jDateStartdatum = new com.toedter.calendar.JDateChooser();
+        jDateSlutdatum = new com.toedter.calendar.JDateChooser();
+
+        jDateStartdatumSök.setDateFormatString("yyyy-MM-dd");
+
+        jDateSlutdatumSök.setDateFormatString("yyyy-MM-dd");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Redigera projekt");
@@ -176,6 +187,10 @@ public class EditProjekt extends javax.swing.JFrame {
 
         lblHandläggare.setText("Handläggare läggs till separat via redigering");
 
+        jDateStartdatum.setDateFormatString("yyyy-MM-dd");
+
+        jDateSlutdatum.setDateFormatString("yyyy-MM-dd");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -203,24 +218,16 @@ public class EditProjekt extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblPrioritet)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblStartDatum)
-                                .addGap(20, 20, 20)
-                                .addComponent(txtStartDatum, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblSlutDatum)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtSlutDatum, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(lblKostnad)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblStatus)
                                 .addGap(46, 46, 46)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtKostnad, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                         .addComponent(cmbLand, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(cmbPrioritet, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                        .addComponent(cmbPrioritet, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblProjektNamn)
@@ -233,9 +240,17 @@ public class EditProjekt extends javax.swing.JFrame {
                                 .addGap(107, 107, 107)
                                 .addComponent(btnRensaFält)
                                 .addGap(40, 40, 40)
-                                .addComponent(btnSpara)))
-                        .addGap(26, 26, 26)))
-                .addContainerGap(49, Short.MAX_VALUE))
+                                .addComponent(btnSpara))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblStartDatum)
+                                .addGap(18, 18, 18)
+                                .addComponent(jDateStartdatum, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblSlutDatum)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jDateSlutdatum, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(24, 24, 24)))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -255,11 +270,12 @@ public class EditProjekt extends javax.swing.JFrame {
                     .addComponent(lblBeskrivning)
                     .addComponent(txtBeskrivning, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblStartDatum)
-                    .addComponent(txtStartDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblSlutDatum)
-                    .addComponent(txtSlutDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblStartDatum)
+                        .addComponent(lblSlutDatum))
+                    .addComponent(jDateStartdatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jDateSlutdatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblKostnad)
@@ -385,13 +401,13 @@ public class EditProjekt extends javax.swing.JFrame {
             try {
                 String query = "SELECT projektnamn, beskrivning, startdatum, slutdatum, kostnad, status, prioritet, projektchef, land FROM projekt WHERE pid = " + pid;
                 HashMap<String, String> resultat = idb.fetchRow(query); // Hämta rad som en HashMap
-
+                
                 // Hämta och sätt värden i motsvarande textfält
                 nyttProjekt = false;
                 txtProjektNamn.setText(resultat.get("projektnamn"));          // Projektnamn
                 txtBeskrivning.setText(resultat.get("beskrivning"));        // Beskrivning
-                txtStartDatum.setText(resultat.get("startdatum"));           // Startdatum
-                txtSlutDatum.setText(resultat.get("slutdatum"));            // Slutdatum
+                jDateStartdatum.setDate(datumformat.parse(resultat.get("startdatum")));           // Startdatum
+                jDateSlutdatum.setDate(datumformat.parse(resultat.get("slutdatum")));            // Slutdatum
                 txtKostnad.setText(resultat.get("kostnad"));            // kostnad
                 if (admin) {
                     String sqlFörnamn = "select fornamn from anstalld where aid = " + resultat.get("projektchef");
@@ -437,8 +453,8 @@ public class EditProjekt extends javax.swing.JFrame {
         int nyttPid = 0;
         String projektNamn = null;
         String beskrivning = null;
-        String startDatum = null;
-        String slutDatum = null;
+        String startDatum = datumformat.format(jDateStartdatum.getDate());
+        String slutDatum = datumformat.format(jDateSlutdatum.getDate());
         double kostnad = 0;
         String status = null;
         String prioritet = null;
@@ -447,12 +463,10 @@ public class EditProjekt extends javax.swing.JFrame {
         // Lägg till korrekt input från fälten som kan läggas till databasen
         if (Validering.faltEjTomtKontroll(txtProjektNamn)
                 && Validering.faltEjTomtKontroll(txtBeskrivning)
-                && Validering.faltEjTomtKontroll(txtStartDatum)
-                && Validering.datumKontroll(txtStartDatum.getText())
-                && Validering.faltEjTomtKontroll(txtSlutDatum)
-                && Validering.datumKontroll(txtSlutDatum.getText())
-                && Validering.datumEfterKontroll(txtStartDatum.getText(), txtSlutDatum.getText())
-                && Validering.datumFöreKontroll(txtSlutDatum.getText(), txtStartDatum.getText())
+                && Validering.datumKontroll(startDatum)
+                && Validering.datumKontroll(slutDatum)
+                && Validering.datumEfterKontroll(startDatum, slutDatum)
+                && Validering.datumFöreKontroll(slutDatum, startDatum)
                 && Validering.faltEjTomtKontroll(txtKostnad)
                 && Validering.arDecimal(txtKostnad)
                 && Validering.positivtVarde(txtKostnad)
@@ -463,8 +477,8 @@ public class EditProjekt extends javax.swing.JFrame {
             
             projektNamn = txtProjektNamn.getText();
             beskrivning = txtBeskrivning.getText();
-            startDatum = txtStartDatum.getText();
-            slutDatum = txtSlutDatum.getText();
+//            startDatum = txtStartDatum.getText();
+//            slutDatum = txtSlutDatum.getText();
             kostnad = Double.parseDouble(txtKostnad.getText());
             status = cmbStatus.getSelectedItem().toString();
             prioritet = cmbPrioritet.getSelectedItem().toString();
@@ -537,8 +551,8 @@ public class EditProjekt extends javax.swing.JFrame {
         if (validering) {   //Om nytt projekt, rensa allt
             txtProjektNamn.setText("");
             txtBeskrivning.setText("");
-            txtStartDatum.setText("");
-            txtSlutDatum.setText("");
+            jDateStartdatum.setDate(null);
+            jDateSlutdatum.setDate(null);
             txtKostnad.setText("");
             cmbStatus.setSelectedIndex(0);
             cmbPrioritet.setSelectedIndex(0);
@@ -563,6 +577,10 @@ public class EditProjekt extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cmbPrioritet;
     private javax.swing.JComboBox<String> cmbProjektChef;
     private javax.swing.JComboBox<String> cmbStatus;
+    private com.toedter.calendar.JDateChooser jDateSlutdatum;
+    private com.toedter.calendar.JDateChooser jDateSlutdatumSök;
+    private com.toedter.calendar.JDateChooser jDateStartdatum;
+    private com.toedter.calendar.JDateChooser jDateStartdatumSök;
     private javax.swing.JLabel lblBeskrivning;
     private javax.swing.JLabel lblHandläggare;
     private javax.swing.JLabel lblKostnad;
@@ -579,7 +597,5 @@ public class EditProjekt extends javax.swing.JFrame {
     private javax.swing.JTextField txtKostnad;
     private javax.swing.JTextField txtProjektID;
     private javax.swing.JTextField txtProjektNamn;
-    private javax.swing.JTextField txtSlutDatum;
-    private javax.swing.JTextField txtStartDatum;
     // End of variables declaration//GEN-END:variables
 }
