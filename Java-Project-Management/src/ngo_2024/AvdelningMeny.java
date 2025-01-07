@@ -51,6 +51,8 @@ public class AvdelningMeny extends javax.swing.JFrame {
         btnÄndra = new javax.swing.JButton();
         btnRadera = new javax.swing.JButton();
         btnNyAvdelning = new javax.swing.JButton();
+        btnSok = new javax.swing.JButton();
+        tfSok = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
@@ -125,6 +127,15 @@ public class AvdelningMeny extends javax.swing.JFrame {
             }
         });
 
+        btnSok.setText("Sök");
+        btnSok.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSokActionPerformed(evt);
+            }
+        });
+
+        tfSok.setText("Ange handläggarens namn eller e-post");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -139,7 +150,11 @@ public class AvdelningMeny extends javax.swing.JFrame {
                 .addComponent(btnRadera)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnNyAvdelning)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(tfSok, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnSok)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,7 +164,9 @@ public class AvdelningMeny extends javax.swing.JFrame {
                     .addComponent(btnUppdatera)
                     .addComponent(btnÄndra)
                     .addComponent(btnRadera)
-                    .addComponent(btnNyAvdelning))
+                    .addComponent(btnNyAvdelning)
+                    .addComponent(btnSok)
+                    .addComponent(tfSok, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -185,9 +202,54 @@ public class AvdelningMeny extends javax.swing.JFrame {
         getAvdelningar();
     }//GEN-LAST:event_formWindowGainedFocus
 
+    private void btnSokActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSokActionPerformed
+        String sokterm = tfSok.getText().trim();
+
+    if (sokterm.isEmpty() || sokterm.equals("Sök efter namn eller e-post")) {
+        JOptionPane.showMessageDialog(this, "Ange ett namn eller en e-post för att söka.");
+        return;
+    }
+
+    try {
+        String query = "SELECT * FROM anstalld WHERE LOWER(fornamn) LIKE LOWER('%" + sokterm + "%') "
+                + "OR LOWER(efternamn) LIKE LOWER('%" + sokterm + "%') "
+                + "OR LOWER(epost) LIKE LOWER('%" + sokterm + "%')";
+
+        ArrayList<HashMap<String, String>> resultat = idb.fetchRows(query);
+
+        if (resultat != null) {
+            DefaultTableModel tableModel = new DefaultTableModel();
+            tableModel.setRowCount(0);
+
+            tableModel.addColumn("ID");
+            tableModel.addColumn("Förnamn");
+            tableModel.addColumn("Efternamn");
+            tableModel.addColumn("E-post");
+            tableModel.addColumn("Telefon");
+
+            for (HashMap<String, String> rad : resultat) {
+                tableModel.addRow(new Object[]{
+                    rad.get("aid"),
+                    rad.get("fornamn"),
+                    rad.get("efternamn"),
+                    rad.get("epost"),
+                    rad.get("telefon")
+                });
+            }
+
+            jTable1.setModel(tableModel);
+        } else {
+            JOptionPane.showMessageDialog(this, "Inga handläggare hittades med den angivna söktermen.");
+        }
+    } catch (InfException e) {
+        JOptionPane.showMessageDialog(null, "Fel vid sökning: " + e.getMessage());
+    }
+    }//GEN-LAST:event_btnSokActionPerformed
+
     /**
      * Metod som hämtar ut alla avdelningar och matar in dem i tabellen i fönstret. 
      */
+    
     private void getAvdelningar()
     {
         try {
@@ -325,9 +387,11 @@ public class AvdelningMeny extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNyAvdelning;
     private javax.swing.JButton btnRadera;
+    private javax.swing.JButton btnSok;
     private javax.swing.JButton btnUppdatera;
     private javax.swing.JButton btnÄndra;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField tfSok;
     // End of variables declaration//GEN-END:variables
 }

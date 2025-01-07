@@ -37,6 +37,10 @@
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="btnNyAvdelning" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
+              <Component id="tfSok" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="btnSok" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -49,6 +53,8 @@
                   <Component id="btnÄndra" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnRadera" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnNyAvdelning" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnSok" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="tfSok" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="275" max="-2" attributes="0"/>
@@ -172,6 +178,19 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNyAvdelningActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnSok">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="S&#xf6;k"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSokActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="tfSok">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Ange handl&#xe4;ggarens namn eller e-post"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>
