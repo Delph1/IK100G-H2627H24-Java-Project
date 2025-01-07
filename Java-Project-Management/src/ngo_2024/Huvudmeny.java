@@ -9,8 +9,8 @@ import javax.swing.JOptionPane;
 import oru.inf.InfDB;
 import oru.inf.InfException;
 /**
- *
- * @author andre
+ * Klass för själva huvudmenyn man når allt ifrån. 
+ * @author Andreas Galistel
  */
 public class Huvudmeny extends javax.swing.JFrame {
     
