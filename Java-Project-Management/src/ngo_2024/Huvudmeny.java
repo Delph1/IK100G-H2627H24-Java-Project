@@ -31,7 +31,7 @@ public class Huvudmeny extends javax.swing.JFrame {
         this.admins = admins;
         this.queryAid = queryAid;
         this.projl = projl;
-        this.anvandare = queryAid
+        this.anvandare = queryAid;
         kontrolleraBehorigheter();
         this.anstalld = new AnstalldMeny(idb);
         visaAnvandaresNamnOchEpost(queryAid);
