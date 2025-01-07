@@ -324,6 +324,66 @@ public class AnstalldMeny extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Ingen rad är markerad!");
         }
     }
+    
+        public String getChefNamn(String aid)
+    {
+        String chefNamn;
+        try
+        {
+            String query = "SELECT CONCAT(fornamn, ' ', efternamn) as namn FROM anstalld WHERE aid = '" + aid + "'";
+            chefNamn = idb.fetchSingle(query);
+        }
+        catch (InfException e)
+        {
+            System.out.println(e.getMessage());
+            chefNamn = null;
+        }
+        return chefNamn;
+    }
+        
+    /**
+     * Metod för att hämta ut alla Anställd(a).
+     * @return 
+     */
+    public ArrayList<HashMap<String, String>> getAllaAnstallda()
+    {
+        ArrayList<HashMap<String, String>> allaAnstallda = new ArrayList<>();
+        try
+        {
+            String sqlfråga = "SELECT * FROM anstalld";
+            allaAnstallda = idb.fetchRows(sqlfråga);
+        }
+        catch(InfException e)
+        {
+            System.out.println("Kunde inte hämta städer.");
+            JOptionPane.showMessageDialog(null, "Kunde inte hämta städer. \n" + e.getMessage());
+            allaAnstallda = null;
+        }
+        return allaAnstallda;
+    }
+    
+     /**
+     * Metod för att hämta ut en Anställd via aid.
+     * @param aid
+     * @return 
+     */
+    
+    public HashMap<String, String> getEnAnstalld(int aid)
+    {
+        HashMap<String, String> enAnstalld = new HashMap<>();
+        try
+        {
+            String sqlfråga = "SELECT * FROM anstalld WHERE aid = '" + aid + "'";
+            enAnstalld = idb.fetchRow(sqlfråga);
+        }
+        catch(InfException e)
+        {
+            System.out.println("Kunde inte hämta användare.");
+            JOptionPane.showMessageDialog(null, "Kunde inte hämta användare. \n" + e.getMessage());
+            enAnstalld = null;
+        }
+        return enAnstalld;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton editAnstalld;
