@@ -33,6 +33,7 @@ public class HandläggareProjektMeny extends javax.swing.JFrame {
         setLocationRelativeTo(null);    //Sätter rutan mitt i skärmen
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  //Stänger fönstret men inte programmet vid kryssad ruta
         formateraTabell();
+        this.setTitle("Lägg till eller ta bort handläggare");
         cmbHandläggare.setVisible(false);
         btnOK.setVisible(false);
         fyllCmbHandläggare();
@@ -153,17 +154,17 @@ public class HandläggareProjektMeny extends javax.swing.JFrame {
         if (selectedRow != -1) {
             int input = JOptionPane.showConfirmDialog(rootPane, "Är du säker på att du vill ta bort handläggaren från projektet?", "Ta bort handläggare", JOptionPane.YES_NO_OPTION);
             if (input == 0) {
-                Object projekt = tblHandlaggare.getValueAt(selectedRow, 0); // Hämta pid-värde från kolumn 0
-                int queryPid = Integer.parseInt(projekt.toString()); // Konvertera till int
+                Object projekt = tblHandlaggare.getValueAt(selectedRow, 0); // Hämta aid-värde från kolumn 0
+                int queryAid = Integer.parseInt(projekt.toString()); // Konvertera till int
                 try {
-                    String sqlFråga = "delete from ans_proj where pid = " + queryPid;
+                    String sqlFråga = "delete from ans_proj where pid = " + pid+" and aid = "+queryAid;
                     idb.delete(sqlFråga);
-                    JOptionPane.showMessageDialog(null, "Hanläggare har tagits bort från projektet.");
+                    JOptionPane.showMessageDialog(null, "Handläggare har tagits bort från projektet.");
+                    formateraTabell();
                 } catch (InfException e) {
                     System.out.println("Databasen har inte uppdaterats. \n" + e.getMessage());
                     JOptionPane.showMessageDialog(null, "Handläggare har inte tagits bort.");
                 }
-                JOptionPane.showMessageDialog(null, "Handläggare har tagits bort från projektet!");
             }
         } else {
             JOptionPane.showMessageDialog(null, "Ingen rad är markerad!");
@@ -184,10 +185,11 @@ public class HandläggareProjektMeny extends javax.swing.JFrame {
             } catch (InfException e) {
                 System.out.println(e.getMessage());
             }
-            String query = "insert into ans_proj aid = " + anställdID + " where pid = " + pid;
+            String query = "insert into ans_proj values (" + pid+", "+ anställdID + ");";
             try {
                 idb.insert(query);
                 formateraTabell();
+                cmbHandläggare.setSelectedIndex(0);
             }
             catch (InfException e) {
                 System.out.println(e.getMessage());
