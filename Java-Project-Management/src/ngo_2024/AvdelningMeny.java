@@ -4,6 +4,7 @@
  */
 package ngo_2024;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
@@ -135,6 +136,16 @@ public class AvdelningMeny extends javax.swing.JFrame {
         });
 
         tfSok.setText("Ange handläggarens namn eller e-post");
+        tfSok.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                tfSokFocusGained(evt);
+            }
+        });
+        tfSok.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tfSokKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -203,53 +214,67 @@ public class AvdelningMeny extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowGainedFocus
 
     private void btnSokActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSokActionPerformed
-        String sokterm = tfSok.getText().trim();
-
-    if (sokterm.isEmpty() || sokterm.equals("Sök efter namn eller e-post")) {
-        JOptionPane.showMessageDialog(this, "Ange ett namn eller en e-post för att söka.");
-        return;
-    }
-
-    try {
-        String query = "SELECT * FROM anstalld WHERE LOWER(fornamn) LIKE LOWER('%" + sokterm + "%') "
-                + "OR LOWER(efternamn) LIKE LOWER('%" + sokterm + "%') "
-                + "OR LOWER(epost) LIKE LOWER('%" + sokterm + "%')";
-
-        ArrayList<HashMap<String, String>> resultat = idb.fetchRows(query);
-
-        if (resultat != null) {
-            DefaultTableModel tableModel = new DefaultTableModel();
-            tableModel.setRowCount(0);
-
-            tableModel.addColumn("ID");
-            tableModel.addColumn("Förnamn");
-            tableModel.addColumn("Efternamn");
-            tableModel.addColumn("E-post");
-            tableModel.addColumn("Telefon");
-
-            for (HashMap<String, String> rad : resultat) {
-                tableModel.addRow(new Object[]{
-                    rad.get("aid"),
-                    rad.get("fornamn"),
-                    rad.get("efternamn"),
-                    rad.get("epost"),
-                    rad.get("telefon")
-                });
-            }
-
-            jTable1.setModel(tableModel);
-        } else {
-            JOptionPane.showMessageDialog(this, "Inga handläggare hittades med den angivna söktermen.");
-        }
-    } catch (InfException e) {
-        JOptionPane.showMessageDialog(null, "Fel vid sökning: " + e.getMessage());
-    }
+        sokHandlaggare();
     }//GEN-LAST:event_btnSokActionPerformed
 
+    private void tfSokFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfSokFocusGained
+        tfSok.setText("");
+    }//GEN-LAST:event_tfSokFocusGained
+
+    private void tfSokKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfSokKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER)
+        {
+            sokHandlaggare();
+        }
+    }//GEN-LAST:event_tfSokKeyPressed
+
+    private void sokHandlaggare()
+    {
+    String sokterm = tfSok.getText().trim();
+
+        if (sokterm.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ange ett namn eller en e-post för att söka.");
+            return;
+        }
+
+        try {
+            String query = "SELECT * FROM anstalld WHERE LOWER(fornamn) LIKE LOWER('%" + sokterm + "%') "
+                    + "OR LOWER(efternamn) LIKE LOWER('%" + sokterm + "%') "
+                    + "OR LOWER(epost) LIKE LOWER('%" + sokterm + "%')";
+
+            ArrayList<HashMap<String, String>> resultat = idb.fetchRows(query);
+
+            if (resultat != null) {
+                DefaultTableModel tableModel = new DefaultTableModel();
+                tableModel.setRowCount(0);
+
+                tableModel.addColumn("ID");
+                tableModel.addColumn("Förnamn");
+                tableModel.addColumn("Efternamn");
+                tableModel.addColumn("E-post");
+                tableModel.addColumn("Telefon");
+
+                for (HashMap<String, String> rad : resultat) {
+                    tableModel.addRow(new Object[]{
+                        rad.get("aid"),
+                        rad.get("fornamn"),
+                        rad.get("efternamn"),
+                        rad.get("epost"),
+                        rad.get("telefon")
+                    });
+                }
+
+                jTable1.setModel(tableModel);
+            } else {
+                JOptionPane.showMessageDialog(this, "Inga handläggare hittades med den angivna söktermen.");
+            }
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(null, "Fel vid sökning: " + e.getMessage());
+        }
+    }
     /**
      * Metod som hämtar ut alla avdelningar och matar in dem i tabellen i fönstret. 
      */
-    
     private void getAvdelningar()
     {
         try {

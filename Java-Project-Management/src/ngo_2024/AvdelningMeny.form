@@ -191,6 +191,10 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Ange handl&#xe4;ggarens namn eller e-post"/>
       </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="tfSokFocusGained"/>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tfSokKeyPressed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
