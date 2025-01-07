@@ -7,6 +7,7 @@ package ngo_2024;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import javax.swing.JOptionPane;
 import oru.inf.InfDB;
 import oru.inf.InfException;
@@ -20,12 +21,20 @@ public class EditAnstalld extends javax.swing.JFrame {
     private InfDB idb;
     private String queryAid;
     private HashMap<String, String> avdelningMap;
-    private final String anvandare;
-    
+    private String anvandare;
     /**
      * Creates new form EditAnstalld
      */
 
+    public EditAnstalld(InfDB idb) {
+        initComponents();
+        setLocationRelativeTo(null); //Den här koden sätter fönstret i mitten av skärmen.
+        this.idb = idb;
+        this.avdelningMap = new HashMap<>();
+        fyllComboBox();
+        txtLosen.setText(generatePassword(12));
+    }
+    
     public EditAnstalld(InfDB idb, String queryAid, String admins, String anvandare) {
         initComponents();
         setLocationRelativeTo(null); //Den här koden sätter fönstret i mitten av skärmen.
@@ -76,16 +85,22 @@ try {
                  String sqlFrågaAdmin = "Select behorighetsniva FROM admin WHERE aid = '" + queryAid + "'";
                  String adminst = idb.fetchSingle(sqlFrågaAdmin); // Hämtar resultatet
                  System.out.println(adminst);
+                 String sqlFrågahandl = "Select aid FROM handlaggare WHERE aid = '" + queryAid + "'";
+                 String handlaggare = idb.fetchSingle(sqlFrågahandl); // Hämtar resultatet
+                 System.out.println(handlaggare);
 
                  // Kontrollera om det är den inloggade användaren
                  if (queryAid.equals(anvandare)) {
                      jCheckBox1.setEnabled(false); // Gör checkboxen oklickbar
+                     jCheckBox2.setEnabled(false); // Gör checkboxen oklickbar
                  } else {
                      // Kontrollera om admins är null
                      if (admins != null) {
                          jCheckBox1.setEnabled(true); // Gör checkboxen klickbar
+                         jCheckBox2.setEnabled(true); // Gör checkboxen klickbar
                      } else {
                          jCheckBox1.setEnabled(false); // Gör checkboxen oklickbar
+                         jCheckBox2.setEnabled(false); // Gör checkboxen oklickbar
                      }
                  }
 
@@ -95,11 +110,29 @@ try {
                  } else {
                      jCheckBox1.setSelected(false); // Avmarkera checkboxen
                  }
+                 if (handlaggare != null) {
+                     jCheckBox2.setSelected(true); // Markera checkboxen
+                 } else {
+                     jCheckBox2.setSelected(false); // Avmarkera checkboxen
+                 }
 
-             } catch (InfException e) {
+             } 
+             catch (InfException e) {
                  System.out.println("Ett fel inträffade: " + e.getMessage());
              }
  
+             try {
+
+                 // SQL-frågan för att hämta behörighetsnivån
+                 String sqlFrågahandl = "Select aid FROM handlaggare WHERE aid = '" + queryAid + "'";
+                 String handlaggare = idb.fetchSingle(sqlFrågahandl); // Hämtar resultatet
+                 System.out.println(handlaggare);
+
+
+             } 
+             catch (InfException e) {
+                 System.out.println("Ett fel inträffade: " + e.getMessage());
+             }
 
     }
         } 
@@ -131,6 +164,28 @@ try {
         return null;
     }
     
+    public static String generatePassword(int length) {
+        
+        String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String lower = "abcdefghijklmnopqrstuvwxyz";
+        String numbers = "0123456789";
+        String special = "!@#$%^&*";
+
+        // Kombinera alla tillåtna tecken
+        String allowedChars = upper + lower + numbers + special;
+
+        Random random = new Random();
+        StringBuilder password = new StringBuilder();
+
+        // Generera lösenord
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(allowedChars.length());
+            password.append(allowedChars.charAt(index));
+        }
+
+        return password.toString();
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -158,6 +213,8 @@ try {
         sparaKnapp = new javax.swing.JButton();
         comboAvdelning = new javax.swing.JComboBox<>();
         jCheckBox1 = new javax.swing.JCheckBox();
+        jCheckBox2 = new javax.swing.JCheckBox();
+        SlumpLosen = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -205,6 +262,15 @@ try {
 
         jCheckBox1.setText("Administratör");
 
+        jCheckBox2.setText("Handläggare");
+
+        SlumpLosen.setText("Slumpa lösenord");
+        SlumpLosen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SlumpLosenActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -242,11 +308,14 @@ try {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtLosen, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jCheckBox2))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(comboAvdelning, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jCheckBox1)
-                                .addComponent(comboAvdelning, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(SlumpLosen))))
                     .addComponent(sparaKnapp))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
@@ -286,10 +355,14 @@ try {
                     .addComponent(jLabel8)
                     .addComponent(comboAvdelning, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jCheckBox1)
-                .addGap(14, 14, 14)
-                .addComponent(sparaKnapp)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jCheckBox2)
+                    .addComponent(jCheckBox1))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(sparaKnapp)
+                    .addComponent(SlumpLosen))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -367,7 +440,8 @@ try {
                     idb.insert(insertAdmin);
                 }
             } else {
-                // Om checkboxen är avmarkerad och det finns en rad i admin
+                
+                // Om checkboxen är avmarkerad och det finns en rad i handlaggare
                 if (adminst != null) {
                     String deleteAdmin = "DELETE FROM admin WHERE aid = '" + queryAid + "'";
                     System.out.println(deleteAdmin);
@@ -375,7 +449,52 @@ try {
                 }
             }
         }
-            
+            if (jCheckBox2.isEnabled()) {
+                String sqlFragaHandl = "SELECT aid FROM handlaggare WHERE aid = '" + queryAid + "'";
+                String handlaggare = idb.fetchSingle(sqlFragaHandl);
+
+                if (jCheckBox2.isSelected()) {
+                    // Om checkboxen är markerad och det inte redan finns en rad i handlaggare
+                    if (handlaggare == null) {
+                        String inserthandlaggare = "INSERT INTO handlaggare (aid, ansvarighetsomrade, mentor) VALUES ('" + queryAid + "', null, null)";
+                        System.out.println(inserthandlaggare);
+                        idb.insert(inserthandlaggare);
+                    }
+                } else {
+                    // Om checkboxen är avmarkerad och det finns en rad i handlaggare
+                    if (handlaggare != null) {
+                        // Kolla om handläggaren är refererad i projekt
+                        String checkProjekt = "SELECT COUNT(*) AS count FROM projekt WHERE projektchef = '" + queryAid + "'";
+                        int antalProjekt = Integer.parseInt(idb.fetchSingle(checkProjekt));
+
+                        if (antalProjekt > 0) {
+                            // Uppdatera projektchef till NULL om det finns referenser
+                            String updateProjekt = "UPDATE projekt SET projektchef = NULL WHERE projektchef = '" + queryAid + "'";
+                            System.out.println(updateProjekt);
+                            idb.update(updateProjekt);
+                        }                      
+
+                        String updateavdelning = "UPDATE avdelning SET chef = NULL WHERE chef = '" + queryAid + "'";
+                        System.out.println(updateavdelning);
+                        idb.update(updateavdelning);
+                        
+                        String updatementor = "UPDATE handlaggare SET mentor = NULL WHERE mentor = '" + queryAid + "'";
+                        System.out.println(updatementor);
+                        idb.update(updatementor);
+                        
+                        // Ta bort handläggaren från handlaggare-tabellen
+                        String deleteHandlaggare = "DELETE FROM handlaggare WHERE aid = '" + queryAid + "'";
+                        System.out.println(deleteHandlaggare);
+                        idb.delete(deleteHandlaggare);
+                        
+                        // Ta bort handläggaren från nas_proj-tabellen
+                        String deleteproj = "DELETE FROM ans_proj WHERE aid = '" + queryAid + "'";
+                        System.out.println(deleteproj);
+                        idb.delete(deleteproj);
+                    }
+                }
+            }
+
         JOptionPane.showMessageDialog(null, "Anställd har sparats.");
         this.setVisible(false);
         
@@ -392,6 +511,11 @@ try {
     private void txtLosenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLosenActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtLosenActionPerformed
+
+    private void SlumpLosenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SlumpLosenActionPerformed
+       String newPassword = generatePassword(10); 
+       txtLosen.setText(newPassword);
+    }//GEN-LAST:event_SlumpLosenActionPerformed
 
     /**
      * @param args the command line arguments
@@ -429,8 +553,10 @@ try {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton SlumpLosen;
     private javax.swing.JComboBox<String> comboAvdelning;
     private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

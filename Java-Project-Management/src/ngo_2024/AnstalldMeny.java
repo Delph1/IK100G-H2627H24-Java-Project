@@ -158,8 +158,7 @@ public class AnstalldMeny extends javax.swing.JFrame {
     }//GEN-LAST:event_fetchanstalldaActionPerformed
 
     private void newAnstalldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newAnstalldActionPerformed
-        String empty = "";
-        new EditAnstalld(idb, empty, admins, anvandare).setVisible(true);    //fulkod för att kunna öppna EditAnstalld som ett tomt formulär
+        new EditAnstalld(idb).setVisible(true);
     }//GEN-LAST:event_newAnstalldActionPerformed
 
     private void editAnstalldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editAnstalldActionPerformed
@@ -188,7 +187,7 @@ public class AnstalldMeny extends javax.swing.JFrame {
                 DefaultTableModel tableModel = new DefaultTableModel();
                 tableModel.setRowCount(0);
 
-                // Lägg till kolumnnamn i modellen
+                // Lägg till kolumnnamnen
                 tableModel.addColumn("ID");
                 tableModel.addColumn("Förnamn");
                 tableModel.addColumn("Efternamn");
