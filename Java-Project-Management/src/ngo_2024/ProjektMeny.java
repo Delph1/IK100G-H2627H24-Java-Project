@@ -11,6 +11,8 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import oru.inf.InfDB;
 import oru.inf.InfException;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -113,8 +115,6 @@ public class ProjektMeny extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProjekt = new javax.swing.JTable();
         btnDatumSök = new javax.swing.JButton();
-        txtSlutdatumSök = new javax.swing.JTextField();
-        txtStartdatumSök = new javax.swing.JTextField();
         lblSokDatum = new javax.swing.JLabel();
         lblBindeStreck = new javax.swing.JLabel();
         cmbStatus = new javax.swing.JComboBox<>();
@@ -122,6 +122,8 @@ public class ProjektMeny extends javax.swing.JFrame {
         lblAvdelning = new javax.swing.JLabel();
         lblStatus = new javax.swing.JLabel();
         btnMinaProjekt = new javax.swing.JButton();
+        jDateStartdatumSök = new com.toedter.calendar.JDateChooser();
+        jDateSlutdatumSök = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Projekt");
@@ -208,6 +210,10 @@ public class ProjektMeny extends javax.swing.JFrame {
             }
         });
 
+        jDateStartdatumSök.setDateFormatString("yyyy-MM-dd");
+
+        jDateSlutdatumSök.setDateFormatString("yyyy-MM-dd");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -216,49 +222,55 @@ public class ProjektMeny extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnÄndraProjekt)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnLäggTillProjekt)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnTaBortProjekt)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
-                        .addComponent(lblSokDatum)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtStartdatumSök, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblBindeStreck)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtSlutdatumSök, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnDatumSök))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnMinaProjekt)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnAllaProjekt)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblAvdelning)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmbAvdelningsVal, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(lblStatus)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(btnÄndraProjekt)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnLäggTillProjekt))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnMinaProjekt)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnAllaProjekt)
+                                .addGap(3, 3, 3)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnTaBortProjekt)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                                .addComponent(lblSokDatum)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jDateStartdatumSök, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblBindeStreck)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jDateSlutdatumSök, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnDatumSök))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(lblAvdelning)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmbAvdelningsVal, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblStatus)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnÄndraProjekt)
-                    .addComponent(btnTaBortProjekt)
-                    .addComponent(btnLäggTillProjekt)
-                    .addComponent(btnDatumSök)
-                    .addComponent(lblSokDatum)
-                    .addComponent(txtStartdatumSök, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnÄndraProjekt)
+                        .addComponent(btnTaBortProjekt)
+                        .addComponent(btnLäggTillProjekt)
+                        .addComponent(btnDatumSök)
+                        .addComponent(lblSokDatum))
                     .addComponent(lblBindeStreck)
-                    .addComponent(txtSlutdatumSök, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jDateStartdatumSök, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jDateSlutdatumSök, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmbAvdelningsVal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -331,26 +343,17 @@ public class ProjektMeny extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbAvdelningsValActionPerformed
 
     private void btnDatumSökActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDatumSökActionPerformed
-        String startDatum = "1000-01-01";
-        String slutDatum = "3000-12-31";
-        
-        if (!txtStartdatumSök.getText().isBlank()) {
-            boolean valideringStart = Validering.datumKontroll(txtStartdatumSök);
-            if (valideringStart) {
-                startDatum = txtStartdatumSök.getText();
-            }
-        }
-        if (!txtSlutdatumSök.getText().isBlank()) {
-            boolean valideringSlut = Validering.datumKontroll(txtSlutdatumSök);
-            if (valideringSlut) {
-                slutDatum = txtSlutdatumSök.getText();
-            }
-        }
-        boolean validering = Validering.datumFöreKontroll(slutDatum, startDatum) &&
-                Validering.datumEfterKontroll(startDatum, slutDatum);
+//        String startDatum = "1000-01-01";
+//        String slutDatum = "3000-12-31";
+        SimpleDateFormat datumformat = new SimpleDateFormat("yyyy-MM-dd");
+        String startDatum = datumformat.format(jDateStartdatumSök.getDate());
+        String slutDatum = datumformat.format(jDateSlutdatumSök.getDate());
 
-        if (validering) {
-            try {
+        
+        if (!startDatum.isBlank() && Validering.datumKontroll(startDatum) && !slutDatum.isBlank() && Validering.datumKontroll(slutDatum) && jDateStartdatumSök.getDate().before(jDateSlutdatumSök.getDate()))
+        {
+            try 
+            {
                 String fraga = "Select * from projekt where startdatum >= '" + startDatum + "' AND slutdatum <= '" + slutDatum + "';";
                 ArrayList<HashMap<String, String>> soktaProjekt = idb.fetchRows(fraga);
                 ingaProjekt();
@@ -361,10 +364,16 @@ public class ProjektMeny extends javax.swing.JFrame {
                 else {
                     formateraTabell(soktaProjekt);
                 }
-            } catch (InfException e) {
+            }
+            catch (InfException e)
+            {
                 System.out.println(e.getMessage());
                 JOptionPane.showMessageDialog(null, "Databasfel");
             }
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "Se över dina sökparametrar en gång till. Du måste ange ett datum i båda fälten och Startdatum måste komma före Slutdatum.");
         }
     }//GEN-LAST:event_btnDatumSökActionPerformed
 
@@ -508,9 +517,9 @@ public class ProjektMeny extends javax.swing.JFrame {
         btnÄndraProjekt.setVisible(false);
         btnTaBortProjekt.setVisible(false);
         lblSokDatum.setVisible(false);
-        txtStartdatumSök.setVisible(false);
+        jDateStartdatumSök.setVisible(false);
         lblBindeStreck.setVisible(false);
-        txtSlutdatumSök.setVisible(false);
+        jDateSlutdatumSök.setVisible(false);
         btnDatumSök.setVisible(false);
 
         ArrayList<HashMap<String, String>> allaProjekt = new ArrayList<>();
@@ -556,9 +565,9 @@ public class ProjektMeny extends javax.swing.JFrame {
         btnLäggTillProjekt.setVisible(false);
         btnTaBortProjekt.setVisible(false);
         lblSokDatum.setVisible(false);
-        txtStartdatumSök.setVisible(false);
+        jDateStartdatumSök.setVisible(false);
         lblBindeStreck.setVisible(false);
-        txtSlutdatumSök.setVisible(false);
+        jDateSlutdatumSök.setVisible(false);
         btnDatumSök.setVisible(false);
         cmbAvdelningsVal.setVisible(false);
         cmbStatus.setVisible(false);
@@ -638,13 +647,13 @@ public class ProjektMeny extends javax.swing.JFrame {
     private javax.swing.JButton btnÄndraProjekt;
     private javax.swing.JComboBox<String> cmbAvdelningsVal;
     private javax.swing.JComboBox<String> cmbStatus;
+    private com.toedter.calendar.JDateChooser jDateSlutdatumSök;
+    private com.toedter.calendar.JDateChooser jDateStartdatumSök;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAvdelning;
     private javax.swing.JLabel lblBindeStreck;
     private javax.swing.JLabel lblSokDatum;
     private javax.swing.JLabel lblStatus;
     private javax.swing.JTable tblProjekt;
-    private javax.swing.JTextField txtSlutdatumSök;
-    private javax.swing.JTextField txtStartdatumSök;
     // End of variables declaration//GEN-END:variables
 }

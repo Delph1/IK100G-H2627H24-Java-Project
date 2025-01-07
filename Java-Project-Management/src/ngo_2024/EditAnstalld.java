@@ -450,7 +450,7 @@ public class EditAnstalld extends javax.swing.JFrame {
                 && Validering.emailKontroll(txtEpost)
                 && Validering.faltEjTomtKontroll(txtTelefonNr)
                 && Validering.faltEjTomtKontroll(txtanstallningsDatum)
-                && Validering.datumKontroll(txtanstallningsDatum)
+                && Validering.datumKontroll(txtanstallningsDatum.getText())
                 && Validering.faltEjTomtKontroll(txtLosen)) {
             
         try
