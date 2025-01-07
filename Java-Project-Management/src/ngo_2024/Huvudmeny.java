@@ -8,6 +8,12 @@ import java.util.HashMap;
 import javax.swing.JOptionPane;
 import oru.inf.InfDB;
 import oru.inf.InfException;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import javax.swing.ImageIcon;
+import java.awt.BorderLayout;
 /**
  *
  * @author andre
@@ -367,10 +373,36 @@ private void kontrolleraBehorigheter() {
     }//GEN-LAST:event_mvadnPersonalActionPerformed
 
     private void mvhjOmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvhjOmActionPerformed
-       
-        String titel = "Om programmet NGO-matic";
-        Object meddelande = "Ett program utvecklat för SDG Sweden som en del av kursen IK100G Informatik 30hp, delkursen Systemutvecklingsprojekt.\n\nUtvecklat av följande i bokstavsordning: Andreas Galistel, Claudia Kourieh, Fredrik Magnusson och Märta Sjöblom.";
-        JOptionPane.showMessageDialog(null, meddelande, titel, 1);
+    
+    JFrame omRuta = new JFrame("Om NGO-matic");
+    omRuta.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    omRuta.setSize(500, 400); 
+    omRuta.setLayout(new BorderLayout());
+    omRuta.setLocationRelativeTo(null); 
+
+    JLabel titelLabel = new JLabel("<html><h1 style='color:blue; text-align:center;'>NGO-matic</h1></html>", JLabel.CENTER);
+
+    String infoText = "<html>"
+            + "<p style='text-align:center;'>Ett program utvecklat för <b>SDG Sweden</b><br> som en del av kursen <i>IK100G Informatik 30hp</i> <br>delkursen <b>Systemutvecklingsprojekt</b>.</p>"
+            + "<br>"
+            + "<h3 style='text-align:center;'>Utvecklat av:</h3>"
+            + "<ul>"
+            + "<li style='text-align:left;'>Andreas Galistel</li>"
+            + "<li style='text-align:left;'>Claudia Kourieh</li>"
+            + "<li style='text-align:left;'>Fredrik Magnusson</li>"
+            + "<li style='text-align:left;'>Märta Sjöblom</li>"
+            + "</ul>"
+            + "<br>"
+            + "<p style='text-align:center;'>NGO-matic är designat för att hjälpa <b>SDG Sweden</b><br>som arbetar med tekniska lösningar för utvecklingsländer.</p>"
+            + "</html>";
+    
+    JLabel infoLabel = new JLabel(infoText, JLabel.CENTER);
+    JButton stangKnapp = new JButton("Stäng");
+    stangKnapp.addActionListener(e -> omRuta.dispose());
+    omRuta.add(titelLabel, BorderLayout.NORTH);
+    omRuta.add(infoLabel, BorderLayout.CENTER);
+    omRuta.add(stangKnapp, BorderLayout.SOUTH);
+    omRuta.setVisible(true);
     }//GEN-LAST:event_mvhjOmActionPerformed
 
     private void mvminMinaUppgifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvminMinaUppgifterActionPerformed
