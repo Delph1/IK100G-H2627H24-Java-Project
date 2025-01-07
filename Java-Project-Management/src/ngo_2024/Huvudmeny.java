@@ -31,11 +31,39 @@ public class Huvudmeny extends javax.swing.JFrame {
         this.admins = admins;
         this.queryAid = queryAid;
         this.projl = projl;
-        this.anvandare = queryAid;
+        this.anvandare = queryAid
+        kontrolleraBehorigheter();
         this.anstalld = new AnstalldMeny(idb);
         visaAnvandaresNamnOchEpost(queryAid);
         this.setTitle("NGO-matic");
+
     }
+private void kontrolleraBehorigheter() {
+    try {
+        
+        String projektledareQuery = "SELECT COUNT(*) FROM projekt WHERE projektchef = '" + queryAid + "'";
+        int antalProjekt = Integer.parseInt(idb.fetchSingle(projektledareQuery));
+
+        if (antalProjekt > 0) {
+            menyProjektledning.setVisible(true);
+        } else {
+            menyProjektledning.setVisible(false);
+        }
+
+        
+        String adminQuery = "SELECT behorighetsniva FROM admin WHERE aid = '" + queryAid + "'";
+        String behorighetsniva = idb.fetchSingle(adminQuery);
+
+        if (behorighetsniva != null && behorighetsniva.equals("1")) {
+            menyAdministration.setVisible(true);
+        } else {
+            menyAdministration.setVisible(false);
+        }
+
+    } catch (InfException e) {
+        System.out.println("Ett fel inträffade vid kontroll av behörigheter: " + e.getMessage());
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
