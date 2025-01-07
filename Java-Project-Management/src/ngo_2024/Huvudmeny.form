@@ -121,6 +121,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="&#xc4;ndra partners f&#xf6;r projekt"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mvproledAndraPartnersForProjektActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mvproledStatistik">
               <Properties>
@@ -168,6 +171,14 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mvadnPartnersActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="mvproledAndraPartnersForProjekt1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#xc4;ndra partners f&#xf6;r projekt"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mvproledAndraPartnersForProjekt1ActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mvadnHallbarhetsmal">
