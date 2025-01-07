@@ -22,8 +22,10 @@ public class EditAnstalld extends javax.swing.JFrame {
     private String queryAid;
     private HashMap<String, String> avdelningMap;
     private String anvandare;
+    
     /**
-     * Creates new form EditAnstalld
+     * Enkel konstruktor som gör det möjligt att anropa metoderna i klassen
+     * @param idb
      */
 
     public EditAnstalld(InfDB idb) {
@@ -32,9 +34,16 @@ public class EditAnstalld extends javax.swing.JFrame {
         this.idb = idb;
         this.avdelningMap = new HashMap<>();
         fyllComboBox();
-        txtLosen.setText(generatePassword(12));
+        txtLosen.setText(genereraLösenord(12));
     }
     
+    /**
+     * Konstruktor som även tar hänsyn till användares rättigheter
+     * @param idb
+     * @param queryAid
+     * @param admins
+     * @param anvandare 
+     */
     public EditAnstalld(InfDB idb, String queryAid, String admins, String anvandare) {
         initComponents();
         setLocationRelativeTo(null); //Den här koden sätter fönstret i mitten av skärmen.
@@ -47,95 +56,95 @@ public class EditAnstalld extends javax.swing.JFrame {
         fyllComboBox();
       
          if (queryAid != null && !queryAid.isEmpty()) {
-try {          
-    String query = "SELECT fornamn, efternamn, adress, epost, telefon, anstallningsdatum, losenord, avdelning FROM anstalld WHERE aid = '" + queryAid + "'";
+            try {
+                String query = "SELECT fornamn, efternamn, adress, epost, telefon, anstallningsdatum, losenord, avdelning FROM anstalld WHERE aid = '" + queryAid + "'";
 
-    HashMap<String, String> resultat = idb.fetchRow(query); // Hämta rad som en HashMap
-    
-    if (resultat != null) {
-        // Hämta och sätt värden i motsvarande textfält
+                HashMap<String, String> resultat = idb.fetchRow(query); // Hämta rad som en HashMap
 
-        txtFornamn.setText(resultat.get("fornamn"));
-        txtEfternamn.setText(resultat.get("efternamn"));
-        txtAdress.setText(resultat.get("adress"));       
-        txtEpost.setText(resultat.get("epost"));         
-        txtTelefonNr.setText(resultat.get("telefon"));
-        txtanstallningsDatum.setText(resultat.get("anstallningsdatum"));
-        txtLosen.setText(resultat.get("losenord"));
-        String avdelning = resultat.get("avdelning");
-        String avdelningsNamn = getAvdelningsNamnId(avdelning); // sätt motsvarande namn från avdelning
-        if (avdelningsNamn != null) {
-            comboAvdelning.setSelectedItem(avdelningsNamn); // om man valt en anställd som ska ändras, väljer rätt namn på avdelningen i comboboxen
+                if (resultat != null) {
+                    // Hämta och sätt värden i motsvarande textfält
+
+                    txtFornamn.setText(resultat.get("fornamn"));
+                    txtEfternamn.setText(resultat.get("efternamn"));
+                    txtAdress.setText(resultat.get("adress"));
+                    txtEpost.setText(resultat.get("epost"));
+                    txtTelefonNr.setText(resultat.get("telefon"));
+                    txtanstallningsDatum.setText(resultat.get("anstallningsdatum"));
+                    txtLosen.setText(resultat.get("losenord"));
+                    String avdelning = resultat.get("avdelning");
+                    String avdelningsNamn = getAvdelningsNamnId(avdelning); // sätt motsvarande namn från avdelning
+                    if (avdelningsNamn != null) {
+                        comboAvdelning.setSelectedItem(avdelningsNamn); // om man valt en anställd som ska ändras, väljer rätt namn på avdelningen i comboboxen
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Ingen anställd hittades med det angivna ID:t.");
+                }
+            } catch (InfException e) {
+                System.out.println("Ett fel inträffade: " + e.getMessage());
+            }
+            try {
+                // Kontrollera om admins är null
+                if (admins != null) {
+                    jCheckBox1.setEnabled(true); // Gör checkboxen klickbar
+                } else {
+                    jCheckBox1.setEnabled(false); // Gör checkboxen oklickbar
+                }
+
+                // SQL-frågan för att hämta behörighetsnivån
+                String sqlFrågaAdmin = "Select behorighetsniva FROM admin WHERE aid = '" + queryAid + "'";
+                String adminst = idb.fetchSingle(sqlFrågaAdmin); // Hämtar resultatet
+                System.out.println(adminst);
+                String sqlFrågahandl = "Select aid FROM handlaggare WHERE aid = '" + queryAid + "'";
+                String handlaggare = idb.fetchSingle(sqlFrågahandl); // Hämtar resultatet
+                System.out.println(handlaggare);
+
+                // Kontrollera om det är den inloggade användaren
+                if (queryAid.equals(anvandare)) {
+                    jCheckBox1.setEnabled(false); // Gör checkboxen oklickbar
+                    jCheckBox2.setEnabled(false); // Gör checkboxen oklickbar
+                } else {
+                    // Kontrollera om admins är null
+                    if (admins != null) {
+                        jCheckBox1.setEnabled(true); // Gör checkboxen klickbar
+                        jCheckBox2.setEnabled(true); // Gör checkboxen klickbar
+                    } else {
+                        jCheckBox1.setEnabled(false); // Gör checkboxen oklickbar
+                        jCheckBox2.setEnabled(false); // Gör checkboxen oklickbar
+                    }
+                }
+
+                // Kontrollera om SQL-frågan returnerar ett resultat
+                if (adminst != null) {
+                    jCheckBox1.setSelected(true); // Markera checkboxen
+                } else {
+                    jCheckBox1.setSelected(false); // Avmarkera checkboxen
+                }
+                if (handlaggare != null) {
+                    jCheckBox2.setSelected(true); // Markera checkboxen
+                } else {
+                    jCheckBox2.setSelected(false); // Avmarkera checkboxen
+                }
+
+            } catch (InfException e) {
+                System.out.println("Ett fel inträffade: " + e.getMessage());
+            }
+
+            try {
+
+                // SQL-frågan för att hämta behörighetsnivån
+                String sqlFrågahandl = "Select aid FROM handlaggare WHERE aid = '" + queryAid + "'";
+                String handlaggare = idb.fetchSingle(sqlFrågahandl); // Hämtar resultatet
+                System.out.println(handlaggare);
+
+            } catch (InfException e) {
+                System.out.println("Ett fel inträffade: " + e.getMessage());
+            }
+
         }
-    } else {
-        JOptionPane.showMessageDialog(null, "Ingen anställd hittades med det angivna ID:t.");
-    }
-} catch (InfException e) {
-    System.out.println("Ett fel inträffade: " + e.getMessage());
-}
-             try {
-                 // Kontrollera om admins är null
-                 if (admins != null) {
-                     jCheckBox1.setEnabled(true); // Gör checkboxen klickbar
-                 } else {
-                     jCheckBox1.setEnabled(false); // Gör checkboxen oklickbar
-                 }
-
-                 // SQL-frågan för att hämta behörighetsnivån
-                 String sqlFrågaAdmin = "Select behorighetsniva FROM admin WHERE aid = '" + queryAid + "'";
-                 String adminst = idb.fetchSingle(sqlFrågaAdmin); // Hämtar resultatet
-                 System.out.println(adminst);
-                 String sqlFrågahandl = "Select aid FROM handlaggare WHERE aid = '" + queryAid + "'";
-                 String handlaggare = idb.fetchSingle(sqlFrågahandl); // Hämtar resultatet
-                 System.out.println(handlaggare);
-
-                 // Kontrollera om det är den inloggade användaren
-                 if (queryAid.equals(anvandare)) {
-                     jCheckBox1.setEnabled(false); // Gör checkboxen oklickbar
-                     jCheckBox2.setEnabled(false); // Gör checkboxen oklickbar
-                 } else {
-                     // Kontrollera om admins är null
-                     if (admins != null) {
-                         jCheckBox1.setEnabled(true); // Gör checkboxen klickbar
-                         jCheckBox2.setEnabled(true); // Gör checkboxen klickbar
-                     } else {
-                         jCheckBox1.setEnabled(false); // Gör checkboxen oklickbar
-                         jCheckBox2.setEnabled(false); // Gör checkboxen oklickbar
-                     }
-                 }
-
-                 // Kontrollera om SQL-frågan returnerar ett resultat
-                 if (adminst != null) {
-                     jCheckBox1.setSelected(true); // Markera checkboxen
-                 } else {
-                     jCheckBox1.setSelected(false); // Avmarkera checkboxen
-                 }
-                 if (handlaggare != null) {
-                     jCheckBox2.setSelected(true); // Markera checkboxen
-                 } else {
-                     jCheckBox2.setSelected(false); // Avmarkera checkboxen
-                 }
-
-             } 
-             catch (InfException e) {
-                 System.out.println("Ett fel inträffade: " + e.getMessage());
-             }
- 
-             try {
-
-                 // SQL-frågan för att hämta behörighetsnivån
-                 String sqlFrågahandl = "Select aid FROM handlaggare WHERE aid = '" + queryAid + "'";
-                 String handlaggare = idb.fetchSingle(sqlFrågahandl); // Hämtar resultatet
-                 System.out.println(handlaggare);
-
-
-             } 
-             catch (InfException e) {
-                 System.out.println("Ett fel inträffade: " + e.getMessage());
-             }
-
-    }
-        } 
+    } 
+    /**
+     * Hämtar ut avdid och namn från databasen och fyller upp comboboxen. 
+     */
     private void fyllComboBox() {
         try {
             String query = "SELECT avdid, namn FROM avdelning";
@@ -155,16 +164,27 @@ try {
         }
     }
 
+    /**
+     * Metod som hämtar ut namn från avdid från HashMap som skapats upp.
+     * @param avdid
+     * @return 
+     */
     private String getAvdelningsNamnId(String avdid) {
+        String namn = null;
         for (Map.Entry<String, String> entry : avdelningMap.entrySet()) {
             if (entry.getValue().equals(avdid)) {
-                return entry.getKey();
+                namn = entry.getKey();
             }
         }
-        return null;
+        return namn;
     }
     
-    public static String generatePassword(int length) {
+    /**
+     * Metod för att generera ett lösenord. 
+     * @param langd
+     * @return 
+     */
+    public static String genereraLösenord(int langd) {
         
         String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String lower = "abcdefghijklmnopqrstuvwxyz";
@@ -178,7 +198,7 @@ try {
         StringBuilder password = new StringBuilder();
 
         // Generera lösenord
-        for (int i = 0; i < length; i++) {
+        for (int i = 0; i < langd; i++) {
             int index = random.nextInt(allowedChars.length());
             password.append(allowedChars.charAt(index));
         }
@@ -186,6 +206,48 @@ try {
         return password.toString();
     }
     
+    /**
+     * Kontrollerar om en e-postadress finns i databasen. Används vid inloggning.
+     * @param epost
+     * @return 
+     */
+    public boolean finnsEpost(String epost)
+    {
+        boolean epostFinns = false;
+        try
+        {
+            String query = "SELECT losenord FROM anstalld WHERE epost = '" + epost + "'";
+            idb.fetchSingle(query);
+            epostFinns = true;
+        }
+        catch(InfException e)
+        {
+            JOptionPane.showMessageDialog(this, "E-postadressen finns inte i datrabasen.");
+        }
+        return epostFinns;
+    }
+    
+    /**
+     * Metod som uppdaterar lösenord för en användare
+     * @param aid
+     * @param nyttLosen 
+     */
+    public boolean uppdateraLosenord(String epost, String nyttLosen)
+    {
+        boolean success = false;
+        try
+        {
+            String query = "UPDATE anstalld SET losenord = '" + nyttLosen + "' WHERE epost = '" + epost + "'";
+            System.out.println(query);
+            idb.update(query);
+            success = true;
+        }
+        catch(InfException e)
+        {
+            JOptionPane.showMessageDialog(this, "Det gick inte att uppdatera lösenordet.");
+        }
+        return success;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -513,44 +575,10 @@ try {
     }//GEN-LAST:event_txtLosenActionPerformed
 
     private void SlumpLosenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SlumpLosenActionPerformed
-       String newPassword = generatePassword(10); 
+       String newPassword = genereraLösenord(10); 
        txtLosen.setText(newPassword);
     }//GEN-LAST:event_SlumpLosenActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EditAnstalld.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EditAnstalld.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EditAnstalld.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EditAnstalld.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-              //  new EditAnstalld().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton SlumpLosen;
