@@ -12,20 +12,115 @@ import oru.inf.InfDB;
 import oru.inf.InfException;
 
 /**
- *
+ * Klass för att hantera Land
  * @author Claudia Kourieh
  */
 public class LandMeny extends javax.swing.JFrame {
 
     private InfDB idb; 
     /**
-     * Creates new form LandMeny
+     * Konstruktur för LandMeny
      */
     public LandMeny(InfDB idb) {
         this.idb = idb;
         initComponents();
         setLocationRelativeTo(null);
-        getLand();
+        getLander();
+    }
+
+    /**
+     * Hämtar ut alla länder från databasen
+     */
+    private void getLander()
+    {
+        try {
+            String query = "SELECT * FROM land";
+            ArrayList<HashMap<String, String>> resultat = idb.fetchRows(query);
+            
+            if(resultat != null)
+            {
+                DefaultTableModel tableModel = new DefaultTableModel();
+                tableModel.setRowCount(0);
+                
+                tableModel.addColumn("ID");
+                tableModel.addColumn("Namn");
+                tableModel.addColumn("Språk");
+                tableModel.addColumn("Valuta");
+                tableModel.addColumn("Tidszon");
+                tableModel.addColumn("Politisk Struktur");
+                tableModel.addColumn("Ekonomi");
+                
+                for (HashMap<String, String> rad : resultat) {
+                    tableModel.addRow(new Object[]{
+                        rad.get("lid"),
+                        rad.get("namn"),
+                        rad.get("sprak"),
+                        rad.get("valuta"),
+                        rad.get("tidszon"),
+                        rad.get("politisk_struktur"),
+                        rad.get("ekonomi")
+                    });
+                }
+                jtTabell.setModel(tableModel);
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(this, "Inga länder hittades.");
+            }
+        }
+        catch (InfException e) 
+        {
+        JOptionPane.showMessageDialog(null, "Fel vid hämtning av länder: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Raderar markerat land från databasen
+     */
+    private void raderaLand()
+    {
+        int selectedRow = jtTabell.getSelectedRow();
+        if (selectedRow != -1)
+        {
+            String land = jtTabell.getValueAt(selectedRow, 0).toString();
+            int queryLid = Integer.parseInt(land);
+
+            // Först kollar vi om det finns några beroenden innan vi tar bort landet.
+            try {
+                String query1 = "UPDATE stad SET land = null WHERE land = " + queryLid;
+                idb.update(query1);
+                
+                // Radera landet
+                String query2 = "DELETE FROM land WHERE lid = " + queryLid;
+                idb.delete(query2);
+                getLander();
+            }
+            catch (InfException e)
+            {
+                JOptionPane.showMessageDialog(null, "Fel vid borttagning av land: " + e.getMessage());
+            }
+        }
+        else 
+        {
+            JOptionPane.showMessageDialog(null, "Ingen rad är markerad!");
+        }
+    }
+    
+    /**
+     * Öppnar upp EditLand för markerat land.
+     */
+    private void editLand()
+    {
+        int selectedRow = jtTabell.getSelectedRow();
+        if (selectedRow != -1)
+        {
+            String land = jtTabell.getValueAt(selectedRow, 0).toString();
+            new EditLand(idb, land).setVisible(true);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "Ingen rad är markerad");
+        }
     }
 
     /**
@@ -141,8 +236,12 @@ public class LandMeny extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Knappar nedan.
+     */
+    
     private void btnUppdateraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUppdateraActionPerformed
-        getLand();
+        getLander();
     }//GEN-LAST:event_btnUppdateraActionPerformed
 
     private void btnÄndraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnÄndraActionPerformed
@@ -158,94 +257,8 @@ public class LandMeny extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNyttLandActionPerformed
 
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
-        getLand();
+        getLander();
     }//GEN-LAST:event_formWindowGainedFocus
-
-    private void getLand()
-    {
-        try {
-            String query = "SELECT * FROM land";
-            ArrayList<HashMap<String, String>> resultat = idb.fetchRows(query);
-            
-            if(resultat != null)
-            {
-                DefaultTableModel tableModel = new DefaultTableModel();
-                tableModel.setRowCount(0);
-                
-                tableModel.addColumn("ID");
-                tableModel.addColumn("Namn");
-                tableModel.addColumn("Språk");
-                tableModel.addColumn("Valuta");
-                tableModel.addColumn("Tidszon");
-                tableModel.addColumn("Politisk Struktur");
-                tableModel.addColumn("Ekonomi");
-                
-                for (HashMap<String, String> rad : resultat) {
-                    tableModel.addRow(new Object[]{
-                        rad.get("lid"),
-                        rad.get("namn"),
-                        rad.get("sprak"),
-                        rad.get("valuta"),
-                        rad.get("tidszon"),
-                        rad.get("politisk_struktur"),
-                        rad.get("ekonomi")
-                    });
-                }
-                jtTabell.setModel(tableModel);
-            }
-            else
-            {
-                JOptionPane.showMessageDialog(this, "Inga länder hittades.");
-            }
-        }
-        catch (InfException e) 
-        {
-        JOptionPane.showMessageDialog(null, "Fel vid hämtning av länder: " + e.getMessage());
-        }
-    }
-    
-    private void raderaLand()
-    {
-        int selectedRow = jtTabell.getSelectedRow();
-        if (selectedRow != -1)
-        {
-            String land = jtTabell.getValueAt(selectedRow, 0).toString();
-            int queryLid = Integer.parseInt(land);
-
-            // Först kollar vi om det finns några beroenden innan vi tar bort landet.
-            try {
-                String query1 = "UPDATE stad SET land = null WHERE land = " + queryLid;
-                idb.update(query1);
-                
-                // Radera landet
-                String query2 = "DELETE FROM land WHERE lid = " + queryLid;
-                idb.delete(query2);
-                getLand();
-            }
-            catch (InfException e)
-            {
-                JOptionPane.showMessageDialog(null, "Fel vid borttagning av land: " + e.getMessage());
-            }
-        }
-        else 
-        {
-            JOptionPane.showMessageDialog(null, "Ingen rad är markerad!");
-        }
-    }
-    
-    private void editLand()
-    {
-        int selectedRow = jtTabell.getSelectedRow();
-        if (selectedRow != -1)
-        {
-            String land = jtTabell.getValueAt(selectedRow, 0).toString();
-            new EditLand(idb, land).setVisible(true);
-        }
-        else
-        {
-            JOptionPane.showMessageDialog(null, "Ingen rad är markerad");
-        }
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNyttLand;

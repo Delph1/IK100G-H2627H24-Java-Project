@@ -10,38 +10,47 @@ import oru.inf.InfDB;
 import oru.inf.InfException;
 
 /**
- *
- * @author andre
+ * Klass för EditHållarbetsmål
+ * @author Andreas Galistel
  */
 public class EditHallbarhetsmal extends javax.swing.JFrame {
 
     private InfDB idb;
-    private String queryAid; 
+    private String queryMid; 
+    
     /**
-     * Creates new form EditHallbarhetsmal
+     * Konstruktor för EditHallbarhetsmal
+     *  @param idb
+     *  @param queryAid
      */
-    public EditHallbarhetsmal(InfDB idb, String queryAid) {
+    public EditHallbarhetsmal(InfDB idb, String queryMid) {
         this.idb = idb;
-        this.queryAid = queryAid;
+        this.queryMid = queryMid;
         initComponents();
         setLocationRelativeTo(null);
         
-        if (queryAid != null)
+        //Kollar om queryMid är satt och i så fall hämta ut data om det satta målet. 
+        if (queryMid != null)
         {
-            getMaldata(queryAid);
+            getMaldata(queryMid);
         }
         else
+            //Om målet inte är satt döljs ID-fälten eftersom de inte ska fyllas i manuellt vid ett nytt mål.
         {
             lblId.setVisible(false);
             txtId.setVisible(false);
         }
     }
 
-    private void getMaldata(String queryAid)
+    /**
+     * Metod som hämtar ut måldata.
+     * @param queryMid 
+     */
+    private void getMaldata(String queryMid)
     {
         try 
         {
-            String query = "SELECT * FROM hallbarhetsmal WHERE hid = " + queryAid;
+            String query = "SELECT * FROM hallbarhetsmal WHERE hid = " + queryMid;
             System.out.println(query);
 
             HashMap<String, String> resultat = idb.fetchRow(query); // Hämta rad som en HashMap
@@ -62,7 +71,7 @@ public class EditHallbarhetsmal extends javax.swing.JFrame {
                 cbPrioritet.setSelectedIndex(prio);
 
             } else {
-                JOptionPane.showMessageDialog(null, "Ingen avdelning hittades med det angivna ID:t.");
+                JOptionPane.showMessageDialog(null, "Ingen avdelning hittades med det angivna ID-numret.");
             }
         } 
         catch (InfException e) 
@@ -90,6 +99,7 @@ public class EditHallbarhetsmal extends javax.swing.JFrame {
         btnSpara = new javax.swing.JButton();
         lblId = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
+        btnAvbryt = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -118,6 +128,13 @@ public class EditHallbarhetsmal extends javax.swing.JFrame {
         });
 
         lblId.setText("ID:");
+
+        btnAvbryt.setText("Avbryt");
+        btnAvbryt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAvbrytActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -156,6 +173,8 @@ public class EditHallbarhetsmal extends javax.swing.JFrame {
                         .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAvbryt)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSpara)))
                 .addGap(16, 16, 16))
         );
@@ -183,13 +202,19 @@ public class EditHallbarhetsmal extends javax.swing.JFrame {
                     .addComponent(cbPrioritet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblPrioritet))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
-                .addComponent(btnSpara)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSpara)
+                    .addComponent(btnAvbryt))
                 .addGap(15, 15, 15))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Knappar följer nedan.
+     */
+    
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
 
         if(Validering.faltEjTomtKontroll(txtNamn) &&
@@ -209,7 +234,7 @@ public class EditHallbarhetsmal extends javax.swing.JFrame {
             };
             try
             {
-                if(queryAid == null)
+                if(queryMid == null)
                 {
                     int hid = Integer.parseInt(idb.getAutoIncrement("hallbarhetsmal", "hid"));
                     String query = "INSERT INTO hallbarhetsmal (hid, namn, malnummer, beskrivning, prioritet)"
@@ -230,7 +255,7 @@ public class EditHallbarhetsmal extends javax.swing.JFrame {
                     + "malnummer = '" + malnummer + "', "
                     + "beskrivning = '" + beskrivning + "', "
                     + "prioritet = '" + prioritet 
-                    + "' WHERE hid = " + queryAid;
+                    + "' WHERE hid = " + queryMid;
                     System.out.println(query);
                     idb.update(query);
 
@@ -251,8 +276,13 @@ public class EditHallbarhetsmal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSparaActionPerformed
 
+    private void btnAvbrytActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvbrytActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnAvbrytActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAvbryt;
     private javax.swing.JButton btnSpara;
     private javax.swing.JComboBox<String> cbPrioritet;
     private javax.swing.JLabel lblBeskrivning;
