@@ -26,6 +26,7 @@ public class PartnerMeny extends javax.swing.JFrame {
     public PartnerMeny(InfDB idb) {
         this.idb = idb;
         this.stad = new StadMeny(idb);
+        aid = "";   //Undvika att aid är null
         initComponents();
         setLocationRelativeTo(null);
         getPartners();

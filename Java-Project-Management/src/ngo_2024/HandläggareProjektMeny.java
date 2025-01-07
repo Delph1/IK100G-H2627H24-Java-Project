@@ -35,7 +35,7 @@ public class HandläggareProjektMeny extends javax.swing.JFrame {
         formateraTabell();
         this.setTitle("Lägg till eller ta bort handläggare");
         cmbHandläggare.setVisible(false);
-        btnOK.setVisible(false);
+        btnSpara.setVisible(false);
         fyllCmbHandläggare();
     }
 
@@ -53,7 +53,8 @@ public class HandläggareProjektMeny extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblHandlaggare = new javax.swing.JTable();
         cmbHandläggare = new javax.swing.JComboBox<>();
-        btnOK = new javax.swing.JButton();
+        btnSpara = new javax.swing.JButton();
+        btnAvbryt = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -102,10 +103,17 @@ public class HandläggareProjektMeny extends javax.swing.JFrame {
 
         cmbHandläggare.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Välj handläggare" }));
 
-        btnOK.setText("OK");
-        btnOK.addActionListener(new java.awt.event.ActionListener() {
+        btnSpara.setText("Spara");
+        btnSpara.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOKActionPerformed(evt);
+                btnSparaActionPerformed(evt);
+            }
+        });
+
+        btnAvbryt.setText("Avbryt");
+        btnAvbryt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAvbrytActionPerformed(evt);
             }
         });
 
@@ -118,16 +126,16 @@ public class HandläggareProjektMeny extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnLäggTill)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnTaBort))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(cmbHandläggare, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnOK)))
-                        .addGap(0, 87, Short.MAX_VALUE)))
+                        .addComponent(cmbHandläggare, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSpara)
+                        .addGap(0, 87, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnLäggTill)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnTaBort)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAvbryt)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -136,11 +144,12 @@ public class HandläggareProjektMeny extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnTaBort)
-                    .addComponent(btnLäggTill))
+                    .addComponent(btnLäggTill)
+                    .addComponent(btnAvbryt))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmbHandläggare, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnOK))
+                    .addComponent(btnSpara))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
                 .addContainerGap())
@@ -171,7 +180,7 @@ public class HandläggareProjektMeny extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnTaBortActionPerformed
 
-    private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
+    private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
         if (cmbHandläggare.getSelectedIndex() ==0) {
             JOptionPane.showMessageDialog(null, "Välj en handläggare från rullmenyn");
         } else {
@@ -196,12 +205,16 @@ public class HandläggareProjektMeny extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Databasfel");
             }
         }
-    }//GEN-LAST:event_btnOKActionPerformed
+    }//GEN-LAST:event_btnSparaActionPerformed
 
     private void btnLäggTillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLäggTillActionPerformed
         cmbHandläggare.setVisible(true);
-        btnOK.setVisible(true);
+        btnSpara.setVisible(true);
     }//GEN-LAST:event_btnLäggTillActionPerformed
+
+    private void btnAvbrytActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvbrytActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnAvbrytActionPerformed
     
     private void fyllCmbHandläggare() {
         String sqlFörnamn = "select fornamn from anstalld, handlaggare where anstalld.aid = handlaggare.aid;";
@@ -267,8 +280,9 @@ public class HandläggareProjektMeny extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAvbryt;
     private javax.swing.JButton btnLäggTill;
-    private javax.swing.JButton btnOK;
+    private javax.swing.JButton btnSpara;
     private javax.swing.JButton btnTaBort;
     private javax.swing.JComboBox<String> cmbHandläggare;
     private javax.swing.JScrollPane jScrollPane1;

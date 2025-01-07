@@ -41,10 +41,10 @@ public class EditProjekt extends javax.swing.JFrame {
         fyllCmbLand();  //Fyller Land-comboboxen med namn
         lblProjektID.setVisible(false);
         txtProjektID.setVisible(false);
-//        btnSökPID.setVisible(false);
         btnHandlaggare.setVisible(false);
         sprStreck.setVisible(false);
         this.setTitle("Nytt projekt");
+        btnRensaFält.setText("Rensa");
         setLocationRelativeTo(null);    //Sätter rutan mitt i skärmen
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  //Stänger fönstret men inte programmet vid kryssad ruta
     }
@@ -131,6 +131,7 @@ public class EditProjekt extends javax.swing.JFrame {
         lblHandläggare = new javax.swing.JLabel();
         jDateStartdatum = new com.toedter.calendar.JDateChooser();
         jDateSlutdatum = new com.toedter.calendar.JDateChooser();
+        btnAvbryt = new javax.swing.JButton();
 
         jDateStartdatumSök.setDateFormatString("yyyy-MM-dd");
 
@@ -191,6 +192,13 @@ public class EditProjekt extends javax.swing.JFrame {
 
         jDateSlutdatum.setDateFormatString("yyyy-MM-dd");
 
+        btnAvbryt.setText("Avbryt");
+        btnAvbryt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAvbrytActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -203,18 +211,6 @@ public class EditProjekt extends javax.swing.JFrame {
                         .addComponent(lblBeskrivning)
                         .addGap(18, 18, 18)
                         .addComponent(txtBeskrivning))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblLand)
-                                .addGap(52, 52, 52))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(lblProjektChef)
-                                .addGap(18, 18, 18)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnHandlaggare)
-                            .addComponent(lblHandläggare)
-                            .addComponent(cmbProjektChef, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblPrioritet)
@@ -237,11 +233,6 @@ public class EditProjekt extends javax.swing.JFrame {
                                     .addComponent(txtProjektID, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtProjektNamn, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(107, 107, 107)
-                                .addComponent(btnRensaFält)
-                                .addGap(40, 40, 40)
-                                .addComponent(btnSpara))
-                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblStartDatum)
                                 .addGap(18, 18, 18)
                                 .addComponent(jDateStartdatum, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -249,7 +240,28 @@ public class EditProjekt extends javax.swing.JFrame {
                                 .addComponent(lblSlutDatum)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jDateSlutdatum, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(24, 24, 24)))
+                        .addGap(24, 24, 24))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblLand)
+                                .addGap(52, 52, 52))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(lblProjektChef)
+                                .addGap(18, 18, 18)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnRensaFält)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnAvbryt)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnSpara))
+                            .addComponent(cmbProjektChef, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnHandlaggare)
+                                    .addComponent(lblHandläggare))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap(40, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -303,7 +315,8 @@ public class EditProjekt extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRensaFält)
-                    .addComponent(btnSpara))
+                    .addComponent(btnSpara)
+                    .addComponent(btnAvbryt))
                 .addContainerGap(32, Short.MAX_VALUE))
         );
 
@@ -568,8 +581,13 @@ public class EditProjekt extends javax.swing.JFrame {
         new HandläggareProjektMeny(idb, pid).setVisible(true);
     }//GEN-LAST:event_btnHandlaggareActionPerformed
 
+    private void btnAvbrytActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvbrytActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnAvbrytActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAvbryt;
     private javax.swing.JButton btnHandlaggare;
     private javax.swing.JButton btnRensaFält;
     private javax.swing.JButton btnSpara;
