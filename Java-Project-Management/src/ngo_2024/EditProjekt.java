@@ -35,6 +35,7 @@ public class EditProjekt extends javax.swing.JFrame {
         this.datumformat = new SimpleDateFormat("yyyy-MM-dd");
         nyttProjekt = true;
         this.admin = admin; 
+        this.land = new LandMeny(idb);
         initComponents();
         fyllCmbStatus();    //Fyller Status-comboboxen
         fyllCmbPrioritet(); //Fyller Prioritet-comboboxen
@@ -43,6 +44,7 @@ public class EditProjekt extends javax.swing.JFrame {
         lblProjektID.setVisible(false);
         txtProjektID.setVisible(false);
         btnHandlaggare.setVisible(false);
+        btnPartners.setVisible(false);
         sprStreck.setVisible(false);
         this.setTitle("Nytt projekt");
         btnRensaFält.setText("Rensa");
@@ -68,6 +70,7 @@ public class EditProjekt extends javax.swing.JFrame {
         fyllCmbProjektChef();   //Fyller ProjektChef-comboboxen med namn
         fyllCmbLand();  //Fyller Land-comboboxen med namn
         lblHandläggare.setVisible(false);
+        lblPartners.setVisible(false);
         txtProjektID.setText("" + pid);   //Sätter projekt-id i rutan vid redigering av projekt
         editProjekt(txtProjektID);  //Redigerar projekt utifrån projektID
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  //Stänger fönstret men inte programmet vid kryssad ruta
@@ -93,6 +96,7 @@ public class EditProjekt extends javax.swing.JFrame {
         fyllCmbProjektChef();   //Fyller ProjektChef-comboboxen med namn
         fyllCmbLand();  //Fyller Land-comboboxen med namn
         lblHandläggare.setVisible(false);
+        lblPartners.setVisible(false);
         txtProjektID.setText("" + pid);   //Sätter projekt-id i rutan vid redigering av projekt
         editProjekt(txtProjektID);  //Redigerar projekt utifrån projektID
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  //Stänger fönstret men inte programmet vid kryssad ruta
@@ -135,6 +139,8 @@ public class EditProjekt extends javax.swing.JFrame {
         jDateStartdatum = new com.toedter.calendar.JDateChooser();
         jDateSlutdatum = new com.toedter.calendar.JDateChooser();
         btnAvbryt = new javax.swing.JButton();
+        btnPartners = new javax.swing.JButton();
+        lblPartners = new javax.swing.JLabel();
 
         jDateStartdatumSök.setDateFormatString("yyyy-MM-dd");
 
@@ -142,6 +148,7 @@ public class EditProjekt extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Redigera projekt");
+        setMaximumSize(new java.awt.Dimension(500, 650));
 
         lblProjektNamn.setText("Projektnamn");
 
@@ -183,6 +190,7 @@ public class EditProjekt extends javax.swing.JFrame {
         });
 
         btnHandlaggare.setText("Hantera deltagande handläggare");
+        btnHandlaggare.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         btnHandlaggare.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnHandlaggareActionPerformed(evt);
@@ -190,6 +198,7 @@ public class EditProjekt extends javax.swing.JFrame {
         });
 
         lblHandläggare.setText("Handläggare läggs till separat via redigering");
+        lblHandläggare.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         jDateStartdatum.setDateFormatString("yyyy-MM-dd");
 
@@ -201,6 +210,17 @@ public class EditProjekt extends javax.swing.JFrame {
                 btnAvbrytActionPerformed(evt);
             }
         });
+
+        btnPartners.setText("Hantera deltagande partners");
+        btnPartners.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        btnPartners.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPartnersActionPerformed(evt);
+            }
+        });
+
+        lblPartners.setText("Partner läggs till separat via redigering");
+        lblPartners.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -253,19 +273,21 @@ public class EditProjekt extends javax.swing.JFrame {
                                 .addComponent(lblProjektChef)
                                 .addGap(18, 18, 18)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnRensaFält)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnAvbryt)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnSpara))
                             .addComponent(cmbProjektChef, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(btnHandlaggare)
-                                    .addComponent(lblHandläggare))
+                                    .addComponent(lblHandläggare)
+                                    .addComponent(btnPartners)
+                                    .addComponent(lblPartners)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnRensaFält)
+                                        .addGap(117, 117, 117)
+                                        .addComponent(btnAvbryt)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnSpara)))
                                 .addGap(0, 0, Short.MAX_VALUE)))))
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -311,16 +333,20 @@ public class EditProjekt extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmbProjektChef, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblProjektChef))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblHandläggare)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnHandlaggare)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnPartners)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblHandläggare)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblPartners)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRensaFält)
-                    .addComponent(btnSpara)
-                    .addComponent(btnAvbryt))
-                .addContainerGap(32, Short.MAX_VALUE))
+                    .addComponent(btnAvbryt)
+                    .addComponent(btnSpara))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         lblProjektNamn.getAccessibleContext().setAccessibleName("lblProjektNamn");
@@ -373,17 +399,13 @@ public class EditProjekt extends javax.swing.JFrame {
     }
 
     private void fyllCmbProjektChef() {
-        String sqlFörnamn = "select fornamn from anstalld, handlaggare where anstalld.aid = handlaggare.aid;";
-        String sqlEfternamn = "select efternamn from anstalld, handlaggare where anstalld.aid = handlaggare.aid;";
-        ArrayList<String> allaFörnamn;
-        ArrayList<String> allaEfternamn;
+        
+        String query = "SELECT CONCAT(fornamn, ' ', efternamn) as namn FROM anstalld, handlaggare where anstalld.aid = handlaggare.aid";
         cmbProjektChef.addItem("");
         try {
-            allaFörnamn = idb.fetchColumn(sqlFörnamn);
-            allaEfternamn = idb.fetchColumn(sqlEfternamn);
-            for (int i = 0; i < allaFörnamn.size(); i++) {
-                String fulltNamn = allaFörnamn.get(i) + " " + allaEfternamn.get(i);
-                cmbProjektChef.addItem(fulltNamn);
+            ArrayList<String> allaNamn = idb.fetchColumn(query);
+            for (int i = 0; i < allaNamn.size(); i++) {
+                cmbProjektChef.addItem(allaNamn.get(i));
             }
         } catch (InfException e) {
             JOptionPane.showMessageDialog(this, "Något gick fel när chef-data skulle hämtas från databasen. Kontrollera att databasen fungerar som den ska.");
@@ -571,10 +593,16 @@ public class EditProjekt extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnAvbrytActionPerformed
 
+    private void btnPartnersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPartnersActionPerformed
+        String pid = txtProjektID.getText();
+        new EditProjektPartner(idb, pid, true).setVisible(true);
+    }//GEN-LAST:event_btnPartnersActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAvbryt;
     private javax.swing.JButton btnHandlaggare;
+    private javax.swing.JButton btnPartners;
     private javax.swing.JButton btnRensaFält;
     private javax.swing.JButton btnSpara;
     private javax.swing.JComboBox<String> cmbLand;
@@ -589,6 +617,7 @@ public class EditProjekt extends javax.swing.JFrame {
     private javax.swing.JLabel lblHandläggare;
     private javax.swing.JLabel lblKostnad;
     private javax.swing.JLabel lblLand;
+    private javax.swing.JLabel lblPartners;
     private javax.swing.JLabel lblPrioritet;
     private javax.swing.JLabel lblProjektChef;
     private javax.swing.JLabel lblProjektID;

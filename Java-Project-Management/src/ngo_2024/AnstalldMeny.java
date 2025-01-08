@@ -88,6 +88,7 @@ public class AnstalldMeny extends javax.swing.JFrame {
         btnSok = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Anställda");
 
         fetchanstallda.setText("Hämta anställda");
         fetchanstallda.addActionListener(new java.awt.event.ActionListener() {
@@ -131,6 +132,11 @@ public class AnstalldMeny extends javax.swing.JFrame {
         });
 
         tfSok.setText("Ange handläggarens namn eller e-post");
+        tfSok.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tfSokMouseClicked(evt);
+            }
+        });
 
         btnSok.setText("Sök");
         btnSok.addActionListener(new java.awt.event.ActionListener() {
@@ -487,6 +493,11 @@ public class AnstalldMeny extends javax.swing.JFrame {
     private void btnSokActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSokActionPerformed
         sokHandlaggare();
     }//GEN-LAST:event_btnSokActionPerformed
+
+    private void tfSokMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfSokMouseClicked
+        tfSok.setText("");
+        //Tar bort hjälptexten vid klick. Kan vara irriterande om man bara vill ändra i texten, men här är vi
+    }//GEN-LAST:event_tfSokMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSok;

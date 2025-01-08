@@ -24,6 +24,7 @@ public class ProjektMeny extends javax.swing.JFrame {
     private boolean projCh;
     private boolean admin;
     private AvdelningMeny avdelning;
+    private AnstalldMeny anstalld;
     
     /**
      * Admin-vy
@@ -31,6 +32,7 @@ public class ProjektMeny extends javax.swing.JFrame {
     public ProjektMeny(InfDB idb) {
         this.idb = idb;
         this.avdelning = new AvdelningMeny(idb);
+        this.anstalld = new AnstalldMeny(idb);
         initComponents();
         fyllCmbAvdelningar();
         fyllCmbStatus();
@@ -48,6 +50,7 @@ public class ProjektMeny extends javax.swing.JFrame {
     public ProjektMeny(InfDB idb, String aid) {
         this.idb = idb;
         this.aid = aid;
+        this.anstalld = new AnstalldMeny(idb);
         initComponents();
         btnMinaProjekt.setVisible(false);
         btnAllaProjekt.setVisible(false);   //Behöver inte kunna se dessa
@@ -55,6 +58,7 @@ public class ProjektMeny extends javax.swing.JFrame {
         cmbAvdelningsVal.setVisible(false);
         lblStatus.setVisible(false);
         cmbStatus.setVisible(false);
+        btnPartners.setVisible(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE );
         hamtaProjekt(aid);
@@ -70,6 +74,7 @@ public class ProjektMeny extends javax.swing.JFrame {
         this.idb = idb;
         this.aid = aid;
         this.avdelning = new AvdelningMeny(idb);
+        this.anstalld = new AnstalldMeny(idb);
         initComponents();
         fyllCmbAvdelningar();
         fyllCmbStatus();
@@ -78,6 +83,7 @@ public class ProjektMeny extends javax.swing.JFrame {
         btnMinaProjekt.setVisible(false);
         btnÄndraProjekt.setVisible(false);
         btnLäggTillProjekt.setVisible(false);
+        btnPartners.setVisible(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         hamtaProjektAvdelning(aid);
     }
@@ -93,6 +99,7 @@ public class ProjektMeny extends javax.swing.JFrame {
         this.aid = aid;
         this.projCh = projCh;
         this.avdelning = new AvdelningMeny(idb);
+        this.anstalld = new AnstalldMeny(idb);
         initComponents();
         fyllCmbAvdelningar();
         fyllCmbStatus();
@@ -100,6 +107,7 @@ public class ProjektMeny extends javax.swing.JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE );
         hamtaProjektSomProjektChef(aid);
         this.setTitle("Projektledare");
+        btnPartners.setVisible(false);
         btnTaBortProjekt.setVisible(false);     //Tolkar det som att ProjektChef inte ska kunna ta bort projekt
         btnAllaProjekt.setVisible(false);   //Behöver inte kunna se dessa
         btnMinaProjekt.setVisible(false); //Behöver inte se projekt de deltar på i denna vy
@@ -129,6 +137,7 @@ public class ProjektMeny extends javax.swing.JFrame {
         btnMinaProjekt = new javax.swing.JButton();
         jDateStartdatumSök = new com.toedter.calendar.JDateChooser();
         jDateSlutdatumSök = new com.toedter.calendar.JDateChooser();
+        btnPartners = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Projekt");
@@ -219,6 +228,13 @@ public class ProjektMeny extends javax.swing.JFrame {
 
         jDateSlutdatumSök.setDateFormatString("yyyy-MM-dd");
 
+        btnPartners.setText("Hantera partners");
+        btnPartners.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPartnersActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -234,12 +250,14 @@ public class ProjektMeny extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnLäggTillProjekt)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnTaBortProjekt))
+                                .addComponent(btnTaBortProjekt)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnPartners))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnMinaProjekt)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnAllaProjekt)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblSokDatum)
@@ -272,7 +290,8 @@ public class ProjektMeny extends javax.swing.JFrame {
                             .addComponent(btnTaBortProjekt)
                             .addComponent(btnLäggTillProjekt)
                             .addComponent(cmbAvdelningsVal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblAvdelning))
+                            .addComponent(lblAvdelning)
+                            .addComponent(btnPartners))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -492,6 +511,10 @@ public class ProjektMeny extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnMinaProjektActionPerformed
 
+    private void btnPartnersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPartnersActionPerformed
+        new EditProjektPartner(idb).setVisible(true);
+    }//GEN-LAST:event_btnPartnersActionPerformed
+
     private void fyllCmbAvdelningar() {
         ArrayList<String> allaAvdelningar = avdelning.getAllaAvdelningsnamn();
         if (allaAvdelningar != null) {
@@ -543,8 +566,8 @@ public class ProjektMeny extends javax.swing.JFrame {
                 rad.get("kostnad"),
                 rad.get("status"),
                 rad.get("prioritet"),
-                rad.get("projektchef"),
-                rad.get("land")
+                anstalld.getChefNamn(rad.get("projektchef")),
+                hamtaLandNamn(rad.get("land"))
             });
             // Sätt modellen på JTable
             tblProjekt.setModel(tableModel);
@@ -681,6 +704,24 @@ public class ProjektMeny extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Hämtar namnet på ett Land utifrån LID, för att kunna visas i projekt
+     * @param landID
+     * @return landNamn
+     */
+    private String hamtaLandNamn(String landID) {
+        String landNamn = landID;
+        String sqlLandNamn = "Select namn from land where lid = "+landID;
+        try {
+            landNamn = idb.fetchSingle(sqlLandNamn);
+        }
+        catch (InfException e) {
+            System.out.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, "Databasfel");
+        }
+        return landNamn;
+    }
+    
     private void ingaProjekt() {
         DefaultTableModel tableModel = new DefaultTableModel();
         tableModel.setRowCount(0);
@@ -705,6 +746,7 @@ public class ProjektMeny extends javax.swing.JFrame {
     private javax.swing.JButton btnDatumSök;
     private javax.swing.JButton btnLäggTillProjekt;
     private javax.swing.JButton btnMinaProjekt;
+    private javax.swing.JButton btnPartners;
     private javax.swing.JButton btnTaBortProjekt;
     private javax.swing.JButton btnÄndraProjekt;
     private javax.swing.JComboBox<String> cmbAvdelningsVal;

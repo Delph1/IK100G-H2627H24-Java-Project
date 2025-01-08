@@ -26,10 +26,9 @@ public class EditProjektPartner extends javax.swing.JFrame {
     private HashMap<Integer, String> pidMap;
 
     /**
-     * Creates new form Editprojpartner
+     * konstruktor för att se bara sina egna projekt
      */
     public EditProjektPartner(InfDB idb, String queryAid) {
-        //konstruktor för att se bara sina egna projekt
         initComponents();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -40,11 +39,13 @@ public class EditProjektPartner extends javax.swing.JFrame {
         this.pidMap = new HashMap<>();
         fyllComboprojekt();
         fyllCombopartners();
-
     }
-
+    
+    /**
+     * konstruktor för att kunna se alla projekt
+     * @param idb 
+     */
     public EditProjektPartner(InfDB idb) {
-        // konstruktor för att kunna se alla projekt
         initComponents();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -52,12 +53,18 @@ public class EditProjektPartner extends javax.swing.JFrame {
         this.projektMap = new HashMap<>();
         this.partnerMap = new HashMap<>();
         this.pidMap = new HashMap<>();
+        this.setTitle("Partners på alla projekt");
         fyllAllaProjekt();
         fyllCombopartners();
     }
-
+    
+    /**
+     * konstruktor för att kunna se alla projekt, men välja rätt i combo boxen baserat på pid
+     * @param idb
+     * @param pid
+     * @param fyllAllt 
+     */
     public EditProjektPartner(InfDB idb, String pid, boolean fyllAllt) {
-        // konstruktor för att kunna se alla projekt, men välja rätt i combo boxen baserat på pid
         initComponents();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -65,15 +72,20 @@ public class EditProjektPartner extends javax.swing.JFrame {
         this.projektMap = new HashMap<>();
         this.partnerMap = new HashMap<>();
         this.pidMap = new HashMap<>();
+        this.setTitle("Partners på mina projekt");
         fyllAllaProjekt();
         fyllCombopartners();
+        minaProjektcmb.setEnabled(false);   //Om redigera projekt ska man inte mitt i kunna byta projekt
 
         // Välj rätt projekt i comboboxen baserat på pid
         if (pid != null && !pid.isEmpty()) {
             valjProjekt(pid);
         }
     }
-//fyller enbart med egna projekt
+    
+    /**
+     * fyller enbart med egna projekt
+     */
     private void fyllComboprojekt() {
         try {
             String query = "SELECT pid, projektnamn FROM projekt WHERE projektchef = '" + queryAid + "'";
@@ -92,7 +104,9 @@ public class EditProjektPartner extends javax.swing.JFrame {
             System.out.println("Ett fel inträffade vid hämtning av avdelningar: " + e.getMessage());
         }
     }
-//fyller alla projekt
+    /**
+     * fyller alla projekt
+     */
     private void fyllAllaProjekt() {
         try {
             String query = "SELECT pid, projektnamn FROM projekt"; // Hämtar alla projekt
@@ -113,7 +127,9 @@ public class EditProjektPartner extends javax.swing.JFrame {
             System.out.println("Ett fel inträffade vid hämtning av projekt: " + e.getMessage());
         }
     }
-//fyller på med alla partners i combo boxen som inte är knytna till projektet
+    /**
+     * fyller på med alla partners i combo boxen som inte är knytna till projektet
+     */
     private void fyllCombopartners() {
         try {
             String valtProjekt = (String) minaProjektcmb.getSelectedItem();
@@ -163,7 +179,10 @@ public class EditProjektPartner extends javax.swing.JFrame {
             System.out.println("Ett fel inträffade vid hämtning av partners: " + e.getMessage());
         }
     }
-//fyller upp jtable med dom partners som är knutna till  
+    /**
+     * fyller upp jtable med dom partners som är knutna till  
+     * @param projektId 
+     */
     private void fyllTablePartners(String projektId) {
         try {
 
@@ -213,7 +232,9 @@ public class EditProjektPartner extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Ett fel inträffade vid hämtning av partners.");
         }
     }
-
+    /**
+     * Listar partners 
+     */
     private void laggTillPartnerIProjekt() {
         try {
             // Hämtar projektnamn och partnernamn från comboboxarna
@@ -257,7 +278,11 @@ public class EditProjektPartner extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Ett fel inträffade vid tillägg av partner till projekt.");
         }
     }
-
+    
+    /**
+     * Metod för att välja projekt
+     * @param pid 
+     */
     private void valjProjekt(String pid) {
         for (Map.Entry<String, String> entry : projektMap.entrySet()) {
             if (entry.getValue().equals(pid)) {
@@ -287,6 +312,7 @@ public class EditProjektPartner extends javax.swing.JFrame {
         delPartnerBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Partners");
 
         minaProjektcmb.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
