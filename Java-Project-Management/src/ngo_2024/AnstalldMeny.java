@@ -184,53 +184,53 @@ public class AnstalldMeny extends javax.swing.JFrame {
      * Sökfunktion för att hitta handläggare
      */
     private void sokHandlaggare() {
-    String sokterm = tfSok.getText().trim();
+        String sokterm = tfSok.getText().trim();
 
-    if (sokterm.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Ange ett namn eller en e-post för att söka.");
-        return;
-    }
-
-    try {
-        String query = "SELECT * FROM anstalld WHERE LOWER(fornamn) LIKE LOWER('%" + sokterm + "%') "
-                + "OR LOWER(efternamn) LIKE LOWER('%" + sokterm + "%') "
-                + "OR LOWER(epost) LIKE LOWER('%" + sokterm + "%')";
-
-        ArrayList<HashMap<String, String>> resultat = idb.fetchRows(query);
-
-        if (resultat != null) {
-            DefaultTableModel tableModel = new DefaultTableModel();
-            tableModel.setRowCount(0);
-
-            tableModel.addColumn("ID");
-            tableModel.addColumn("Förnamn");
-            tableModel.addColumn("Efternamn");
-            tableModel.addColumn("E-post");
-            tableModel.addColumn("Telefon");
-
-            for (HashMap<String, String> rad : resultat) {
-                tableModel.addRow(new Object[]{
-                    rad.get("aid"),
-                    rad.get("fornamn"),
-                    rad.get("efternamn"),
-                    rad.get("epost"),
-                    rad.get("telefon")
-                });
-            }
-
-            jTable1.setModel(tableModel);
-        } else {
-            JOptionPane.showMessageDialog(this, "Inga handläggare hittades med den angivna söktermen.");
+        if (sokterm.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ange ett namn eller en e-post för att söka.");
+            return;
         }
-    } catch (InfException e) {
-        JOptionPane.showMessageDialog(this, "Fel vid sökning: " + e.getMessage());
+
+        try {
+            String query = "SELECT * FROM anstalld WHERE LOWER(fornamn) LIKE LOWER('%" + sokterm + "%') "
+                    + "OR LOWER(efternamn) LIKE LOWER('%" + sokterm + "%') "
+                    + "OR LOWER(epost) LIKE LOWER('%" + sokterm + "%')";
+
+            ArrayList<HashMap<String, String>> resultat = idb.fetchRows(query);
+
+            if (resultat != null) {
+                DefaultTableModel tableModel = new DefaultTableModel();
+                tableModel.setRowCount(0);
+
+                tableModel.addColumn("ID");
+                tableModel.addColumn("Förnamn");
+                tableModel.addColumn("Efternamn");
+                tableModel.addColumn("E-post");
+                tableModel.addColumn("Telefon");
+
+                for (HashMap<String, String> rad : resultat) {
+                    tableModel.addRow(new Object[]{
+                        rad.get("aid"),
+                        rad.get("fornamn"),
+                        rad.get("efternamn"),
+                        rad.get("epost"),
+                        rad.get("telefon")
+                    });
+                }
+
+                jTable1.setModel(tableModel);
+            } else {
+                JOptionPane.showMessageDialog(this, "Inga handläggare hittades med den angivna söktermen.");
+            }
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(this, "Det uppstod ett fel vid sökningen i databasen.");
+        }
+
+        // Gör fältet tomt efter sökningen
+        tfSok.setText("");
     }
 
-    // Gör fältet tomt efter sökningen
-    tfSok.setText("");
-}
 
-    
     /**
      * Metod som hämtar ut alla anställda för en viss avdelning och stoppar in det i tabellen. Denna skulle kunna skrivas om till en SQL-sats med sub-queries.
      * @param queryAid 
