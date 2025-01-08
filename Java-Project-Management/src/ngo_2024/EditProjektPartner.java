@@ -6,6 +6,7 @@ package ngo_2024;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import oru.inf.InfDB;
@@ -19,7 +20,7 @@ public class EditProjektPartner extends javax.swing.JFrame {
 
     private InfDB idb;
     private String queryAid;
-    private int pid;
+
     private HashMap<String, String> projektMap;
     private HashMap<String, String> partnerMap;
     private HashMap<Integer, String> pidMap;
@@ -41,35 +42,17 @@ public class EditProjektPartner extends javax.swing.JFrame {
         fyllCombopartners();
 
     }
-    public EditProjektPartner(InfDB idb) {
-        initComponents();
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.idb = idb;
-        this.projektMap = new HashMap<>();
-        this.partnerMap = new HashMap<>();
-        this.pidMap = new HashMap<>();
-        fyllAllaProjekt();
-        fyllCombopartners();
-    }
-
-    public EditProjektPartner(InfDB idb, String pid, boolean fyllAllaProjekt) {
-        initComponents();
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.idb = idb;
-        this.projektMap = new HashMap<>();
-        this.partnerMap = new HashMap<>();
-        this.pidMap = new HashMap<>();
-
-        if (fyllAllaProjekt) {
-            fyllAllaProjektVal(pid);
-        } else {
-            fyllComboprojekt();
-        }
-
-        fyllCombopartners();
-    }
+public EditProjektPartner(InfDB idb) {
+    initComponents();
+    setLocationRelativeTo(null);
+    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    this.idb = idb;
+    this.projektMap = new HashMap<>();
+    this.partnerMap = new HashMap<>();
+    this.pidMap = new HashMap<>();
+    fyllAllaProjekt();
+    fyllCombopartners(); 
+}
     private void fyllComboprojekt() {
         try {
             String query = "SELECT pid, projektnamn FROM projekt WHERE projektchef = '" + queryAid + "'";
@@ -88,85 +71,44 @@ public class EditProjektPartner extends javax.swing.JFrame {
             System.out.println("Ett fel inträffade vid hämtning av avdelningar: " + e.getMessage());
         }
     }
-    private void fyllAllaProjektVal(String pid) {
-        try {
-            String query = "SELECT pid, projektnamn FROM projekt"; // Hämta alla projekt
-            ArrayList<HashMap<String, String>> projekten = idb.fetchRows(query);
-
-            if (projekten != null) {
-                for (HashMap<String, String> projekt : projekten) {
-                    String projid = projekt.get("pid");
-                    String namn = projekt.get("projektnamn");
-
-                    projektMap.put(namn, projid);
-                    minaProjektcmb.addItem(namn);
-
-                    // Om projekt-ID matchar valtProjektId, välj det i comboboxen
-                    if (projid.equals(pid)) {
-                        minaProjektcmb.setSelectedItem(namn);
-                    }
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Inga projekt hittades i databasen.");
-            }
-        } catch (InfException e) {
-            System.out.println("Ett fel inträffade vid hämtning av projekt: " + e.getMessage());
-        }
-    }
-    private void fyllAllaProjekt() {
-        try {
-            String query = "SELECT pid, projektnamn FROM projekt"; // Hämta alla projekt
-            ArrayList<HashMap<String, String>> projekten = idb.fetchRows(query);
-
-            if (projekten != null) {
-                for (HashMap<String, String> projekt : projekten) {
-                    String projid = projekt.get("pid");
-                    String namn = projekt.get("projektnamn");
-
-                    projektMap.put(namn, projid);
-                    minaProjektcmb.addItem(namn); 
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Inga projekt hittades i databasen.");
-            }
-        } catch (InfException e) {
-            System.out.println("Ett fel inträffade vid hämtning av projekt: " + e.getMessage());
-        }
-    }
-    
-    private void fyllCombopartners() {
+private void fyllAllaProjekt() {
     try {
-       
-        String queryAllaPartners = "SELECT pid, namn FROM partner";
-        ArrayList<HashMap<String, String>> allaPartners = idb.fetchRows(queryAllaPartners);
+        String query = "SELECT pid, projektnamn FROM projekt"; // Hämtar alla projekt
+        ArrayList<HashMap<String, String>> projekten = idb.fetchRows(query);
 
-      
-        ArrayList<String> redanKoppladePartners = new ArrayList<>();
-        for (int row = 0; row < jTable1.getRowCount(); row++) {
-            String partnerNamn = (String) jTable1.getValueAt(row, 0);
-            redanKoppladePartners.add(partnerNamn);
-        }
+        if (projekten != null) {
+            for (HashMap<String, String> projekt : projekten) {
+                String projid = projekt.get("pid");
+                String namn = projekt.get("projektnamn");
 
-        // Töm comboboxen först
-        allaPartnersCmb.removeAllItems();
-        allaPartnersCmb.addItem("Välj partner att lägga till"); 
-
- 
-        if (allaPartners != null) {
-            for (HashMap<String, String> partner : allaPartners) {
-                String partnerId = partner.get("pid");
-                String namn = partner.get("namn");
-
- 
-                if (!redanKoppladePartners.contains(namn)) {
-                    partnerMap.put(namn, partnerId); 
-                    allaPartnersCmb.addItem(namn);  
-                }
+                projektMap.put(namn, projid);
+                minaProjektcmb.addItem(namn); // Lägg till projektets namn i comboboxen
             }
+        } else {
+            JOptionPane.showMessageDialog(this, "Inga projekt hittades i databasen.");
         }
     } catch (InfException e) {
-        System.out.println("Ett fel inträffade vid hämtning av partners: " + e.getMessage());
+        System.out.println("Ett fel inträffade vid hämtning av projekt: " + e.getMessage());
     }
+}
+
+    private void fyllCombopartners() {
+        try {
+            String query = "SELECT pid, namn FROM partner";
+            ArrayList<HashMap<String, String>> partners = idb.fetchRows(query);
+
+            if (partners != null) {
+                for (HashMap<String, String> partner : partners) {
+                    String partnerid = partner.get("pid");
+                    String namn = partner.get("namn");
+
+                    partnerMap.put(namn, partnerid);
+                    allaPartnersCmb.addItem(namn); // Lägg till namnet i comboboxen
+                }
+            }
+        } catch (InfException e) {
+            System.out.println("Ett fel inträffade vid hämtning av avdelningar: " + e.getMessage());
+        }
     }
 
     private void fyllTablePartners(String projektId) {
@@ -350,22 +292,23 @@ public class EditProjektPartner extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(delPartnerBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(closeBtn))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(minaProjektcmb, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(allaPartnersCmb, 0, 191, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(allaPartnersCmb, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(minaProjektcmb, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(delPartnerBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(closeBtn)))
-                .addContainerGap())
+                        .addComponent(jButton1)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -396,13 +339,11 @@ public class EditProjektPartner extends javax.swing.JFrame {
         if (valtProjekt != null && projektMap.containsKey(valtProjekt)) {
             String projektId = projektMap.get(valtProjekt);
             fyllTablePartners(projektId); // Uppdatera JTable baserat på det valda projektet
-            fyllCombopartners(); //uppdaterar listan på partners
         }
     }//GEN-LAST:event_minaProjektcmbActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         laggTillPartnerIProjekt();
-        fyllCombopartners();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void allaPartnersCmbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allaPartnersCmbActionPerformed
@@ -420,10 +361,9 @@ public class EditProjektPartner extends javax.swing.JFrame {
             } else {
                 System.out.println("Partner-ID saknas för: " + valdPartner);
             }
-        } 
-//        else {
-//            System.out.println("Inget giltigt partnernamn valt.");
-//        }
+        } else {
+            System.out.println("Inget giltigt partnernamn valt.");
+        }
     }//GEN-LAST:event_allaPartnersCmbActionPerformed
 
     private void delPartnerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delPartnerBtnActionPerformed
@@ -462,10 +402,8 @@ public class EditProjektPartner extends javax.swing.JFrame {
 
             JOptionPane.showMessageDialog(this, "Partnern har tagits bort.");
 
-            // Uppdaterar JTable
+            // Uppdatera JTable
             fyllTablePartners(projektId);
-            // Uppdaterar comboboxen med ej tillagda partners
-            fyllCombopartners();
 
         } catch (InfException e) {
             System.out.println("Ett fel inträffade: " + e.getMessage());
