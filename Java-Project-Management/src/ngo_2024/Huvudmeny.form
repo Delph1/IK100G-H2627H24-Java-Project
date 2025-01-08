@@ -43,6 +43,14 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mvminLoggaUtActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="mvpersPersonalPaMinAvdelning">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Personal p&#xe5; min avdelning"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mvpersPersonalPaMinAvdelningActionPerformed"/>
+              </Events>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="menyProjekt">
@@ -81,26 +89,6 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mvprojHallarbhetsmalActionPerformed"/>
               </Events>
-            </MenuItem>
-          </SubComponents>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="menyPersonal">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Personal"/>
-          </Properties>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="mvpersPersonalPaMinAvdelning">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Personal p&#xe5; min avdelning"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mvpersPersonalPaMinAvdelningActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mvpersHandlaggare">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Handl&#xe4;ggare"/>
-              </Properties>
             </MenuItem>
           </SubComponents>
         </Menu>
