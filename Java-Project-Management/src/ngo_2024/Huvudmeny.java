@@ -353,7 +353,7 @@ private void kontrolleraBehorigheter() {
     private void visaAnvandaresNamnOchEpost(String queryAid)
     {
         String roll = ((admins == null) ? "Handläggare" : "Administratör"); //Korthands-if
-        HashMap<String, String> resultat = anstalld.hamtaAnstalldsData(queryAid);
+        HashMap<String, String> resultat = anstalld.getEnAnstalld(queryAid);
         lblNamn.setText(resultat.get("fornamn") + " " + resultat.get("efternamn"));
         lblEpost.setText(resultat.get("epost"));
         lblRoll.setText(roll);
