@@ -34,7 +34,7 @@ public class AvdelningMeny extends javax.swing.JFrame {
         this.anstalld = new AnstalldMeny(idb);
         initComponents();
         setLocationRelativeTo(null);
-        getAvdelningar();
+        populeraTabell(getAvdelningar());
     }
 
     /**
@@ -275,67 +275,60 @@ public class AvdelningMeny extends javax.swing.JFrame {
     /**
      * Metod som hämtar ut alla avdelningar och matar in dem i tabellen i fönstret. 
      */
-    private void getAvdelningar()
-    {
+    public ArrayList<HashMap<String, String>> getAvdelningar() {
+        ArrayList<HashMap<String, String>> resultat;
         try {
             String query = "SELECT * FROM avdelning";
-            ArrayList<HashMap<String, String>> resultat = idb.fetchRows(query);
-            
-            if(resultat != null)
-            {
-                DefaultTableModel tableModel = new DefaultTableModel();
-                tableModel.setRowCount(0);
-                
-                tableModel.addColumn("ID");
-                tableModel.addColumn("Namn");
-                tableModel.addColumn("Beskrivning");
-                tableModel.addColumn("Adress");
-                tableModel.addColumn("Epost");
-                tableModel.addColumn("Telefon");
-                tableModel.addColumn("Stad Id");
-                tableModel.addColumn("Chef Id");
-                tableModel.addColumn("Stad");
-                tableModel.addColumn("Chef");
-                
-                for (HashMap<String, String> rad : resultat) {
-                tableModel.addRow(new Object[]{
-                    rad.get("avdid"),
-                    rad.get("namn"),
-                    rad.get("beskrivning"),
-                    rad.get("adress"),
-                    rad.get("epost"),
-                    rad.get("telefon"),
-                    rad.get("stad"),
-                    rad.get("chef")
-                }
-                );
-                
-                for (int i = 0; i < tableModel.getRowCount() ; i++)
-                {
-                    String stadId = tableModel.getValueAt(i, 6).toString();
-                    Object stadNamn = stad.getNamn(Integer.parseInt(stadId));
-                    tableModel.setValueAt(stadNamn, i, 8);
-                    
-                    String chefId = tableModel.getValueAt(i, 7).toString();
-                    Object chefNamn = anstalld.getChefNamn(chefId); 
-                    tableModel.setValueAt(chefNamn, i, 9);
-                }
-            }
-            jTable1.setModel(tableModel);
-            jTable1.getColumnModel().getColumn(6).setMinWidth(0);
-            jTable1.getColumnModel().getColumn(6).setMaxWidth(0);
-            jTable1.getColumnModel().getColumn(7).setMinWidth(0);
-            jTable1.getColumnModel().getColumn(7).setMaxWidth(0);            
-            }
-            else
-            {
-                JOptionPane.showMessageDialog(this, "Inga avdelningar hittades.");
+            resultat = idb.fetchRows(query);
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(null, "Fel vid hämtning av avdelningar. Kontrollera att databasen fungerar. ");
+            resultat = null;
+        }
+        return resultat;
+    }
+    
+    private void populeraTabell(ArrayList<HashMap<String, String>> avdelningar) {
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel.setRowCount(0);
+
+        tableModel.addColumn("ID");
+        tableModel.addColumn("Namn");
+        tableModel.addColumn("Beskrivning");
+        tableModel.addColumn("Adress");
+        tableModel.addColumn("Epost");
+        tableModel.addColumn("Telefon");
+        tableModel.addColumn("Stad Id");
+        tableModel.addColumn("Chef Id");
+        tableModel.addColumn("Stad");
+        tableModel.addColumn("Chef");
+
+        for (HashMap<String, String> rad : avdelningar) {
+            tableModel.addRow(new Object[]{
+                rad.get("avdid"),
+                rad.get("namn"),
+                rad.get("beskrivning"),
+                rad.get("adress"),
+                rad.get("epost"),
+                rad.get("telefon"),
+                rad.get("stad"),
+                rad.get("chef")
+            });
+
+            for (int i = 0; i < tableModel.getRowCount(); i++) {
+                String stadId = tableModel.getValueAt(i, 6).toString();
+                Object stadNamn = stad.getNamn(Integer.parseInt(stadId));
+                tableModel.setValueAt(stadNamn, i, 8);
+
+                String chefId = tableModel.getValueAt(i, 7).toString();
+                Object chefNamn = anstalld.getChefNamn(chefId);
+                tableModel.setValueAt(chefNamn, i, 9);
             }
         }
-        catch (InfException e) 
-        {
-            JOptionPane.showMessageDialog(null, "Fel vid hämtning av avdelningar: " + e.getMessage());
-        }
+        jTable1.setModel(tableModel);
+        jTable1.getColumnModel().getColumn(6).setMinWidth(0);
+        jTable1.getColumnModel().getColumn(6).setMaxWidth(0);
+        jTable1.getColumnModel().getColumn(7).setMinWidth(0);
+        jTable1.getColumnModel().getColumn(7).setMaxWidth(0);
     }
     
     /**

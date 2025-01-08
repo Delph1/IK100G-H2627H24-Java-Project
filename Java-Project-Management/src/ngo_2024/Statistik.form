@@ -1,8 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <NonVisualComponents>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTable" name="jTable1">
+          <Properties>
+            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+              <Table columnCount="4" rowCount="4">
+                <Column editable="true" title="Title 1" type="java.lang.Object"/>
+                <Column editable="true" title="Title 2" type="java.lang.Object"/>
+                <Column editable="true" title="Title 3" type="java.lang.Object"/>
+                <Column editable="true" title="Title 4" type="java.lang.Object"/>
+              </Table>
+            </Property>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JSeparator" name="jSeparator1">
+    </Component>
+  </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+      <Dimension value="[400, 450]"/>
+    </Property>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -26,42 +54,56 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="lblRubrik2" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="lblTotalKostnadAvd" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblTotalKostnadAlla" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="67" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="lblAlla" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblAvd" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="352" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="lblPagaende" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="btnLänder" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                              <Component id="btnLänderKost" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+                              <Component id="btnPartners" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="lblStatistikRubrik" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="lblRubrik2" min="-2" max="-2" attributes="0"/>
                                   <Component id="lblAvslutade" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="lblTotalKostnadMina" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblStatistikRubrik" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblPagaende" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="txtTotalKostnadMina" alignment="1" pref="75" max="32767" attributes="0"/>
-                                  <Component id="txtPagaende" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="txtAvslutade" alignment="1" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                      <Component id="lblPåg" alignment="1" max="32767" attributes="0"/>
+                                      <Component id="lblTotKost" alignment="1" max="32767" attributes="0"/>
+                                      <Component id="lblAvs" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="lblKostnad" min="-2" max="-2" attributes="0"/>
                               </Group>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="lblTotalKostnadAvd" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="txtTotalKostnadAvd" min="-2" pref="75" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="lblTotalKostnadAlla" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="txtTotalKostnadAlla" min="-2" pref="75" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="116" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
-                      <Component id="jSeparator1" min="-2" pref="347" max="-2" attributes="0"/>
-                      <EmptySpace pref="31" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="jScrollPane2" pref="0" max="32767" attributes="0"/>
+                          <Component id="sprMina" pref="347" max="32767" attributes="0"/>
+                          <Component id="sprSök" alignment="0" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -73,39 +115,50 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="lblStatistikRubrik" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-              <Component id="lblRubrik2" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="lblRubrik2" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblKostnad" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="lblTotalKostnadMina" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblPagaende" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblAvslutade" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Component id="lblTotKost" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblPåg" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblAvs" min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="sprMina" min="-2" pref="10" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lblTotalKostnadAvd" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblAvd" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="lblTotalKostnadMina" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtTotalKostnadMina" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblTotalKostnadAlla" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblAlla" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="sprSök" min="-2" pref="10" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="lblPagaende" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtPagaende" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnLänder" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnLänderKost" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnPartners" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="txtAvslutade" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblAvslutade" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
-              <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lblTotalKostnadAvd" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="26" max="32767" attributes="0"/>
-                      <Component id="lblTotalKostnadAlla" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
-                      <Component id="txtTotalKostnadAvd" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="txtTotalKostnadAlla" min="-2" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
-              <EmptySpace pref="18" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane2" min="-2" pref="114" max="-2" attributes="0"/>
+              <EmptySpace pref="71" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -116,30 +169,22 @@
         <Property name="text" type="java.lang.String" value="Total kostnad"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtTotalKostnadMina">
-    </Component>
     <Component class="javax.swing.JLabel" name="lblPagaende">
       <Properties>
         <Property name="text" type="java.lang.String" value="- varav p&#xe5;g&#xe5;ende"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtPagaende">
     </Component>
     <Component class="javax.swing.JLabel" name="lblAvslutade">
       <Properties>
         <Property name="text" type="java.lang.String" value="- varav avslutade"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtAvslutade">
-    </Component>
-    <Component class="javax.swing.JSeparator" name="jSeparator1">
+    <Component class="javax.swing.JSeparator" name="sprMina">
     </Component>
     <Component class="javax.swing.JLabel" name="lblTotalKostnadAlla">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Kostnad totalt"/>
+        <Property name="text" type="java.lang.String" value="Alla projekt"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtTotalKostnadAlla">
     </Component>
     <Component class="javax.swing.JLabel" name="lblStatistikRubrik">
       <Properties>
@@ -151,17 +196,102 @@
     </Component>
     <Component class="javax.swing.JLabel" name="lblTotalKostnadAvd">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Kostnad - Min avdelning"/>
+        <Property name="text" type="java.lang.String" value="Min avdelning"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtTotalKostnadAvd">
     </Component>
     <Component class="javax.swing.JLabel" name="lblRubrik2">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="12" style="1"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Som projektledare"/>
+        <Property name="text" type="java.lang.String" value="Mina ledda projekt:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblTotKost">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="2"/>
+        <Property name="text" type="java.lang.String" value="0"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblP&#xe5;g">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="2"/>
+        <Property name="text" type="java.lang.String" value="0"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblAvs">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="2"/>
+        <Property name="text" type="java.lang.String" value="0"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblAvd">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="2"/>
+        <Property name="text" type="java.lang.String" value="0"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblAlla">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="2"/>
+        <Property name="text" type="java.lang.String" value="0"/>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane2">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTable" name="tblStatistik">
+          <Properties>
+            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+              <Table columnCount="0" rowCount="4"/>
+            </Property>
+            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+              <TableColumnModel selectionModel="0"/>
+            </Property>
+            <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+              <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+            </Property>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JButton" name="btnL&#xe4;nder">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="L&#xe4;nder"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnL&#xe4;nderActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnL&#xe4;nderKost">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Kostnad l&#xe4;nder"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnL&#xe4;nderKostActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnPartners">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Partners"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPartnersActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JSeparator" name="sprS&#xf6;k">
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblKostnad">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Segoe UI" size="12" style="1"/>
+        </Property>
+        <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="text" type="java.lang.String" value="Kostnad"/>
       </Properties>
     </Component>
   </SubComponents>
