@@ -26,7 +26,7 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane1" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="fetchanstallda" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -35,7 +35,10 @@
                       <Component id="remAnstalld" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="newAnstalld" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="412" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="106" max="-2" attributes="0"/>
+                      <Component id="tfSok" pref="222" max="32767" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="btnSok" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -51,6 +54,8 @@
                   <Component id="editAnstalld" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="remAnstalld" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="newAnstalld" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="tfSok" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnSok" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="32767" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="427" max="-2" attributes="0"/>
@@ -173,6 +178,19 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="newAnstalldActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="tfSok">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Ange handl&#xe4;ggarens namn eller e-post"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnSok">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="S&#xf6;k"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSokActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
