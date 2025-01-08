@@ -45,18 +45,15 @@ public class PartnerMeny extends javax.swing.JFrame {
         btnNyPartner.setVisible(false);
     }
 
-    private void getPartnersVidMinaProjekt()
-    {
-        try
-        {
+    private void getPartnersVidMinaProjekt() {
+        try {
             String query = "SELECT * FROM partner WHERE pid IN (SELECT partner_pid FROM projekt_partner WHERE pid IN (SELECT pid FROM ans_proj WHERE aid = '" + aid + "'))";
             ArrayList<HashMap<String, String>> resultat = idb.fetchRows(query);
-            
-            if (resultat != null)
-            {
+
+            if (resultat != null) {
                 DefaultTableModel tableModel = new DefaultTableModel();
                 tableModel.setRowCount(0);
-                
+
                 tableModel.addColumn("ID");
                 tableModel.addColumn("Namn");
                 tableModel.addColumn("Kontaktperson");
@@ -67,55 +64,45 @@ public class PartnerMeny extends javax.swing.JFrame {
                 tableModel.addColumn("Stad Id");
                 tableModel.addColumn("Stad");
 
-
-                for (HashMap<String, String> rad : resultat)
-                {
+                for (HashMap<String, String> rad : resultat) {
                     tableModel.addRow(new Object[]{
-                    rad.get("pid"),
-                    rad.get("namn"),
-                    rad.get("kontaktperson"),
-                    rad.get("kontaktepost"),
-                    rad.get("telefon"),
-                    rad.get("adress"),
-                    rad.get("branch"),
-                    rad.get("stad")
+                        rad.get("pid"),
+                        rad.get("namn"),
+                        rad.get("kontaktperson"),
+                        rad.get("kontaktepost"),
+                        rad.get("telefon"),
+                        rad.get("adress"),
+                        rad.get("branch"),
+                        rad.get("stad")
                     }
                     );
-                    
-                for (int i = 0; i < tableModel.getRowCount() ; i++)
-                {
-                    String stadId = tableModel.getValueAt(i, 7).toString();
-                    Object stadNamn = stad.getNamn(Integer.parseInt(stadId));
-                    tableModel.setValueAt(stadNamn, i, 8);
+
+                    for (int i = 0; i < tableModel.getRowCount(); i++) {
+                        String stadId = tableModel.getValueAt(i, 7).toString();
+                        Object stadNamn = stad.getNamn(Integer.parseInt(stadId));
+                        tableModel.setValueAt(stadNamn, i, 8);
+                    }
                 }
-            }
-            jTable1.setModel(tableModel);
-            jTable1.getColumnModel().getColumn(7).setMinWidth(0);
-            jTable1.getColumnModel().getColumn(7).setMaxWidth(0);
-            }
-            else
-            {
+                jTable1.setModel(tableModel);
+                jTable1.getColumnModel().getColumn(7).setMinWidth(0);
+                jTable1.getColumnModel().getColumn(7).setMaxWidth(0);
+            } else {
                 JOptionPane.showMessageDialog(this, "Inga partners hittades.");
             }
-        }
-        catch(InfException e)
-        {
+        } catch (InfException e) {
             JOptionPane.showMessageDialog(null, "Fel vid hämtning av partners: " + e.getMessage());
         }
     }
     
-    private void getPartners()
-    {
-        try
-        {
+    private void getPartners() {
+        try {
             String query = "SELECT * FROM partner";
             ArrayList<HashMap<String, String>> resultat = idb.fetchRows(query);
-            
-            if (resultat != null)
-            {
+
+            if (resultat != null) {
                 DefaultTableModel tableModel = new DefaultTableModel();
                 tableModel.setRowCount(0);
-                
+
                 tableModel.addColumn("ID");
                 tableModel.addColumn("Namn");
                 tableModel.addColumn("Kontaktperson");
@@ -126,92 +113,84 @@ public class PartnerMeny extends javax.swing.JFrame {
                 tableModel.addColumn("Stad Id");
                 tableModel.addColumn("Stad");
 
-
-                for (HashMap<String, String> rad : resultat)
-                {
+                for (HashMap<String, String> rad : resultat) {
                     tableModel.addRow(new Object[]{
-                    rad.get("pid"),
-                    rad.get("namn"),
-                    rad.get("kontaktperson"),
-                    rad.get("kontaktepost"),
-                    rad.get("telefon"),
-                    rad.get("adress"),
-                    rad.get("branch"),
-                    rad.get("stad")
+                        rad.get("pid"),
+                        rad.get("namn"),
+                        rad.get("kontaktperson"),
+                        rad.get("kontaktepost"),
+                        rad.get("telefon"),
+                        rad.get("adress"),
+                        rad.get("branch"),
+                        rad.get("stad")
                     }
                     );
-                    
-                for (int i = 0; i < tableModel.getRowCount() ; i++)
-                {
-                    String stadId = tableModel.getValueAt(i, 7).toString();
-                    Object stadNamn = stad.getNamn(Integer.parseInt(stadId));
-                    tableModel.setValueAt(stadNamn, i, 8);
+
+                    for (int i = 0; i < tableModel.getRowCount(); i++) {
+                        String stadId = tableModel.getValueAt(i, 7).toString();
+                        Object stadNamn = stad.getNamn(Integer.parseInt(stadId));
+                        tableModel.setValueAt(stadNamn, i, 8);
+                    }
                 }
-            }
-            jTable1.setModel(tableModel);
-            jTable1.getColumnModel().getColumn(7).setMinWidth(0);
-            jTable1.getColumnModel().getColumn(7).setMaxWidth(0);
-            }
-            else
-            {
+                jTable1.setModel(tableModel);
+                jTable1.getColumnModel().getColumn(7).setMinWidth(0);
+                jTable1.getColumnModel().getColumn(7).setMaxWidth(0);
+            } else {
                 JOptionPane.showMessageDialog(this, "Inga partners hittades.");
             }
-        }
-        catch(InfException e)
-        {
+        } catch (InfException e) {
             JOptionPane.showMessageDialog(null, "Fel vid hämtning av partners: " + e.getMessage());
         }
     }
     
-    private void raderaPartner()
-    {
+    public HashMap<String, String> getEnPartner(String pid) {
+        HashMap<String, String> enPartner;
+        try {
+            String query = "SELECT * FROM partner WHERE pid = " + pid;
+            enPartner = idb.fetchRow(query); // Hämta rad som en HashMap
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(this, "Något gick fel när partnerdata skulle hämtas. Kontrollera att databasen fugnerar som den ska.");
+            enPartner = null;
+        }
+        return enPartner;
+    }
+    
+    private void raderaPartner() {
         int selectedRow = jTable1.getSelectedRow();
-        if (selectedRow != -1)
-        {
+        if (selectedRow != -1) {
             Object partner = jTable1.getValueAt(selectedRow, 0);
             String queryAid = partner.toString();
-            
+
             //Först kollar vi om en partner är knuten till ett projekt och raderar den relationen.
-            try
-            {
+            try {
                 String query1 = "DELETE FROM projekt_partner WHERE partner_pid = '" + partner + "'";
                 idb.delete(query1);
-                try
-                {
+                try {
                     String query2 = "DELETE FROM partner WHERE pid = '" + partner + "'";
                     idb.delete(query2);
-                }
-                catch(InfException e)
-                {
+                } catch (InfException e) {
                     System.out.println(e.getMessage());
                 }
-            }
-            catch(InfException e)
-            {
+            } catch (InfException e) {
                 System.out.println(e.getMessage());
             }
-        getPartners();
-        }
-        else 
-        {
+            getPartners();
+        } else {
             JOptionPane.showMessageDialog(null, "Ingen rad är markerad!");
         }
     }
     
-    private void editPartner()
-    {
+    private void editPartner() {
         int selectedRow = jTable1.getSelectedRow();
-        if (selectedRow != -1)
-        {
+        if (selectedRow != -1) {
             Object partner = jTable1.getValueAt(selectedRow, 0);
             String queryAid = partner.toString();
             new EditPartner(idb, queryAid).setVisible(true);
-        }
-        else
-        {
+        } else {
             JOptionPane.showMessageDialog(null, "Ingen rad är markerad");
         }
     }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -325,6 +304,11 @@ public class PartnerMeny extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    
+    /**
+     * Knappar nedan.
+     */
 
     private void btnUppdateraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUppdateraActionPerformed
         getPartners();

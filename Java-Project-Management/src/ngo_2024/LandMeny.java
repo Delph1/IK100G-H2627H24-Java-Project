@@ -140,10 +140,10 @@ public class LandMeny extends javax.swing.JFrame {
                 idb.delete(query2);
                 getLander();
             } catch (InfException e) {
-                JOptionPane.showMessageDialog(null, "Fel vid borttagning av land: " + e.getMessage());
+                JOptionPane.showMessageDialog(this, "Landet gick inte att radera. Kontrollera att databasen fungerar som den ska.");
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Ingen rad är markerad!");
+            JOptionPane.showMessageDialog(this, "Ingen rad är markerad!");
         }
     }
     
@@ -156,7 +156,7 @@ public class LandMeny extends javax.swing.JFrame {
             String land = jtTabell.getValueAt(selectedRow, 0).toString();
             new EditLand(idb, land).setVisible(true);
         } else {
-            JOptionPane.showMessageDialog(null, "Ingen rad är markerad");
+            JOptionPane.showMessageDialog(this, "Ingen rad är markerad");
         }
     }
 

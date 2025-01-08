@@ -185,6 +185,18 @@ public class AvdelningMeny extends javax.swing.JFrame {
         }
         return allaAvdelningar;
     }
+  
+    public HashMap<String, String> getEnAvdelning(String avdid) {
+        HashMap<String, String> enAvdelning;
+        try {
+            String query = "SELECT * FROM avdelning WHERE avdid = " + avdid;
+            enAvdelning = idb.fetchRow(query);
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(null, "Något gick fel i databassökningen. Kontrollera att databasen fungerar som den ska.");
+            enAvdelning = null;
+        }
+        return enAvdelning;
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -334,7 +346,7 @@ public class AvdelningMeny extends javax.swing.JFrame {
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
         getAvdelningar();
     }//GEN-LAST:event_formWindowGainedFocus
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNyAvdelning;
     private javax.swing.JButton btnRadera;

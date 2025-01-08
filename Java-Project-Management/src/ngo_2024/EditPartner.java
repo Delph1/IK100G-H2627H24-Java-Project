@@ -20,6 +20,8 @@ public class EditPartner extends javax.swing.JFrame {
     private String queryAid;
     private StadMeny stad;
     private ArrayList<HashMap<String, String>> allaStader;
+    private PartnerMeny partner;
+    
     /**
      * Creates new form EditPartner
      */
@@ -28,6 +30,7 @@ public class EditPartner extends javax.swing.JFrame {
         this.queryAid = queryAid;
         this.stad = new StadMeny(idb);
         this.allaStader = new ArrayList<>();
+        this.partner = new PartnerMeny(idb);
         initComponents();
         setLocationRelativeTo(null);
         
@@ -47,53 +50,36 @@ public class EditPartner extends javax.swing.JFrame {
     /**
      * Metod för att skapa upp listan med städer i comboboxen.
      */
-    
-    private void populeraCbStad()
-    {
+    private void populeraCbStad() {
         allaStader = stad.getAllaStader();
         //Lägger till nuvarande staden först i listan
-        for(HashMap<String, String> enStad : allaStader)
-        {
-            if (enStad.get("sid").equals(txtStadId.getText()))
-            {
+        for (HashMap<String, String> enStad : allaStader) {
+            if (enStad.get("sid").equals(txtStadId.getText())) {
                 cbStadNamn.addItem(enStad.get("namn"));
             }
         }
         //och sedan resten.
-        for(HashMap<String, String> enStad : allaStader)
-        {
-            if (!enStad.get("sid").equals(txtStadId.getText()))
-            {
+        for (HashMap<String, String> enStad : allaStader) {
+            if (!enStad.get("sid").equals(txtStadId.getText())) {
                 cbStadNamn.addItem(enStad.get("namn"));
             }
         }
     }
         
-        private void getPartnerdata(String queryAid)
-    {
-        try {
-            String query = "SELECT * FROM partner WHERE pid = " + queryAid;
-            System.out.println(query);
-
-            HashMap<String, String> resultat = idb.fetchRow(query); // Hämta rad som en HashMap
-
-                if (resultat != null) {
-                    // Hämta och sätt värden i motsvarande textfält
-
-                    txtNamn.setText(resultat.get("namn"));
-                    txtKontaktperson.setText(resultat.get("kontaktperson"));
-                    txtKontaktepost.setText(resultat.get("kontaktepost"));  
-                    txtTelefon.setText(resultat.get("telefon"));
-                    txtAdress.setText(resultat.get("adress"));       
-                    txtBranch.setText(resultat.get("branch"));       
-                    txtStadId.setText(resultat.get("stad")); 
-                   
-                } else {
-                    JOptionPane.showMessageDialog(null, "Ingen avdelning hittades med det angivna ID:t.");
-                }
-            } catch (InfException e) {
-                System.out.println("Ett fel inträffade: " + e.getMessage());
-            }
+    private void getPartnerdata(String queryAid) {
+        HashMap<String, String> resultat = partner.getEnPartner(queryAid);
+        if (resultat != null) {
+            // sätt värden i motsvarande textfält
+            txtNamn.setText(resultat.get("namn"));
+            txtKontaktperson.setText(resultat.get("kontaktperson"));
+            txtKontaktepost.setText(resultat.get("kontaktepost"));
+            txtTelefon.setText(resultat.get("telefon"));
+            txtAdress.setText(resultat.get("adress"));
+            txtBranch.setText(resultat.get("branch"));
+            txtStadId.setText(resultat.get("stad"));
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingen avdelning hittades med det angivna ID:t.");
+        }
     }
 
     /**
@@ -267,17 +253,16 @@ public class EditPartner extends javax.swing.JFrame {
     }//GEN-LAST:event_cbStadNamnActionPerformed
 
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
-        if (Validering.faltEjTomtKontroll(txtNamn) &&
-            Validering.faltEjTomtKontroll(txtKontaktperson) &&
-            Validering.faltEjTomtKontroll(txtKontaktepost) &&
-            Validering.faltEjTomtKontroll(txtTelefon) &&
-            Validering.faltEjTomtKontroll(txtAdress) &&
-            Validering.faltEjTomtKontroll(txtBranch) &&
-            Validering.faltEjTomtKontroll(txtStadId) &&
-            Validering.comboBoxInteTom(cbStadNamn.getSelectedItem()) &&
-            Validering.arHeltal(txtStadId) &&
-            Validering.positivtVarde(txtStadId))
-        {
+        if (Validering.faltEjTomtKontroll(txtNamn)
+                && Validering.faltEjTomtKontroll(txtKontaktperson)
+                && Validering.faltEjTomtKontroll(txtKontaktepost)
+                && Validering.faltEjTomtKontroll(txtTelefon)
+                && Validering.faltEjTomtKontroll(txtAdress)
+                && Validering.faltEjTomtKontroll(txtBranch)
+                && Validering.faltEjTomtKontroll(txtStadId)
+                && Validering.comboBoxInteTom(cbStadNamn.getSelectedItem())
+                && Validering.arHeltal(txtStadId)
+                && Validering.positivtVarde(txtStadId)) {
             String namn = txtNamn.getText();
             String kontaktperson = txtKontaktperson.getText();
             String kontaktepost = txtKontaktepost.getText();
@@ -286,53 +271,47 @@ public class EditPartner extends javax.swing.JFrame {
             String branch = txtBranch.getText();
             int stad = Integer.parseInt(txtStadId.getText());
 
-            try
-            {
-                if(queryAid == null)
-                {
+            if (queryAid == null) {
+                try {
                     int pid = Integer.parseInt(idb.getAutoIncrement("partner", "pid"));
                     String query = "INSERT INTO partner (pid, namn, kontaktperson, kontaktepost, telefon, adress, branch, stad)"
-                    + " VALUES ("
-                    + pid + ", '"
-                    + namn + "', '"
-                    + kontaktperson + "', '"
-                    + kontaktepost + "', '"
-                    + telefon + "', '"
-                    + adress + "', '"
-                    + branch + "', "
-                    + stad + ")";
-                    System.out.println(query);
+                            + " VALUES ("
+                            + pid + ", '"
+                            + namn + "', '"
+                            + kontaktperson + "', '"
+                            + kontaktepost + "', '"
+                            + telefon + "', '"
+                            + adress + "', '"
+                            + branch + "', "
+                            + stad + ")";
                     idb.insert(query);
-
+                } catch (InfException e) {
+                    JOptionPane.showMessageDialog(this, "Partnern kunde inte sparas till databasen. Kontrollera att databasen fungerar som den ska.");
                 }
-                else
-                {
+            } else {
+                try {
                     String query = "UPDATE partner "
-                    + "SET namn = '" + namn + "', "
-                    + "kontaktperson = '" + kontaktperson + "', "
-                    + "kontaktepost = '" + kontaktepost + "', "
-                    + "adress = '" + adress + "', "
-                    + "telefon = '" + telefon + "', "
-                    + "stad = " + stad + ", "
-                    + "branch = '" + branch
-                    + "' WHERE pid = " + queryAid;
+                            + "SET namn = '" + namn + "', "
+                            + "kontaktperson = '" + kontaktperson + "', "
+                            + "kontaktepost = '" + kontaktepost + "', "
+                            + "adress = '" + adress + "', "
+                            + "telefon = '" + telefon + "', "
+                            + "stad = " + stad + ", "
+                            + "branch = '" + branch
+                            + "' WHERE pid = " + queryAid;
                     System.out.println(query);
                     idb.update(query);
-
+                } catch (InfException e) {
+                    JOptionPane.showMessageDialog(this, "Partnern kunde inte sparas till databasen. Kontrollera att databasen fungerar som den ska.");
                 }
 
-                JOptionPane.showMessageDialog(null, "Partnern har sparats.");
-                this.setVisible(false);
+            }
 
-            }
-            catch(InfException e)
-            {
-                System.out.println("Ett fel inträffade: " + e.getMessage());
-            }
-        }
-        else
-        {
-            JOptionPane.showMessageDialog(null, "Partnern har inte sparats.");
+            JOptionPane.showMessageDialog(this, "Partnern har sparats.");
+            this.setVisible(false);
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Du måste fylla i alla fält med korrekt data.");
         }
     }//GEN-LAST:event_btnSparaActionPerformed
 

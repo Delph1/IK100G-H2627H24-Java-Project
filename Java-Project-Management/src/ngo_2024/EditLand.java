@@ -26,9 +26,8 @@ public class EditLand extends javax.swing.JFrame {
      * Hämtar och visar landets data i fälten
      */ 
     private void laddaLandData() {
-        
-        if(lid != null)
-        {
+
+        if (lid != null) {
             try {
                 String query = "SELECT namn, sprak, valuta, tidszon, politisk_struktur, ekonomi FROM land WHERE lid = '" + lid + "'";
                 HashMap<String, String> resultat = idb.fetchRow(query);
@@ -41,11 +40,11 @@ public class EditLand extends javax.swing.JFrame {
                     txtPolitiskstruktur.setText(resultat.get("politisk_struktur"));
                     txtEkonomi.setText(resultat.get("ekonomi"));
                 } else {
-                    JOptionPane.showMessageDialog(null, "Inget land hittades med ID: " + lid);
+                    JOptionPane.showMessageDialog(this, "Inget land hittades med ID: " + lid);
                     dispose(); // Stäng fönstret om inget land hittas
                 }
             } catch (InfException e) {
-                JOptionPane.showMessageDialog(null, "Fel vid hämtning av landdata: " + e.getMessage());
+                JOptionPane.showMessageDialog(this, "Fel vid hämtning av landdata från databasen. Kontrollera att databasen fungerar som den ska.");
             }
         }
     }
@@ -54,18 +53,15 @@ public class EditLand extends javax.swing.JFrame {
      * Uppdaterar landets data i databasen
      */
     private void sparaLandData() {
-        if(Validering.faltEjTomtKontroll(txtNamn) &&
-                Validering.faltEjTomtKontroll(txtSprak) &&
-                Validering.faltEjTomtKontroll(txtValuta) &&
-                Validering.faltEjTomtKontroll(txtTidszon) &&
-                Validering.faltEjTomtKontroll(txtPolitiskstruktur) &&
-                Validering.faltEjTomtKontroll(txtEkonomi) &&
-                Validering.arDecimal(txtValuta))
-        {
-            if(lid == null)
-            {
-                try
-                {
+        if (Validering.faltEjTomtKontroll(txtNamn)
+                && Validering.faltEjTomtKontroll(txtSprak)
+                && Validering.faltEjTomtKontroll(txtValuta)
+                && Validering.faltEjTomtKontroll(txtTidszon)
+                && Validering.faltEjTomtKontroll(txtPolitiskstruktur)
+                && Validering.faltEjTomtKontroll(txtEkonomi)
+                && Validering.arDecimal(txtValuta)) {
+            if (lid == null) {
+                try {
                     String nyttLandId = idb.getAutoIncrement("land", "lid");
                     try {
                         // Hämta värden från textfälten
@@ -77,29 +73,25 @@ public class EditLand extends javax.swing.JFrame {
                         String ekonomi = txtEkonomi.getText();
 
                         // Uppdatera landets data i databasen
-                        String query = "INSERT INTO land (lid, namn, sprak, valuta, tidszon, politisk_struktur, ekonomi ) VALUES ('" +
-                                nyttLandId + "', '" +
-                                namn + "', '" +
-                                sprak + "', '" +
-                                valuta + "', '" +
-                                tidszon + "', '" +
-                                politiskStruktur + "', '" + 
-                                ekonomi + "')";
+                        String query = "INSERT INTO land (lid, namn, sprak, valuta, tidszon, politisk_struktur, ekonomi ) VALUES ('"
+                                + nyttLandId + "', '"
+                                + namn + "', '"
+                                + sprak + "', '"
+                                + valuta + "', '"
+                                + tidszon + "', '"
+                                + politiskStruktur + "', '"
+                                + ekonomi + "')";
                         System.out.println(query);
                         idb.insert(query);
                         JOptionPane.showMessageDialog(this, "Landdata har uppdaterats!");
                         dispose(); // Stänger fönstret efter uppdatering
                     } catch (InfException e) {
-                        JOptionPane.showMessageDialog(this, "Fel vid uppdatering: " + e.getMessage());
+                        JOptionPane.showMessageDialog(this, "Landet kunde inte uppdateras. Kontrollera att databasen fungerar som den ska.");
                     }
+                } catch (InfException e) {
+                    JOptionPane.showMessageDialog(this, "Fel vid hämtning av nästa ID-nummer från databasen. Kontrollera att databasen fugnerar som den ska.");
                 }
-                catch(InfException e)
-                {
-                    JOptionPane.showMessageDialog(this, "Fel vid hämtning av nästa ID-nummer: " + e.getMessage());
-                }
-            }
-            else
-            {
+            } else {
                 try {
                     // Hämta värden från textfälten
                     String namn = txtNamn.getText();
@@ -110,14 +102,14 @@ public class EditLand extends javax.swing.JFrame {
                     String ekonomi = txtEkonomi.getText();
 
                     // Uppdatera landets data i databasen
-                    String query = "UPDATE land SET " +
-                                   "namn = '" + namn + "', " +
-                                   "sprak = '" + sprak + "', " +
-                                   "valuta = '" + valuta + "', " +
-                                   "tidszon = '" + tidszon + "', " +
-                                   "politisk_struktur = '" + politiskStruktur + "', " +
-                                   "ekonomi = '" + ekonomi + "' " +
-                                   "WHERE lid = '" + lid + "'";
+                    String query = "UPDATE land SET "
+                            + "namn = '" + namn + "', "
+                            + "sprak = '" + sprak + "', "
+                            + "valuta = '" + valuta + "', "
+                            + "tidszon = '" + tidszon + "', "
+                            + "politisk_struktur = '" + politiskStruktur + "', "
+                            + "ekonomi = '" + ekonomi + "' "
+                            + "WHERE lid = '" + lid + "'";
 
                     idb.update(query);
                     JOptionPane.showMessageDialog(this, "Landdata har uppdaterats!");
@@ -126,9 +118,7 @@ public class EditLand extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "Fel vid uppdatering: " + e.getMessage());
                 }
             }
-        }
-        else
-        {
+        } else {
             JOptionPane.showMessageDialog(this, "Landdata har inte uppdaterats!");
         }
     }
