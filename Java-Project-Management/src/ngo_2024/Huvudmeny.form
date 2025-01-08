@@ -35,20 +35,20 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mvminMinaUppgifterActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mvminLoggaUt">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Logga ut"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mvminLoggaUtActionPerformed"/>
-              </Events>
-            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mvpersPersonalPaMinAvdelning">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Personal p&#xe5; min avdelning"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mvpersPersonalPaMinAvdelningActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="mvminLoggaUt">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Logga ut"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mvminLoggaUtActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
@@ -159,14 +159,6 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mvadnPartnersActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mvproledAndraPartnersForProjekt1">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="&#xc4;ndra partners f&#xf6;r projekt"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mvproledAndraPartnersForProjekt1ActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mvadnHallbarhetsmal">

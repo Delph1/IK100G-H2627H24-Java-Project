@@ -89,8 +89,8 @@ private void kontrolleraBehorigheter() {
         jMenuBar1 = new javax.swing.JMenuBar();
         menyMinaUppgifter = new javax.swing.JMenu();
         mvminMinaUppgifter = new javax.swing.JMenuItem();
-        mvminLoggaUt = new javax.swing.JMenuItem();
         mvpersPersonalPaMinAvdelning = new javax.swing.JMenuItem();
+        mvminLoggaUt = new javax.swing.JMenuItem();
         menyProjekt = new javax.swing.JMenu();
         mvprojMinaProjekt = new javax.swing.JMenuItem();
         mvprojAllaProjekt = new javax.swing.JMenuItem();
@@ -105,7 +105,6 @@ private void kontrolleraBehorigheter() {
         mvadnAvdelningar = new javax.swing.JMenuItem();
         mvadnProjekt = new javax.swing.JMenuItem();
         mvadnPartners = new javax.swing.JMenuItem();
-        mvproledAndraPartnersForProjekt1 = new javax.swing.JMenuItem();
         mvadnHallbarhetsmal = new javax.swing.JMenuItem();
         mvadnLand = new javax.swing.JMenuItem();
         menyHjalp = new javax.swing.JMenu();
@@ -163,14 +162,6 @@ private void kontrolleraBehorigheter() {
         });
         menyMinaUppgifter.add(mvminMinaUppgifter);
 
-        mvminLoggaUt.setText("Logga ut");
-        mvminLoggaUt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mvminLoggaUtActionPerformed(evt);
-            }
-        });
-        menyMinaUppgifter.add(mvminLoggaUt);
-
         mvpersPersonalPaMinAvdelning.setText("Personal på min avdelning");
         mvpersPersonalPaMinAvdelning.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -178,6 +169,14 @@ private void kontrolleraBehorigheter() {
             }
         });
         menyMinaUppgifter.add(mvpersPersonalPaMinAvdelning);
+
+        mvminLoggaUt.setText("Logga ut");
+        mvminLoggaUt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mvminLoggaUtActionPerformed(evt);
+            }
+        });
+        menyMinaUppgifter.add(mvminLoggaUt);
 
         jMenuBar1.add(menyMinaUppgifter);
 
@@ -280,14 +279,6 @@ private void kontrolleraBehorigheter() {
         });
         menyAdministration.add(mvadnPartners);
 
-        mvproledAndraPartnersForProjekt1.setText("Ändra partners för projekt");
-        mvproledAndraPartnersForProjekt1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mvproledAndraPartnersForProjekt1ActionPerformed(evt);
-            }
-        });
-        menyAdministration.add(mvproledAndraPartnersForProjekt1);
-
         mvadnHallbarhetsmal.setText("Hållbarhetsmål");
         mvadnHallbarhetsmal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -381,10 +372,6 @@ private void kontrolleraBehorigheter() {
     private void mvadnHallbarhetsmalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvadnHallbarhetsmalActionPerformed
         new HallbarhetsmalMeny(idb, false).setVisible(true);
     }//GEN-LAST:event_mvadnHallbarhetsmalActionPerformed
-
-    private void mvproledAndraPartnersForProjekt1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvproledAndraPartnersForProjekt1ActionPerformed
-        new EditProjektPartner(idb).setVisible(true);
-    }//GEN-LAST:event_mvproledAndraPartnersForProjekt1ActionPerformed
 
     private void mvadnPartnersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvadnPartnersActionPerformed
         new PartnerMeny(idb).setVisible(true);
@@ -487,7 +474,6 @@ private void kontrolleraBehorigheter() {
     private javax.swing.JMenuItem mvprojMinaProjekt;
     private javax.swing.JMenuItem mvprojProjektPartners;
     private javax.swing.JMenuItem mvproledAndraPartnersForProjekt;
-    private javax.swing.JMenuItem mvproledAndraPartnersForProjekt1;
     private javax.swing.JMenuItem mvproledMinaProjekt;
     private javax.swing.JMenuItem mvproledStatistik;
     // End of variables declaration//GEN-END:variables
