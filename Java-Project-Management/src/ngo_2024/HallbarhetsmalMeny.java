@@ -19,6 +19,7 @@ public class HallbarhetsmalMeny extends javax.swing.JFrame {
 
     private InfDB idb;
     private boolean endastVisa;
+    
     /**
      * Konstruktor för HallbarhetsmalMeny
      */
@@ -42,55 +43,45 @@ public class HallbarhetsmalMeny extends javax.swing.JFrame {
     /**
      * Hämtar ut alla Hållbarhetsmål och populerar tabellen som visas. 
      */
-    private void getHallbarhetsmal()
-    {
+    private void getHallbarhetsmal() {
         try {
             String query = "SELECT * FROM hallbarhetsmal";
             ArrayList<HashMap<String, String>> resultat = idb.fetchRows(query);
-            
-            if(resultat != null)
-            {
+
+            if (resultat != null) {
                 DefaultTableModel tableModel = new DefaultTableModel();
                 tableModel.setRowCount(0);
-                
+
                 tableModel.addColumn("ID");
                 tableModel.addColumn("Namn");
                 tableModel.addColumn("Målnummer");
                 tableModel.addColumn("Beskrivning");
                 tableModel.addColumn("pioritet");
-                
+
                 for (HashMap<String, String> rad : resultat) {
-                tableModel.addRow(new Object[]{
-                    rad.get("hid"),
-                    rad.get("namn"),
-                    rad.get("malnummer"),
-                    rad.get("beskrivning"),
-                    rad.get("prioritet"),
+                    tableModel.addRow(new Object[]{
+                        rad.get("hid"),
+                        rad.get("namn"),
+                        rad.get("malnummer"),
+                        rad.get("beskrivning"),
+                        rad.get("prioritet"),}
+                    );
                 }
-                );
-                
-            }
-            jTable1.setModel(tableModel);
-            }
-            else
-            {
+                jTable1.setModel(tableModel);
+            } else {
                 JOptionPane.showMessageDialog(this, "Inga hållbarhetsmål hittades.");
             }
-        }
-        catch (InfException e) 
-        {
-            JOptionPane.showMessageDialog(null, "Fel vid hämtning av hållbarhetsmål: " + e.getMessage());
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(this, "Fel vid hämtning av hållbarhetsmål. Kontrollera att databasen fungerar som den ska.");
         }
     }
     
     /**
      * Raderar valt mål.
      */
-    private void raderaHallbarhetsmal()
-    {
+    private void raderaHallbarhetsmal() {
         int selectedRow = jTable1.getSelectedRow();
-        if (selectedRow != -1)
-        {
+        if (selectedRow != -1) {
             Object mal = jTable1.getValueAt(selectedRow, 0);
             String queryAid = mal.toString();
 
@@ -98,39 +89,29 @@ public class HallbarhetsmalMeny extends javax.swing.JFrame {
             try {
                 String query1 = "DELETE FROM proj_hallbarhet WHERE hid = '" + queryAid + "'";
                 idb.delete(query1);
-                
+
                 //Sedan raderar vi kopplingen mellan avdelningen och hållbarhetsmålen.
-                try
-                {
+                try {
                     String query2 = "DELETE FROM avd_hallbarhet WHERE hid = '" + queryAid + "'";
                     idb.delete(query2);
 
                     //Sist raderar vi själva avdelningen.
-                    try
-                    {
+                    try {
                         String query3 = "DELETE FROM hallbarhetsmal WHERE hid = '" + queryAid + "'";
                         idb.delete(query3);
-                    }
-                    catch (InfException e)
-                    {
-                        System.out.println(e.getMessage());
+                    } catch (InfException e) {
+                        JOptionPane.showMessageDialog(this, "Något gick fel när hållbarhetsmålet skulle raderas. Kontrollera att databasen fungerar som den ska.");
                     }
 
-                }
-                catch (InfException e)
-                {
-                    System.out.println(e.getMessage());
+                } catch (InfException e) {
+                    JOptionPane.showMessageDialog(this, "Något gick fel när hållbarhetsmålet för avdelning skulle raderas. Kontrollera att databasen fungerar som den ska.");
                 }
 
+            } catch (InfException e) {
+                    JOptionPane.showMessageDialog(this, "Något gick fel när hållbarhetsmålet för projekt skulle raderas. Kontrollera att databasen fungerar som den ska.");
             }
-            catch (InfException e)
-            {
-                System.out.println(e.getMessage());
-            }
-        getHallbarhetsmal();
-        }
-        else 
-        {
+            getHallbarhetsmal();
+        } else {
             JOptionPane.showMessageDialog(null, "Ingen rad är markerad!");
         }
     }
@@ -138,17 +119,13 @@ public class HallbarhetsmalMeny extends javax.swing.JFrame {
     /**
      * Metod för att redigera valt hållbarhetsmål.
      */
-    private void editHallbarhetsmal()
-    {
+    private void editHallbarhetsmal() {
         int selectedRow = jTable1.getSelectedRow();
-        if (selectedRow != -1)
-        {
+        if (selectedRow != -1) {
             Object mal = jTable1.getValueAt(selectedRow, 0);
             String queryAid = mal.toString();
             new EditHallbarhetsmal(idb, queryAid).setVisible(true);
-        }
-        else
-        {
+        } else {
             JOptionPane.showMessageDialog(null, "Ingen rad är markerad");
         }
     }
