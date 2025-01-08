@@ -108,6 +108,7 @@ private void kontrolleraBehorigheter() {
         mvproledAndraPartnersForProjekt1 = new javax.swing.JMenuItem();
         mvadnHallbarhetsmal = new javax.swing.JMenuItem();
         mvadnLand = new javax.swing.JMenuItem();
+        mvadnStad = new javax.swing.JMenuItem();
         menyHjalp = new javax.swing.JMenu();
         mvhjOm = new javax.swing.JMenuItem();
 
@@ -304,6 +305,14 @@ private void kontrolleraBehorigheter() {
         });
         menyAdministration.add(mvadnLand);
 
+        mvadnStad.setText("Stad");
+        mvadnStad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mvadnStadActionPerformed(evt);
+            }
+        });
+        menyAdministration.add(mvadnStad);
+
         jMenuBar1.add(menyAdministration);
 
         menyHjalp.setText("Hjälp");
@@ -447,6 +456,10 @@ private void kontrolleraBehorigheter() {
         new AnstalldMeny(idb, anvandare).setVisible(true);
     }//GEN-LAST:event_mvpersPersonalPaMinAvdelningActionPerformed
 
+    private void mvadnStadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvadnStadActionPerformed
+        new StadMeny(idb).setVisible(true);
+    }//GEN-LAST:event_mvadnStadActionPerformed
+
     private void visaAnvandaresNamnOchEpost(String queryAid)
     {
         String roll = ((admins == null) ? "Handläggare" : "Administratör"); //Korthands-if
@@ -478,6 +491,7 @@ private void kontrolleraBehorigheter() {
     private javax.swing.JMenuItem mvadnPartners;
     private javax.swing.JMenuItem mvadnPersonal;
     private javax.swing.JMenuItem mvadnProjekt;
+    private javax.swing.JMenuItem mvadnStad;
     private javax.swing.JMenuItem mvhjOm;
     private javax.swing.JMenuItem mvminLoggaUt;
     private javax.swing.JMenuItem mvminMinaUppgifter;

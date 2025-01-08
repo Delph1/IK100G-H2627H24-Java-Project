@@ -19,85 +19,83 @@ import oru.inf.InfException;
 public class EditStad extends javax.swing.JFrame {
 
     private InfDB idb;
-    private int stadId;
+    private String stadId;
+    private LandMeny land;
 
-    public EditStad(InfDB idb, int stadId) {
+    public EditStad(InfDB idb, String stadId) {
         this.idb = idb;
         this.stadId = stadId;
+        this.land = new LandMeny(idb);
         initComponents();
         setLocationRelativeTo(null); // Centrera fönstret
         fyllComboBoxMedLand(); // Fyller ComboBox med länder
         fyllStadsInfo(); // Hämtar stadens nuvarande information
     }
 
+    /**
+     * Metod som fyller i fälten med aktuell stad.
+     */
     private void fyllStadsInfo() {
-        try {
-            String query = "SELECT namn, land FROM stad WHERE sid = " + stadId;
-            HashMap<String, String> stad = idb.fetchRow(query);
+        if(stadId != null) {
+            try {
+                String query = "SELECT namn, land FROM stad WHERE sid = " + stadId;
+                HashMap<String, String> stad = idb.fetchRow(query);
 
-            if (stad != null) {
-                tfNamn.setText(stad.get("namn")); // Fyller i stadens namn
-                String landId = stad.get("land");
-                String landNamn = getLandNamn(landId);
-                cbLand.setSelectedItem(landId + " - " + landNamn); // Förväljer rätt land i ComboBox
-            } else {
-                JOptionPane.showMessageDialog(this, "Staden kunde inte hittas.");
-                dispose(); // Stänger fönstret om staden inte hittas
+                if (stad != null) {
+                    tfNamn.setText(stad.get("namn")); // Fyller i stadens namn
+                    String landId = stad.get("land");
+                    String landNamn = land.getLandNamnFranId(landId);
+                    cbLand.setSelectedItem(landId + " - " + landNamn); // Förväljer rätt land i ComboBox
+                } else {
+                    JOptionPane.showMessageDialog(this, "Staden kunde inte hittas.");
+                    dispose(); // Stänger fönstret om staden inte hittas
+                }
+            } catch (InfException e) {
+                JOptionPane.showMessageDialog(this, "Fel vid hämtning av stadens information från databasen.");
             }
-        } catch (InfException e) {
-            JOptionPane.showMessageDialog(this, "Fel vid hämtning av stadens information: " + e.getMessage());
-        }
-    }
-
-    private String getLandNamn(String landId) {
-        try {
-            String query = "SELECT namn FROM land WHERE lid = " + landId;
-            return idb.fetchSingle(query);
-        } catch (InfException e) {
-            return "Okänt land";
         }
     }
 
     private void fyllComboBoxMedLand() {
-        try {
-            String query = "SELECT lid, namn FROM land";
-            ArrayList<HashMap<String, String>> landLista = idb.fetchRows(query);
-
-            if (landLista != null) {
-                for (HashMap<String, String> land : landLista) {
-                    cbLand.addItem(land.get("lid") + " - " + land.get("namn"));
-                }
+        ArrayList<HashMap<String, String>> landLista = land.getLander();
+        if (landLista != null) {
+            for (HashMap<String, String> land : landLista) {
+                cbLand.addItem(land.get("lid") + " - " + land.get("namn"));
             }
-        } catch (InfException e) {
-            JOptionPane.showMessageDialog(this, "Fel vid hämtning av länder: " + e.getMessage());
         }
     }
 
-    private void uppdateraStad() {
-        if(Validering.faltEjTomtKontroll(tfNamn) &&
-           Validering.comboBoxInteTom(cbLand.getSelectedItem()))
-        {
-            try {
+    private void sparaStad() {
+        if (Validering.faltEjTomtKontroll(tfNamn)
+                && Validering.comboBoxInteTom(cbLand.getSelectedItem())) {
                 String nyttNamn = tfNamn.getText().trim();
                 String valtLand = cbLand.getSelectedItem().toString();
                 String landId = valtLand.split(" - ")[0]; // Extraherar landets ID
-
-                if (nyttNamn.isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "Stadens namn får inte vara tomt.");
-                    return;
+            if (stadId != null) {
+                try {
+                    String query = "UPDATE stad SET namn = '" + nyttNamn + "', land = " + landId + " WHERE sid = " + stadId;
+                    idb.update(query);
+                } catch (InfException e) {
+                    JOptionPane.showMessageDialog(this, "Staden kunde inte sparas i databasen");
                 }
-
-                String query = "UPDATE stad SET namn = '" + nyttNamn + "', land = " + landId + " WHERE sid = " + stadId;
-                idb.update(query);
-                JOptionPane.showMessageDialog(this, "Staden har uppdaterats!");
-                dispose(); // Stänger fönstret efter uppdatering
-            } catch (InfException e) {
-                JOptionPane.showMessageDialog(this, "Fel vid uppdatering av stad: " + e.getMessage());
+            } else {
+                try {
+                    int sid = Integer.parseInt(idb.getAutoIncrement("stad", "sid"));
+                    try {
+                        String query = "INSERT INTO stad (sid, namn, land) VALUES (" + sid + ", '" + nyttNamn + "', " + landId + ")";
+                        idb.insert(query);
+                    } catch (InfException e) {
+                        JOptionPane.showMessageDialog(this, "Det gick inte att spara den nya staden.");
+                    }
+                } catch (InfException e) {
+                    JOptionPane.showMessageDialog(this, "Det gick inte att hämta nästa ID-nummer för en ny stad.");
+                }
             }
-        }
-        else
-        {
-            JOptionPane.showMessageDialog(this, "Staden har inte uppdaterats.");
+                JOptionPane.showMessageDialog(this, "Staden har sparats!");
+                dispose(); // Stänger fönstret efter uppdatering
+            
+        } else {
+            JOptionPane.showMessageDialog(this, "Du måste fylla i alla fält för att kunna skapa en stad.");
         }
     }
 
@@ -134,12 +132,6 @@ public class EditStad extends javax.swing.JFrame {
         });
 
         lbNamn.setText("Namn");
-
-        tfNamn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfNamnActionPerformed(evt);
-            }
-        });
 
         lbLand.setText("Land");
 
@@ -186,18 +178,12 @@ public class EditStad extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSparaActionPerformed
-        // TODO add your handling code here: 
-        uppdateraStad(); // Uppdaterar stadens information
+        sparaStad(); // Uppdaterar stadens information
     }//GEN-LAST:event_btSparaActionPerformed
 
     private void btAvbrytActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAvbrytActionPerformed
-        // TODO add your handling code here:  
         dispose(); // Stänger fönstret
     }//GEN-LAST:event_btAvbrytActionPerformed
-
-    private void tfNamnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfNamnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfNamnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btAvbryt;
