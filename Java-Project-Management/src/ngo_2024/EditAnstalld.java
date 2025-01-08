@@ -4,7 +4,9 @@
  */
 package ngo_2024;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -22,17 +24,20 @@ public class EditAnstalld extends javax.swing.JFrame {
     private String queryAid;
     private HashMap<String, String> avdelningMap;
     private String anvandare;
+    private SimpleDateFormat datumformat;
+    private AvdelningMeny avdelning;
     
     /**
      * Enkel konstruktor som gör det möjligt att anropa metoderna i klassen
      * @param idb
      */
-
     public EditAnstalld(InfDB idb) {
         initComponents();
         setLocationRelativeTo(null); //Den här koden sätter fönstret i mitten av skärmen.
         this.idb = idb;
         this.avdelningMap = new HashMap<>();
+        this.datumformat = new SimpleDateFormat("yyyy-MM-dd");
+        this.avdelning = new AvdelningMeny(idb);
         fyllComboBox();
         txtLosen.setText(genereraLösenord(12));
     }
@@ -50,120 +55,106 @@ public class EditAnstalld extends javax.swing.JFrame {
         this.idb = idb;
         this.queryAid = queryAid;
         this.anvandare = anvandare;
+        this.avdelning = new AvdelningMeny(idb);
         this.avdelningMap = new HashMap<>();
-
+        this.datumformat = new SimpleDateFormat("yyyy-MM-dd");
         comboAvdelning.setVisible(true);
         fyllComboBox();
-      
-         if (queryAid != null && !queryAid.isEmpty()) {
+
+        if (queryAid != null && !queryAid.isEmpty()) {
             try {
                 String query = "SELECT fornamn, efternamn, adress, epost, telefon, anstallningsdatum, losenord, avdelning FROM anstalld WHERE aid = '" + queryAid + "'";
-
                 HashMap<String, String> resultat = idb.fetchRow(query); // Hämta rad som en HashMap
-
-                if (resultat != null) {
-                    // Hämta och sätt värden i motsvarande textfält
-
+                try {
+                    Date datum = datumformat.parse(resultat.get("anstallningsdatum"));
                     txtFornamn.setText(resultat.get("fornamn"));
                     txtEfternamn.setText(resultat.get("efternamn"));
                     txtAdress.setText(resultat.get("adress"));
                     txtEpost.setText(resultat.get("epost"));
                     txtTelefonNr.setText(resultat.get("telefon"));
-                    txtanstallningsDatum.setText(resultat.get("anstallningsdatum"));
+                    jDateAnstallningsdatum.setDate(datum);
                     txtLosen.setText(resultat.get("losenord"));
                     String avdelning = resultat.get("avdelning");
                     String avdelningsNamn = getAvdelningsNamnId(avdelning); // sätt motsvarande namn från avdelning
                     if (avdelningsNamn != null) {
                         comboAvdelning.setSelectedItem(avdelningsNamn); // om man valt en anställd som ska ändras, väljer rätt namn på avdelningen i comboboxen
                     }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Ingen anställd hittades med det angivna ID:t.");
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Datum är felaktigt formaterat");
                 }
             } catch (InfException e) {
-                System.out.println("Ett fel inträffade: " + e.getMessage());
+                JOptionPane.showMessageDialog(this, "Det gick inte att hämta information om den anställde från databasen. Kontrollera att databasen fungerar som den ska.");
             }
+            // Kontrollera om admins är null
+            if (admins != null) {
+                jCheckBoxAdmin.setEnabled(true); // Gör checkboxen klickbar
+            } else {
+                jCheckBoxAdmin.setEnabled(false); // Gör checkboxen oklickbar
+            }
+            String adminst;
             try {
-                // Kontrollera om admins är null
-                if (admins != null) {
-                    jCheckBox1.setEnabled(true); // Gör checkboxen klickbar
-                } else {
-                    jCheckBox1.setEnabled(false); // Gör checkboxen oklickbar
-                }
-
                 // SQL-frågan för att hämta behörighetsnivån
                 String sqlFrågaAdmin = "Select behorighetsniva FROM admin WHERE aid = '" + queryAid + "'";
-                String adminst = idb.fetchSingle(sqlFrågaAdmin); // Hämtar resultatet
-                System.out.println(adminst);
-                String sqlFrågahandl = "Select aid FROM handlaggare WHERE aid = '" + queryAid + "'";
-                String handlaggare = idb.fetchSingle(sqlFrågahandl); // Hämtar resultatet
-                System.out.println(handlaggare);
-
-                // Kontrollera om det är den inloggade användaren
-                if (queryAid.equals(anvandare)) {
-                    jCheckBox1.setEnabled(false); // Gör checkboxen oklickbar
-                    jCheckBox2.setEnabled(false); // Gör checkboxen oklickbar
-                } else {
-                    // Kontrollera om admins är null
-                    if (admins != null) {
-                        jCheckBox1.setEnabled(true); // Gör checkboxen klickbar
-                        jCheckBox2.setEnabled(true); // Gör checkboxen klickbar
-                    } else {
-                        jCheckBox1.setEnabled(false); // Gör checkboxen oklickbar
-                        jCheckBox2.setEnabled(false); // Gör checkboxen oklickbar
-                    }
-                }
-
-                // Kontrollera om SQL-frågan returnerar ett resultat
-                if (adminst != null) {
-                    jCheckBox1.setSelected(true); // Markera checkboxen
-                } else {
-                    jCheckBox1.setSelected(false); // Avmarkera checkboxen
-                }
-                if (handlaggare != null) {
-                    jCheckBox2.setSelected(true); // Markera checkboxen
-                } else {
-                    jCheckBox2.setSelected(false); // Avmarkera checkboxen
-                }
-
+                adminst = idb.fetchSingle(sqlFrågaAdmin); // Hämtar resultatet
             } catch (InfException e) {
-                System.out.println("Ett fel inträffade: " + e.getMessage());
+                JOptionPane.showMessageDialog(this, "Det gick inte att hämta information om behörighetsnivå från databasen. Kontrollera att databasen fungerar som den ska.");
+                adminst = null;
             }
-
+            String handlaggare;
             try {
-
-                // SQL-frågan för att hämta behörighetsnivån
                 String sqlFrågahandl = "Select aid FROM handlaggare WHERE aid = '" + queryAid + "'";
-                String handlaggare = idb.fetchSingle(sqlFrågahandl); // Hämtar resultatet
-                System.out.println(handlaggare);
-
+                handlaggare = idb.fetchSingle(sqlFrågahandl); // Hämtar resultatet
             } catch (InfException e) {
-                System.out.println("Ett fel inträffade: " + e.getMessage());
+                JOptionPane.showMessageDialog(this, "Det gick inte att hämta information om handläggare från databasen. Kontrollera att databasen fungerar som den ska.");
+                handlaggare = null;
             }
-
+                
+            // Kontrollera om det är den inloggade användaren
+            if (queryAid.equals(anvandare)) {
+                jCheckBoxAdmin.setEnabled(false); // Gör checkboxen oklickbar
+                jCheckBoxHandlaggare.setEnabled(false); // Gör checkboxen oklickbar
+            } else {
+                // Kontrollera om admins är null
+                if (admins != null) {
+                    jCheckBoxAdmin.setEnabled(true); // Gör checkboxen klickbar
+                    jCheckBoxHandlaggare.setEnabled(true); // Gör checkboxen klickbar
+                } else {
+                    jCheckBoxAdmin.setEnabled(false); // Gör checkboxen oklickbar
+                    jCheckBoxHandlaggare.setEnabled(false); // Gör checkboxen oklickbar
+                }
+            }
+            
+            // Kontrollera om SQL-frågan returnerar ett resultat
+            if (adminst != null) {
+                jCheckBoxAdmin.setSelected(true); // Markera checkboxen
+            } else {
+                jCheckBoxAdmin.setSelected(false); // Avmarkera checkboxen
+            }
+            if (handlaggare != null) {
+                jCheckBoxHandlaggare.setSelected(true); // Markera checkboxen
+            } else {
+                jCheckBoxHandlaggare.setSelected(false); // Avmarkera checkboxen
+            }
         }
-    } 
+    }
+    
     /**
      * Hämtar ut avdid och namn från databasen och fyller upp comboboxen. 
      */
     private void fyllComboBox() {
-        try {
-            String query = "SELECT avdid, namn FROM avdelning";
-            ArrayList<HashMap<String, String>> avdelningar = idb.fetchRows(query);
+        ArrayList<HashMap<String, String>> avdelningar = avdelning.getAvdelningar();
+        if (avdelningar != null)
+        for (HashMap<String, String> avdelning : avdelningar) {
+            String avdid = avdelning.get("avdid");
+            String namn = avdelning.get("namn");
 
-            if (avdelningar != null) {
-                for (HashMap<String, String> avdelning : avdelningar) {
-                    String avdid = avdelning.get("avdid");
-                    String namn = avdelning.get("namn");
-
-                    avdelningMap.put(namn, avdid);
-                    comboAvdelning.addItem(namn); // Lägg till namnet i comboboxen
-                }
-            }
-        } catch (InfException e) {
-            System.out.println("Ett fel inträffade vid hämtning av avdelningar: " + e.getMessage());
+            avdelningMap.put(namn, avdid);
+            comboAvdelning.addItem(namn); // Lägg till namnet i comboboxen
+        } else {
+            JOptionPane.showMessageDialog(this, "Inga avdelningar hittades i databasen.");
         }
     }
-
+    
     /**
      * Metod som hämtar ut namn från avdid från HashMap som skapats upp.
      * @param avdid
@@ -185,25 +176,16 @@ public class EditAnstalld extends javax.swing.JFrame {
      * @return 
      */
     public static String genereraLösenord(int langd) {
-        
-        String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        String lower = "abcdefghijklmnopqrstuvwxyz";
-        String numbers = "0123456789";
-        String special = "!@#$%^&*";
-
-        // Kombinera alla tillåtna tecken
-        String allowedChars = upper + lower + numbers + special;
-
+        String tillatnaTecken = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
         Random random = new Random();
-        StringBuilder password = new StringBuilder();
+        StringBuilder slumpatLosenord = new StringBuilder();
 
         // Generera lösenord
         for (int i = 0; i < langd; i++) {
-            int index = random.nextInt(allowedChars.length());
-            password.append(allowedChars.charAt(index));
+            int index = random.nextInt(tillatnaTecken.length());
+            slumpatLosenord.append(tillatnaTecken.charAt(index));
         }
-
-        return password.toString();
+        return slumpatLosenord.toString();
     }
     
     /**
@@ -211,17 +193,13 @@ public class EditAnstalld extends javax.swing.JFrame {
      * @param epost
      * @return 
      */
-    public boolean finnsEpost(String epost)
-    {
+    public boolean finnsEpost(String epost) {
         boolean epostFinns = false;
-        try
-        {
+        try {
             String query = "SELECT losenord FROM anstalld WHERE epost = '" + epost + "'";
             idb.fetchSingle(query);
             epostFinns = true;
-        }
-        catch(InfException e)
-        {
+        } catch (InfException e) {
             JOptionPane.showMessageDialog(this, "E-postadressen finns inte i datrabasen.");
         }
         return epostFinns;
@@ -232,22 +210,19 @@ public class EditAnstalld extends javax.swing.JFrame {
      * @param aid
      * @param nyttLosen 
      */
-    public boolean uppdateraLosenord(String epost, String nyttLosen)
-    {
+    public boolean uppdateraLosenord(String epost, String nyttLosen) {
         boolean success = false;
-        try
-        {
+        try {
             String query = "UPDATE anstalld SET losenord = '" + nyttLosen + "' WHERE epost = '" + epost + "'";
             System.out.println(query);
             idb.update(query);
             success = true;
-        }
-        catch(InfException e)
-        {
+        } catch (InfException e) {
             JOptionPane.showMessageDialog(this, "Det gick inte att uppdatera lösenordet.");
         }
         return success;
     }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -262,7 +237,6 @@ public class EditAnstalld extends javax.swing.JFrame {
         txtAdress = new javax.swing.JTextField();
         txtEpost = new javax.swing.JTextField();
         txtTelefonNr = new javax.swing.JTextField();
-        txtanstallningsDatum = new javax.swing.JTextField();
         txtLosen = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -274,9 +248,10 @@ public class EditAnstalld extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         sparaKnapp = new javax.swing.JButton();
         comboAvdelning = new javax.swing.JComboBox<>();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
+        jCheckBoxAdmin = new javax.swing.JCheckBox();
+        jCheckBoxHandlaggare = new javax.swing.JCheckBox();
         SlumpLosen = new javax.swing.JButton();
+        jDateAnstallningsdatum = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -289,8 +264,6 @@ public class EditAnstalld extends javax.swing.JFrame {
         txtEpost.setActionCommand("<Not Set>");
 
         txtTelefonNr.setActionCommand("<Not Set>");
-
-        txtanstallningsDatum.setActionCommand("<Not Set>");
 
         txtLosen.setActionCommand("<Not Set>");
         txtLosen.addActionListener(new java.awt.event.ActionListener() {
@@ -322,9 +295,9 @@ public class EditAnstalld extends javax.swing.JFrame {
             }
         });
 
-        jCheckBox1.setText("Administratör");
+        jCheckBoxAdmin.setText("Administratör");
 
-        jCheckBox2.setText("Handläggare");
+        jCheckBoxHandlaggare.setText("Handläggare");
 
         SlumpLosen.setText("Slumpa lösenord");
         SlumpLosen.addActionListener(new java.awt.event.ActionListener() {
@@ -332,6 +305,8 @@ public class EditAnstalld extends javax.swing.JFrame {
                 SlumpLosenActionPerformed(evt);
             }
         });
+
+        jDateAnstallningsdatum.setDateFormatString("yyyy-MM-dd");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -349,9 +324,6 @@ public class EditAnstalld extends javax.swing.JFrame {
                                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addGap(18, 18, 18)
-                                    .addComponent(txtanstallningsDatum, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(layout.createSequentialGroup()
                                     .addGap(18, 18, 18)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -360,7 +332,10 @@ public class EditAnstalld extends javax.swing.JFrame {
                                                 .addComponent(txtEpost, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addComponent(txtAdress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addComponent(txtEfternamn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(txtFornamn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addComponent(txtFornamn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jDateAnstallningsdatum, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
@@ -372,11 +347,11 @@ public class EditAnstalld extends javax.swing.JFrame {
                         .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jCheckBox2))
+                                .addComponent(jCheckBoxHandlaggare))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(comboAvdelning, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jCheckBox1)
+                                .addComponent(jCheckBoxAdmin)
                                 .addComponent(SlumpLosen))))
                     .addComponent(sparaKnapp))
                 .addContainerGap(19, Short.MAX_VALUE))
@@ -405,9 +380,9 @@ public class EditAnstalld extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(txtTelefonNr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel6)
-                    .addComponent(txtanstallningsDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jDateAnstallningsdatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
@@ -418,8 +393,8 @@ public class EditAnstalld extends javax.swing.JFrame {
                     .addComponent(comboAvdelning, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox2)
-                    .addComponent(jCheckBox1))
+                    .addComponent(jCheckBoxHandlaggare)
+                    .addComponent(jCheckBoxAdmin))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(sparaKnapp)
@@ -437,7 +412,7 @@ public class EditAnstalld extends javax.swing.JFrame {
         String adress = txtAdress.getText();
         String epost = txtEpost.getText();
         String telefon = txtTelefonNr.getText();
-        String ansdatum = txtanstallningsDatum.getText();
+        String ansdatum = datumformat.format(jDateAnstallningsdatum.getDate());
         String losen = txtLosen.getText();
         String avdelningsNamn = (String) comboAvdelning.getSelectedItem(); // Hämta valt namn från combobox
         String avdelningId = avdelningMap.get(avdelningsNamn);
@@ -449,125 +424,167 @@ public class EditAnstalld extends javax.swing.JFrame {
                 && Validering.faltEjTomtKontroll(txtEpost)
                 && Validering.emailKontroll(txtEpost)
                 && Validering.faltEjTomtKontroll(txtTelefonNr)
-                && Validering.faltEjTomtKontroll(txtanstallningsDatum)
-                && Validering.datumKontroll(txtanstallningsDatum.getText())
+                && Validering.datumKontroll(ansdatum)
                 && Validering.faltEjTomtKontroll(txtLosen)) {
-            
-        try
-        {
-            if (queryAid == null || queryAid.isEmpty())
-            {
-            int aid = Integer.parseInt(idb.getAutoIncrement("anstalld", "aid"));
-            String query = "INSERT INTO anstalld (aid, fornamn, efternamn, adress, epost, telefon, anstallningsdatum, losenord, avdelning)"
-                    + " VALUES ("
-                    + aid + ", '"
-                    + fornamn + "', '"
-                    + efternamn + "', '"
-                    + adress + "', '"
-                    + epost + "', '"
-                    + telefon + "', '" 
-                    + ansdatum + "', '"
-                    + losen + "', "
-                    + avdelningId + ")";
-            System.out.println(query);
-            idb.insert(query);
-            queryAid = String.valueOf(aid);    
-            }
-            else
-            {
-                String query = "UPDATE anstalld "
-                        + "SET fornamn = '" + fornamn + "', "
-                        + "efternamn = '" + efternamn + "', "
-                        + "adress = '" + adress + "', "
-                        + "epost = '" + epost + "', "
-                        + "telefon = '" + telefon + "', "
-                        + "anstallningsdatum = '" + ansdatum + "', "
-                        + "losenord = '" + losen + "', "
-                        + "avdelning = '" + avdelningId + "' "
-                        + "WHERE aid = " + queryAid;
-                System.out.println(query);
-                idb.update(query);
 
-            }
-
-                    if (jCheckBox1.isEnabled()) {
-            String sqlFrågaAdmin = "SELECT behorighetsniva FROM admin WHERE aid = '" + queryAid + "'";
-            String adminst = idb.fetchSingle(sqlFrågaAdmin);
-
-            if (jCheckBox1.isSelected()) {
-                // Om checkboxen är markerad och det inte redan finns en rad i admin
-                if (adminst == null) {
-                    String insertAdmin = "INSERT INTO admin (aid, behorighetsniva) VALUES ('" + queryAid + "', 1)";
-                    System.out.println(insertAdmin);
-                    idb.insert(insertAdmin);
-                }
-            } else {
-                
-                // Om checkboxen är avmarkerad och det finns en rad i handlaggare
-                if (adminst != null) {
-                    String deleteAdmin = "DELETE FROM admin WHERE aid = '" + queryAid + "'";
-                    System.out.println(deleteAdmin);
-                    idb.delete(deleteAdmin);
-                }
-            }
-        }
-            if (jCheckBox2.isEnabled()) {
-                String sqlFragaHandl = "SELECT aid FROM handlaggare WHERE aid = '" + queryAid + "'";
-                String handlaggare = idb.fetchSingle(sqlFragaHandl);
-
-                if (jCheckBox2.isSelected()) {
-                    // Om checkboxen är markerad och det inte redan finns en rad i handlaggare
-                    if (handlaggare == null) {
-                        String inserthandlaggare = "INSERT INTO handlaggare (aid, ansvarighetsomrade, mentor) VALUES ('" + queryAid + "', null, null)";
-                        System.out.println(inserthandlaggare);
-                        idb.insert(inserthandlaggare);
+            try {
+                if (queryAid == null || queryAid.isEmpty()) {
+                    int aid = Integer.parseInt(idb.getAutoIncrement("anstalld", "aid"));
+                    String query = "INSERT INTO anstalld (aid, fornamn, efternamn, adress, epost, telefon, anstallningsdatum, losenord, avdelning)"
+                            + " VALUES ("
+                            + aid + ", '"
+                            + fornamn + "', '"
+                            + efternamn + "', '"
+                            + adress + "', '"
+                            + epost + "', '"
+                            + telefon + "', '"
+                            + ansdatum + "', '"
+                            + losen + "', "
+                            + avdelningId + ")";
+                    //System.out.println(query);
+                    try {
+                        idb.insert(query);
+                    } catch (InfException e) {
+                        JOptionPane.showMessageDialog(this, "Det gick inte att spara den nya personen i databasen.");
                     }
+                    queryAid = String.valueOf(aid);
                 } else {
-                    // Om checkboxen är avmarkerad och det finns en rad i handlaggare
-                    if (handlaggare != null) {
-                        // Kolla om handläggaren är refererad i projekt
-                        String checkProjekt = "SELECT COUNT(*) AS count FROM projekt WHERE projektchef = '" + queryAid + "'";
-                        int antalProjekt = Integer.parseInt(idb.fetchSingle(checkProjekt));
+                    String query = "UPDATE anstalld "
+                            + "SET fornamn = '" + fornamn + "', "
+                            + "efternamn = '" + efternamn + "', "
+                            + "adress = '" + adress + "', "
+                            + "epost = '" + epost + "', "
+                            + "telefon = '" + telefon + "', "
+                            + "anstallningsdatum = '" + ansdatum + "', "
+                            + "losenord = '" + losen + "', "
+                            + "avdelning = '" + avdelningId + "' "
+                            + "WHERE aid = " + queryAid;
+                    //System.out.println(query);
+                    try {
+                        idb.update(query);
+                    } catch (InfException e) {
+                        JOptionPane.showMessageDialog(this, "Det gick inte att uppdatera personen i databasen.");
+                    }
 
-                        if (antalProjekt > 0) {
-                            // Uppdatera projektchef till NULL om det finns referenser
-                            String updateProjekt = "UPDATE projekt SET projektchef = NULL WHERE projektchef = '" + queryAid + "'";
-                            System.out.println(updateProjekt);
-                            idb.update(updateProjekt);
-                        }                      
+                }
 
-                        String updateavdelning = "UPDATE avdelning SET chef = NULL WHERE chef = '" + queryAid + "'";
-                        System.out.println(updateavdelning);
-                        idb.update(updateavdelning);
-                        
-                        String updatementor = "UPDATE handlaggare SET mentor = NULL WHERE mentor = '" + queryAid + "'";
-                        System.out.println(updatementor);
-                        idb.update(updatementor);
-                        
-                        // Ta bort handläggaren från handlaggare-tabellen
-                        String deleteHandlaggare = "DELETE FROM handlaggare WHERE aid = '" + queryAid + "'";
-                        System.out.println(deleteHandlaggare);
-                        idb.delete(deleteHandlaggare);
-                        
-                        // Ta bort handläggaren från nas_proj-tabellen
-                        String deleteproj = "DELETE FROM ans_proj WHERE aid = '" + queryAid + "'";
-                        System.out.println(deleteproj);
-                        idb.delete(deleteproj);
+                if (jCheckBoxAdmin.isEnabled()) {
+                    try {
+                        String sqlFrågaAdmin = "SELECT behorighetsniva FROM admin WHERE aid = '" + queryAid + "'";
+                        String adminst = idb.fetchSingle(sqlFrågaAdmin);
+
+                        if (jCheckBoxAdmin.isSelected()) {
+                            // Om checkboxen är markerad och det inte redan finns en rad i admin
+                            if (adminst == null) {
+                                String insertAdmin = "INSERT INTO admin (aid, behorighetsniva) VALUES ('" + queryAid + "', 1)";
+                                //System.out.println(insertAdmin);
+                                try {
+                                    idb.insert(insertAdmin);
+                                } catch (InfException e) {
+                                    JOptionPane.showMessageDialog(this, "Det gick inte att sätta användaren som en administratör i databasen.");                        
+                                }
+                            }
+                        } else {
+
+                            // Om checkboxen är avmarkerad och det finns en rad i handlaggare
+                            if (adminst != null) {
+                                String deleteAdmin = "DELETE FROM admin WHERE aid = '" + queryAid + "'";
+                                //System.out.println(deleteAdmin);
+                                try {
+                                    idb.delete(deleteAdmin);
+                                } catch (InfException e) {
+                                    JOptionPane.showMessageDialog(this, "Det gick inte att ta bort användaren från administratörer databasen.");                        
+                                }                                    
+                            }
+                        }
+                    } catch(InfException e) {
+                        JOptionPane.showMessageDialog(this, "Det gick inte att hämta behörighetsnivå från databasen.");                        
                     }
                 }
+                if (jCheckBoxHandlaggare.isEnabled()) {
+                    try {
+                        String sqlFragaHandl = "SELECT aid FROM handlaggare WHERE aid = '" + queryAid + "'";
+                        String handlaggare = idb.fetchSingle(sqlFragaHandl);
+
+                        if (jCheckBoxHandlaggare.isSelected()) {
+                            // Om checkboxen är markerad och det inte redan finns en rad i handlaggare
+                            if (handlaggare == null) {
+                                String inserthandlaggare = "INSERT INTO handlaggare (aid, ansvarighetsomrade, mentor) VALUES ('" + queryAid + "', null, null)";
+                                System.out.println(inserthandlaggare);
+                                try {
+                                    idb.insert(inserthandlaggare);
+                                } catch (InfException e) {
+                                    JOptionPane.showMessageDialog(this, "Det gick inte att göra personen till en handläggare. Databasen uppdaterades inte.");
+                                }
+                            }
+                        } else {
+                            // Om checkboxen är avmarkerad och det finns en rad i handlaggare
+                            if (handlaggare != null) {
+                                try {
+                                    // Kolla om handläggaren är refererad i projekt
+                                    String checkProjekt = "SELECT COUNT(*) AS count FROM projekt WHERE projektchef = '" + queryAid + "'";
+                                    int antalProjekt = Integer.parseInt(idb.fetchSingle(checkProjekt));
+
+                                    if (antalProjekt > 0) {
+                                        // Uppdatera projektchef till NULL om det finns referenser
+                                        String updateProjekt = "UPDATE projekt SET projektchef = NULL WHERE projektchef = '" + queryAid + "'";
+                                        //System.out.println(updateProjekt);
+                                        idb.update(updateProjekt);
+                                    }
+                                } catch (InfException e) {
+                                    JOptionPane.showMessageDialog(this, "Det gick inte att kolla om personen är projektchef för några projekt. ");                                    
+                                }
+                                
+                                //Tar bort som chef för en avdelning ... om det finns
+                                try {
+                                    String updateavdelning = "UPDATE avdelning SET chef = NULL WHERE chef = '" + queryAid + "'";
+                                    System.out.println(updateavdelning);
+                                    idb.update(updateavdelning);
+                                } catch (InfException e) {
+                                    JOptionPane.showMessageDialog(this, "Det gick inte att uppdatera tabellen avdelning.");                                    
+                                }
+                                
+                                //Tar bort eventuella mentorsroller.
+                                try {
+                                    String updatementor = "UPDATE handlaggare SET mentor = NULL WHERE mentor = '" + queryAid + "'";
+                                    System.out.println(updatementor);
+                                    idb.update(updatementor);
+                                } catch (InfException e) {
+                                    JOptionPane.showMessageDialog(this, "Det gick inte att uppdatera mentorsrollerna i handläggare.");                                    
+                                }
+
+                                // Ta bort handläggaren från handlaggare-tabellen
+                                try {
+                                    String deleteHandlaggare = "DELETE FROM handlaggare WHERE aid = '" + queryAid + "'";
+                                    System.out.println(deleteHandlaggare);
+                                    idb.delete(deleteHandlaggare);
+                                } catch (InfException e) {
+                                    JOptionPane.showMessageDialog(this, "Det gick inte att radera personen från handlaggare.");                                    
+                                }
+
+                                // Ta bort handläggaren från ans_proj-tabellen. Vi är lite osäkra på om detta ska göras, men vi har lagt in det för det verkar troligt att det ska vara så.
+                                try {
+                                    String deleteproj = "DELETE FROM ans_proj WHERE aid = '" + queryAid + "'";
+                                    System.out.println(deleteproj);
+                                    idb.delete(deleteproj);
+                                } catch (InfException e) {
+                                    JOptionPane.showMessageDialog(this, "Det gick inte att ta bort personens koppling till projekt.");                                    
+                                }
+                            }
+                        }
+                    } catch (InfException e) {
+                        JOptionPane.showMessageDialog(this, "Det gick inte att hämta från tabellen \"handlaggare\".");                        
+                    }
+                }
+
+                JOptionPane.showMessageDialog(null, "Anställd har sparats.");
+                this.setVisible(false);
+
+            } catch (InfException e) {
+                System.out.println("Det gick inte att hämta nästa ID-nummer från databasen.");
             }
 
-        JOptionPane.showMessageDialog(null, "Anställd har sparats.");
-        this.setVisible(false);
-        
-
         }
-        catch(InfException e)
-        {
-            System.out.println("Ett fel inträffade: " + e.getMessage());
-        }
-        
-           }  
     }//GEN-LAST:event_sparaKnappActionPerformed
 
     private void txtLosenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLosenActionPerformed
@@ -583,8 +600,9 @@ public class EditAnstalld extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton SlumpLosen;
     private javax.swing.JComboBox<String> comboAvdelning;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
+    private javax.swing.JCheckBox jCheckBoxAdmin;
+    private javax.swing.JCheckBox jCheckBoxHandlaggare;
+    private com.toedter.calendar.JDateChooser jDateAnstallningsdatum;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -600,6 +618,5 @@ public class EditAnstalld extends javax.swing.JFrame {
     private javax.swing.JTextField txtFornamn;
     private javax.swing.JTextField txtLosen;
     private javax.swing.JTextField txtTelefonNr;
-    private javax.swing.JTextField txtanstallningsDatum;
     // End of variables declaration//GEN-END:variables
 }
