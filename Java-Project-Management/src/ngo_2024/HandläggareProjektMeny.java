@@ -166,23 +166,23 @@ public class HandläggareProjektMeny extends javax.swing.JFrame {
                 Object projekt = tblHandlaggare.getValueAt(selectedRow, 0); // Hämta aid-värde från kolumn 0
                 int queryAid = Integer.parseInt(projekt.toString()); // Konvertera till int
                 try {
-                    String sqlFråga = "delete from ans_proj where pid = " + pid+" and aid = "+queryAid;
+                    String sqlFråga = "delete from ans_proj where pid = " + pid + " and aid = " + queryAid;
                     idb.delete(sqlFråga);
-                    JOptionPane.showMessageDialog(null, "Handläggare har tagits bort från projektet.");
+                    JOptionPane.showMessageDialog(this, "Handläggare har tagits bort från projektet.");
                     formateraTabell();
                 } catch (InfException e) {
                     System.out.println("Databasen har inte uppdaterats. \n" + e.getMessage());
-                    JOptionPane.showMessageDialog(null, "Handläggare har inte tagits bort.");
+                    JOptionPane.showMessageDialog(this, "Handläggare har inte tagits bort.");
                 }
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Ingen rad är markerad!");
+            JOptionPane.showMessageDialog(this, "Ingen rad är markerad!");
         }
     }//GEN-LAST:event_btnTaBortActionPerformed
 
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
-        if (cmbHandläggare.getSelectedIndex() ==0) {
-            JOptionPane.showMessageDialog(null, "Välj en handläggare från rullmenyn");
+        if (cmbHandläggare.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(this, "Välj en handläggare från rullmenyn");
         } else {
             int anställdID = 0;
             String[] namn = cmbHandläggare.getSelectedItem().toString().split(" ");
@@ -194,15 +194,14 @@ public class HandläggareProjektMeny extends javax.swing.JFrame {
             } catch (InfException e) {
                 System.out.println(e.getMessage());
             }
-            String query = "insert into ans_proj values (" + pid+", "+ anställdID + ");";
+            String query = "insert into ans_proj values (" + pid + ", " + anställdID + ");";
             try {
                 idb.insert(query);
                 formateraTabell();
                 cmbHandläggare.setSelectedIndex(0);
-            }
-            catch (InfException e) {
+            } catch (InfException e) {
                 System.out.println(e.getMessage());
-                JOptionPane.showMessageDialog(null, "Databasfel");
+                JOptionPane.showMessageDialog(this, "Det gick inte att koppla den anställda till det valda projektet.");
             }
         }
     }//GEN-LAST:event_btnSparaActionPerformed
@@ -229,22 +228,20 @@ public class HandläggareProjektMeny extends javax.swing.JFrame {
                 cmbHandläggare.addItem(fulltNamn);
             }
         } catch (InfException e) {
-            System.out.println(e.getMessage());
-            JOptionPane.showMessageDialog(null, "Databasfel");
+            JOptionPane.showMessageDialog(this, "Det gick inte att hämta namn från databasen.");
         }
     }
     private ArrayList<HashMap<String,String>> hamtaHandlaggare(int pid)
     {
         String query = "Select aid, fornamn, efternamn, epost from anstalld where aid in (select aid from ans_proj where pid = " + pid + ");";
-        
+        ArrayList<HashMap<String, String>> allaHandlaggare;
         try {
-            ArrayList<HashMap<String, String>> allaHandlaggare = idb.fetchRows(query);
-            return allaHandlaggare;
+            allaHandlaggare = idb.fetchRows(query);
         } catch (InfException e) {
-            System.out.println(e.getMessage());
-            JOptionPane.showMessageDialog(null, "Databasfel");
+            JOptionPane.showMessageDialog(this, "Det gick inte att hämta ut handläggare från databasen.");
+            allaHandlaggare = null;
         }
-        return null;
+        return allaHandlaggare;
     }
 
     private void formateraTabell() {
@@ -271,11 +268,10 @@ public class HandläggareProjektMeny extends javax.swing.JFrame {
                 }
             }
             else {
-                JOptionPane.showMessageDialog(null, "Det finns inga deltagande handläggare på projektet än.");
+                JOptionPane.showMessageDialog(this, "Det finns inga deltagande handläggare på projektet än.");
             }
         }
-        tblHandlaggare.setModel(tableModel);
-                 // Sätt modellen på JTable
+        tblHandlaggare.setModel(tableModel); // Sätt modellen på JTable
     }
 
 
