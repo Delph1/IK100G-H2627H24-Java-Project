@@ -46,10 +46,8 @@ public class EditHallbarhetsmal extends javax.swing.JFrame {
      * Metod som hämtar ut måldata.
      * @param queryMid 
      */
-    private void getMaldata(String queryMid)
-    {
-        try 
-        {
+    private void getMaldata(String queryMid) {
+        try {
             String query = "SELECT * FROM hallbarhetsmal WHERE hid = " + queryMid;
             System.out.println(query);
 
@@ -59,24 +57,25 @@ public class EditHallbarhetsmal extends javax.swing.JFrame {
                 // Hämta och sätt värden i motsvarande textfält
 
                 txtNamn.setText(resultat.get("namn"));
-                txtMalnummer.setText(resultat.get("malnummer"));       
+                txtMalnummer.setText(resultat.get("malnummer"));
                 txtBeskrivning.setText(resultat.get("beskrivning"));
                 String prioritet = resultat.get("prioritet");
                 int prio = 0;
                 prio = switch (prioritet) {
-                    case "Låg" -> 0;
-                    case "Medel" -> 1;
-                    default -> 2;
+                    case "Låg" ->
+                        0;
+                    case "Medel" ->
+                        1;
+                    default ->
+                        2;
                 };
                 cbPrioritet.setSelectedIndex(prio);
 
             } else {
-                JOptionPane.showMessageDialog(null, "Ingen avdelning hittades med det angivna ID-numret.");
+                JOptionPane.showMessageDialog(this, "Ingen avdelning hittades med det angivna ID-numret.");
             }
-        } 
-        catch (InfException e) 
-        {
-            System.out.println("Ett fel inträffade: " + e.getMessage());
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(this, "Något gick fel när målet skulle hämtas från databasen. Kontrollera att databasen fungerar som den ska.");
         }
     }
     /**
@@ -216,63 +215,54 @@ public class EditHallbarhetsmal extends javax.swing.JFrame {
      */
     
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
-
-        if(Validering.faltEjTomtKontroll(txtNamn) &&
-                Validering.faltEjTomtKontroll(txtMalnummer) &&
-                Validering.faltEjTomtKontroll(txtBeskrivning) &&
-                Validering.comboBoxInteTom(cbPrioritet.getSelectedItem()))
-        {
+        if (Validering.faltEjTomtKontroll(txtNamn)
+                && Validering.faltEjTomtKontroll(txtMalnummer)
+                && Validering.faltEjTomtKontroll(txtBeskrivning)
+                && Validering.comboBoxInteTom(cbPrioritet.getSelectedItem())) {
             String namn = txtNamn.getText();
             String malnummer = txtMalnummer.getText();
             String beskrivning = txtBeskrivning.getText();
             int prio = cbPrioritet.getSelectedIndex();
             String prioritet;
             prioritet = switch (prio) {
-                case 0 -> "Låg";
-                case 1 -> "Medel";
-                default -> "Hög";
+                case 0 ->
+                    "Låg";
+                case 1 ->
+                    "Medel";
+                default ->
+                    "Hög";
             };
-            try
-            {
-                if(queryMid == null)
-                {
+            try {
+                if (queryMid == null) {
                     int hid = Integer.parseInt(idb.getAutoIncrement("hallbarhetsmal", "hid"));
                     String query = "INSERT INTO hallbarhetsmal (hid, namn, malnummer, beskrivning, prioritet)"
-                    + " VALUES ("
-                    + hid + ", '"
-                    + namn + "', '"
-                    + malnummer + "', '"
-                    + beskrivning + "', '"
-                    + prioritet + "')";
+                            + " VALUES ("
+                            + hid + ", '"
+                            + namn + "', '"
+                            + malnummer + "', '"
+                            + beskrivning + "', '"
+                            + prioritet + "')";
                     System.out.println(query);
                     idb.insert(query);
 
-                }
-                else
-                {
+                } else {
                     String query = "UPDATE hallbarhetsmal "
-                    + "SET namn = '" + namn + "', "
-                    + "malnummer = '" + malnummer + "', "
-                    + "beskrivning = '" + beskrivning + "', "
-                    + "prioritet = '" + prioritet 
-                    + "' WHERE hid = " + queryMid;
+                            + "SET namn = '" + namn + "', "
+                            + "malnummer = '" + malnummer + "', "
+                            + "beskrivning = '" + beskrivning + "', "
+                            + "prioritet = '" + prioritet
+                            + "' WHERE hid = " + queryMid;
                     System.out.println(query);
                     idb.update(query);
-
                 }
-
-                JOptionPane.showMessageDialog(null, "Hållbarhetsmålet har sparats.");
+                JOptionPane.showMessageDialog(this, "Hållbarhetsmålet har sparats.");
                 this.setVisible(false);
 
+            } catch (InfException e) {
+                JOptionPane.showMessageDialog(this, "Hållbarhetsmålet kunde inte sparas i databasen. Kontrollera att databasen fungerar som den ska.");
             }
-            catch(InfException e)
-            {
-                System.out.println("Ett fel inträffade: " + e.getMessage());
-            }
-        }
-        else
-        {
-            JOptionPane.showMessageDialog(null, "Hållbarhetsmålet har inte sparats.");
+        } else {
+            JOptionPane.showMessageDialog(this, "Du måste fylla i alla fält.");
         }
     }//GEN-LAST:event_btnSparaActionPerformed
 
