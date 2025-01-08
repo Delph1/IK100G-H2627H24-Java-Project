@@ -129,19 +129,19 @@ public class AvdelningMeny extends javax.swing.JFrame {
                     }
                     catch (InfException e)
                     {
-                        System.out.println(e.getMessage());
+                        JOptionPane.showMessageDialog(this, "Avdelningen gick inte att radera. Något gick fel i kommunikation med databasen.");
                     }
 
                 }
                 catch (InfException e)
                 {
-                    System.out.println(e.getMessage());
+                    JOptionPane.showMessageDialog(this, "Det gick inte att ta bort avdelningen från anställda.");
                 }
 
             }
             catch (InfException e)
             {
-                System.out.println(e.getMessage());
+                JOptionPane.showMessageDialog(this, "Inga städer hittades.");
             }
         //Uppdaterar tabellen efter att raden blivit raderad.
         getAvdelningar();
