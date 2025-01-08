@@ -14,61 +14,49 @@ import oru.inf.InfException;
 public class StadMeny extends javax.swing.JFrame {
 
     private InfDB idb;
+    private LandMeny land;
 
     public StadMeny(InfDB idb) {
         this.idb = idb;
+        this.land = new LandMeny(idb);
         initComponents();
         setLocationRelativeTo(null); // Centrera fönstret
-        getStad(); // Ladda alla städer direkt vid start
+        pupuleraStadTabell(getAllaStader()); // Ladda alla städer direkt vid start
     }
 
     /**
      * Hämtar och visar alla städer i tabellen.
      */
-    private void getStad() {
-        try {
-            String query = "SELECT sid, namn, land FROM stad"; // Hämtar stadens ID, namn och land-ID
-            ArrayList<HashMap<String, String>> resultat = idb.fetchRows(query);
+    private void pupuleraStadTabell(ArrayList<HashMap<String, String>> allaStader) {
+        if (allaStader != null) {
+            DefaultTableModel tableModel = new DefaultTableModel();
+            tableModel.setRowCount(0);
 
-            if (resultat != null) {
-                DefaultTableModel tableModel = new DefaultTableModel();
-                tableModel.setRowCount(0);
+            tableModel.addColumn("ID");
+            tableModel.addColumn("Namn");
+            tableModel.addColumn("Land");
 
-                tableModel.addColumn("ID");
-                tableModel.addColumn("Namn");
-                tableModel.addColumn("Land");
+            for (HashMap<String, String> rad : allaStader) {
+                String landId = rad.get("land");
+                String landNamn = land.getLandNamnFranId(landId); // Hämtar landets namn baserat på ID
 
-                for (HashMap<String, String> rad : resultat) {
-                    String landId = rad.get("land");
-                    String landNamn = getLandNamn(landId); // Hämtar landets namn baserat på ID
-
-                    tableModel.addRow(new Object[]{
-                        rad.get("sid"),
-                        rad.get("namn"),
-                        landNamn
-                    });
-                }
-                jTable1.setModel(tableModel);
-            } else {
-                JOptionPane.showMessageDialog(this, "Inga städer hittades.");
+                tableModel.addRow(new Object[]{
+                    rad.get("sid"),
+                    rad.get("namn"),
+                    landNamn
+                });
             }
-        } catch (InfException e) {
-            JOptionPane.showMessageDialog(null, "Fel vid hämtning av städer: " + e.getMessage());
+            jTable1.setModel(tableModel);
+        } else {
+            JOptionPane.showMessageDialog(this, "Inga städer hittades.");
         }
     }
 
     /**
-     * Hämtar landets namn baserat på dess ID.
+     * Hämtar ut namn för en stad.
+     * @param sid
+     * @return 
      */
-    private String getLandNamn(String landId) {
-        try {
-            String query = "SELECT namn FROM land WHERE lid = " + landId;
-            return idb.fetchSingle(query); // Returnerar landets namn
-        } catch (InfException e) {
-            return "Okänt land"; // Om något går fel, visa "Okänt land"
-        }
-    }
-    
     public String getNamn(int sid)
         {
             String namn;
@@ -79,7 +67,7 @@ public class StadMeny extends javax.swing.JFrame {
             }
             catch(InfException e)
             {
-                System.out.println(e.getMessage());
+                JOptionPane.showMessageDialog(this, "Ingen stad hittades.");
                 namn = null;
             }
         return namn;
@@ -87,7 +75,7 @@ public class StadMeny extends javax.swing.JFrame {
     
     public ArrayList<HashMap<String, String>> getAllaStader()
     {
-        ArrayList<HashMap<String, String>> allaStäder = new ArrayList<>();
+        ArrayList<HashMap<String, String>> allaStäder;
         try
         {
             String sqlfråga = "SELECT * FROM stad";
@@ -95,12 +83,10 @@ public class StadMeny extends javax.swing.JFrame {
         }
         catch(InfException e)
         {
-            System.out.println("Kunde inte hämta städer.");
-            JOptionPane.showMessageDialog(null, "Kunde inte hämta städer. \n" + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Kunde inte hämta data om städer ur databasen.");
             allaStäder = null;
         }
         return allaStäder;
-
     }
         
     /**
@@ -115,15 +101,27 @@ public class StadMeny extends javax.swing.JFrame {
                 String query = "DELETE FROM stad WHERE sid = " + stadId;
                 idb.delete(query);
                 JOptionPane.showMessageDialog(this, "Staden har raderats!");
-                getStad(); // Uppdatera tabellen
+                pupuleraStadTabell(getAllaStader()); // Uppdatera tabellen
             } catch (InfException e) {
-                JOptionPane.showMessageDialog(this, "Fel vid borttagning: " + e.getMessage());
+                JOptionPane.showMessageDialog(this, "Det gick inte att radera staden. Kontrollera att databasen fungerar som den ska");
             }
         } else {
             JOptionPane.showMessageDialog(this, "Välj en stad att radera!");
         }
     }
 
+    /**
+     * Öppnar upp EditLand för markerat land.
+     */
+    private void editStad() {
+        int selectedRow = jTable1.getSelectedRow();
+        if (selectedRow != -1) {
+            String stad = jTable1.getValueAt(selectedRow, 0).toString();
+            new EditStad(idb, stad).setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Ingen rad är markerad");
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -227,19 +225,19 @@ public class StadMeny extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnUppdateraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUppdateraActionPerformed
-        // TODO add your handling code here:
+        pupuleraStadTabell(getAllaStader());
     }//GEN-LAST:event_btnUppdateraActionPerformed
 
     private void btnÄndraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnÄndraActionPerformed
-        // TODO add your handling code here:
+        editStad();
     }//GEN-LAST:event_btnÄndraActionPerformed
 
     private void btnRaderaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRaderaActionPerformed
-        // TODO add your handling code here:
+        raderaStad();
     }//GEN-LAST:event_btnRaderaActionPerformed
 
     private void btnNyStadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNyStadActionPerformed
-        // TODO add your handling code here:
+        new EditStad(idb, null).setVisible(true);
     }//GEN-LAST:event_btnNyStadActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
