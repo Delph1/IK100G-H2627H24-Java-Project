@@ -36,6 +36,156 @@ public class AvdelningMeny extends javax.swing.JFrame {
         populeraTabell(getAvdelningar());
     }
 
+        /**
+     * Metod som hämtar ut alla avdelningar och matar in dem i tabellen i fönstret. 
+     */
+    public ArrayList<HashMap<String, String>> getAvdelningar() {
+        ArrayList<HashMap<String, String>> resultat;
+        try {
+            String query = "SELECT * FROM avdelning";
+            resultat = idb.fetchRows(query);
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(null, "Fel vid hämtning av avdelningar. Kontrollera att databasen fungerar. ");
+            resultat = null;
+        }
+        return resultat;
+    }
+    
+    /**
+     * Metod som skapar upp tabellen baserat på den HashMap som matas in.
+     * @param avdelningar 
+     */
+    private void populeraTabell(ArrayList<HashMap<String, String>> avdelningar) {
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel.setRowCount(0);
+
+        tableModel.addColumn("ID");
+        tableModel.addColumn("Namn");
+        tableModel.addColumn("Beskrivning");
+        tableModel.addColumn("Adress");
+        tableModel.addColumn("Epost");
+        tableModel.addColumn("Telefon");
+        tableModel.addColumn("Stad Id");
+        tableModel.addColumn("Chef Id");
+        tableModel.addColumn("Stad");
+        tableModel.addColumn("Chef");
+
+        for (HashMap<String, String> rad : avdelningar) {
+            tableModel.addRow(new Object[]{
+                rad.get("avdid"),
+                rad.get("namn"),
+                rad.get("beskrivning"),
+                rad.get("adress"),
+                rad.get("epost"),
+                rad.get("telefon"),
+                rad.get("stad"),
+                rad.get("chef")
+            });
+
+            for (int i = 0; i < tableModel.getRowCount(); i++) {
+                String stadId = tableModel.getValueAt(i, 6).toString();
+                Object stadNamn = stad.getNamn(Integer.parseInt(stadId));
+                tableModel.setValueAt(stadNamn, i, 8);
+
+                String chefId = tableModel.getValueAt(i, 7).toString();
+                Object chefNamn = anstalld.getChefNamn(chefId);
+                tableModel.setValueAt(chefNamn, i, 9);
+            }
+        }
+        jTable1.setModel(tableModel);
+        jTable1.getColumnModel().getColumn(6).setMinWidth(0);
+        jTable1.getColumnModel().getColumn(6).setMaxWidth(0);
+        jTable1.getColumnModel().getColumn(7).setMinWidth(0);
+        jTable1.getColumnModel().getColumn(7).setMaxWidth(0);
+    }
+    
+    /**
+     * Metod för att radera en vald avdelning. Utgår från den rad som är markerad i tabellen. 
+     */
+    private void raderaAvdelning()
+    {
+        int selectedRow = jTable1.getSelectedRow();
+        if (selectedRow != -1)
+        {
+            Object avdelning = jTable1.getValueAt(selectedRow, 0);
+            String queryAid = avdelning.toString();
+
+            //Först kollar vi om anställda finns vid den avdelning som ska raderas och tar bort dem från avdelningen.
+            try {
+                String query1 = "UPDATE anstalld SET avdelning = null WHERE avdelning = '" + queryAid + "'";
+                idb.update(query1);
+                
+                //Sedan raderar vi kopplingen mellan avdelningen och hållbarhetsmålen.
+                try
+                {
+                    String query2 = "DELETE FROM avd_hallbarhet WHERE avdid = '" + queryAid + "'";
+                    idb.delete(query2);
+
+                    //Sist raderar vi själva avdelningen.
+                    try
+                    {
+                        String query3 = "DELETE FROM avdelning WHERE avdid = '" + queryAid + "'";
+                        idb.delete(query3);
+                    }
+                    catch (InfException e)
+                    {
+                        System.out.println(e.getMessage());
+                    }
+
+                }
+                catch (InfException e)
+                {
+                    System.out.println(e.getMessage());
+                }
+
+            }
+            catch (InfException e)
+            {
+                System.out.println(e.getMessage());
+            }
+        //Uppdaterar tabellen efter att raden blivit raderad.
+        getAvdelningar();
+        }
+        else 
+        {
+            JOptionPane.showMessageDialog(null, "Ingen rad är markerad!");
+        }
+    }
+
+    /**
+     * Metod för att redigera en avdelning. Utgår från den rad i tabellen som är markerad.
+     */
+    private void editAvdelning()
+    {
+        int selectedRow = jTable1.getSelectedRow();
+        if (selectedRow != -1)
+        {
+            Object avdelning = jTable1.getValueAt(selectedRow, 0);
+            String queryAid = avdelning.toString();
+            new EditAvdelning(idb, queryAid).setVisible(true);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "Ingen rad är markerad");
+        }
+    }
+    
+    /**
+     * Hämtar ut alla avdelningsnamn som en ArrayList.
+     * @return 
+     */
+    public ArrayList<String> getAllaAvdelningsnamn() {
+        String sqlfråga = "select namn from avdelning";
+        ArrayList<String> allaAvdelningar;
+        try {
+            allaAvdelningar = idb.fetchColumn(sqlfråga);
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(this, "Något gick fel när namn för alla avdelningar skulle hämtas ur databasen.");
+            allaAvdelningar = null;
+        }
+        return allaAvdelningar;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -184,136 +334,7 @@ public class AvdelningMeny extends javax.swing.JFrame {
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
         getAvdelningar();
     }//GEN-LAST:event_formWindowGainedFocus
-    /**
-     * Metod som hämtar ut alla avdelningar och matar in dem i tabellen i fönstret. 
-     */
-    public ArrayList<HashMap<String, String>> getAvdelningar() {
-        ArrayList<HashMap<String, String>> resultat;
-        try {
-            String query = "SELECT * FROM avdelning";
-            resultat = idb.fetchRows(query);
-        } catch (InfException e) {
-            JOptionPane.showMessageDialog(null, "Fel vid hämtning av avdelningar. Kontrollera att databasen fungerar. ");
-            resultat = null;
-        }
-        return resultat;
-    }
-    
-    private void populeraTabell(ArrayList<HashMap<String, String>> avdelningar) {
-        DefaultTableModel tableModel = new DefaultTableModel();
-        tableModel.setRowCount(0);
 
-        tableModel.addColumn("ID");
-        tableModel.addColumn("Namn");
-        tableModel.addColumn("Beskrivning");
-        tableModel.addColumn("Adress");
-        tableModel.addColumn("Epost");
-        tableModel.addColumn("Telefon");
-        tableModel.addColumn("Stad Id");
-        tableModel.addColumn("Chef Id");
-        tableModel.addColumn("Stad");
-        tableModel.addColumn("Chef");
-
-        for (HashMap<String, String> rad : avdelningar) {
-            tableModel.addRow(new Object[]{
-                rad.get("avdid"),
-                rad.get("namn"),
-                rad.get("beskrivning"),
-                rad.get("adress"),
-                rad.get("epost"),
-                rad.get("telefon"),
-                rad.get("stad"),
-                rad.get("chef")
-            });
-
-            for (int i = 0; i < tableModel.getRowCount(); i++) {
-                String stadId = tableModel.getValueAt(i, 6).toString();
-                Object stadNamn = stad.getNamn(Integer.parseInt(stadId));
-                tableModel.setValueAt(stadNamn, i, 8);
-
-                String chefId = tableModel.getValueAt(i, 7).toString();
-                Object chefNamn = anstalld.getChefNamn(chefId);
-                tableModel.setValueAt(chefNamn, i, 9);
-            }
-        }
-        jTable1.setModel(tableModel);
-        jTable1.getColumnModel().getColumn(6).setMinWidth(0);
-        jTable1.getColumnModel().getColumn(6).setMaxWidth(0);
-        jTable1.getColumnModel().getColumn(7).setMinWidth(0);
-        jTable1.getColumnModel().getColumn(7).setMaxWidth(0);
-    }
-    
-    /**
-     * Metod för att radera en vald avdelning. Utgår från den rad som är markerad i tabellen. 
-     */
-    private void raderaAvdelning()
-    {
-        int selectedRow = jTable1.getSelectedRow();
-        if (selectedRow != -1)
-        {
-            Object avdelning = jTable1.getValueAt(selectedRow, 0);
-            String queryAid = avdelning.toString();
-
-            //Först kollar vi om anställda finns vid den avdelning som ska raderas och tar bort dem från avdelningen.
-            try {
-                String query1 = "UPDATE anstalld SET avdelning = null WHERE avdelning = '" + queryAid + "'";
-                idb.update(query1);
-                
-                //Sedan raderar vi kopplingen mellan avdelningen och hållbarhetsmålen.
-                try
-                {
-                    String query2 = "DELETE FROM avd_hallbarhet WHERE avdid = '" + queryAid + "'";
-                    idb.delete(query2);
-
-                    //Sist raderar vi själva avdelningen.
-                    try
-                    {
-                        String query3 = "DELETE FROM avdelning WHERE avdid = '" + queryAid + "'";
-                        idb.delete(query3);
-                    }
-                    catch (InfException e)
-                    {
-                        System.out.println(e.getMessage());
-                    }
-
-                }
-                catch (InfException e)
-                {
-                    System.out.println(e.getMessage());
-                }
-
-            }
-            catch (InfException e)
-            {
-                System.out.println(e.getMessage());
-            }
-        //Uppdaterar tabellen efter att raden blivit raderad.
-        getAvdelningar();
-        }
-        else 
-        {
-            JOptionPane.showMessageDialog(null, "Ingen rad är markerad!");
-        }
-    }
-
-    /**
-     * Metod för att redigera en avdelning. Utgår från den rad i tabellen som är markerad.
-     */
-    private void editAvdelning()
-    {
-        int selectedRow = jTable1.getSelectedRow();
-        if (selectedRow != -1)
-        {
-            Object avdelning = jTable1.getValueAt(selectedRow, 0);
-            String queryAid = avdelning.toString();
-            new EditAvdelning(idb, queryAid).setVisible(true);
-        }
-        else
-        {
-            JOptionPane.showMessageDialog(null, "Ingen rad är markerad");
-        }
-    }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNyAvdelning;
     private javax.swing.JButton btnRadera;
