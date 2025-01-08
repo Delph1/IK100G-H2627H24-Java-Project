@@ -466,13 +466,23 @@ public class EditProjekt extends javax.swing.JFrame {
         int nyttPid = 0;
         String projektNamn = null;
         String beskrivning = null;
-        String startDatum = datumformat.format(jDateStartdatum.getDate());
-        String slutDatum = datumformat.format(jDateSlutdatum.getDate());
         double kostnad = 0;
         String status = null;
         String prioritet = null;
         int projektChef = 0;
         int land = 0;
+
+        String startDatum = "";
+        String slutDatum = "";
+        SimpleDateFormat datumformat = new SimpleDateFormat("yyyy-MM-dd");  //Det format vi vill spara datumen till databasen
+        try {   //Försöker hämta datumen från datepicker och göra om till formatet ovan
+            startDatum = datumformat.format(jDateStartdatum.getDate());
+            slutDatum = datumformat.format(jDateSlutdatum.getDate());
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, "Se över dina sökparametrar en gång till. Du måste ange ett datum i båda datumfälten och Startdatum måste komma före Slutdatum.");
+        }
+
         // Lägg till korrekt input från fälten som kan läggas till databasen
         if (Validering.faltEjTomtKontroll(txtProjektNamn)
                 && Validering.faltEjTomtKontroll(txtBeskrivning)
@@ -487,15 +497,12 @@ public class EditProjekt extends javax.swing.JFrame {
                 && cmbPrioritet.getSelectedIndex() != 0
                 && cmbProjektChef.getSelectedIndex() != 0
                 && cmbLand.getSelectedIndex() != 0) {
-            
             projektNamn = txtProjektNamn.getText();
             beskrivning = txtBeskrivning.getText();
-//            startDatum = txtStartDatum.getText();
-//            slutDatum = txtSlutDatum.getText();
             kostnad = Double.parseDouble(txtKostnad.getText());
             status = cmbStatus.getSelectedItem().toString();
             prioritet = cmbPrioritet.getSelectedItem().toString();
-            
+
             //Hämta aid för projektchef utifrån fulla namnet i comboboxen
             String[] namn = cmbProjektChef.getSelectedItem().toString().split(" ");
             String sqlFörnamn = namn[0];
@@ -506,7 +513,7 @@ public class EditProjekt extends javax.swing.JFrame {
             } catch (InfException e) {
                 System.out.println(e.getMessage());
             }
-            
+
             //Hämta Lid för land utifrån namnet i comboboxen
             try {
                 String sqlLand = "select lid from land where namn = '" + cmbLand.getSelectedItem().toString() + "'";
@@ -522,7 +529,7 @@ public class EditProjekt extends javax.swing.JFrame {
                 } catch (InfException e) {
                     System.out.println(e.getMessage());
                 }
-                String nyFråga = "insert into projekt values (" + nyttPid + ", '" + projektNamn+ "', '" + beskrivning + "', '" + startDatum
+                String nyFråga = "insert into projekt values (" + nyttPid + ", '" + projektNamn + "', '" + beskrivning + "', '" + startDatum
                         + "', '" + slutDatum + "', " + kostnad + ", '" + status + "', '" + prioritet + "', " + projektChef + ", " + land + ")";
                 try {
                     idb.insert(nyFråga);
@@ -541,7 +548,7 @@ public class EditProjekt extends javax.swing.JFrame {
                             + ", land = " + land + " where pid = " + Integer.valueOf(txtProjektID.getText());
                 } else {    //Om bara projektchef redigerar projektet kan inte val av projektchef göras
                     uppdateraFråga = "update projekt set projektnamn = '" + projektNamn + "', beskrivning = '" + beskrivning
-                            + "', startdatum = '" + startDatum + "', slutdatum = '" + slutDatum+ "', kostnad = " + kostnad
+                            + "', startdatum = '" + startDatum + "', slutdatum = '" + slutDatum + "', kostnad = " + kostnad
                             + ", status = '" + status + "', prioritet = '" + prioritet + "', land = " + land + " where pid = " + Integer.valueOf(txtProjektID.getText());
                 }
                 try {
@@ -553,9 +560,11 @@ public class EditProjekt extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Kunde inte uppdatera projekt");
                 }
             }
-        }
-        else {
-            JOptionPane.showMessageDialog(null, "Var vänlig fyll i alla fälten");
+        } else if (cmbStatus.getSelectedIndex() == 0
+                || cmbPrioritet.getSelectedIndex() == 0
+                || cmbProjektChef.getSelectedIndex() == 0
+                || cmbLand.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(null, "En eller flera fält är inte ifyllt.\nVar vänlig fyll i alla fälten");
         }
     }//GEN-LAST:event_btnSparaActionPerformed
 
