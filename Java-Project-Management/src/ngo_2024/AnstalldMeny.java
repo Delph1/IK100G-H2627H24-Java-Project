@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
 /**
  * Klass för att hantera Anställda
  * @author Fredrik Magnusson
@@ -27,6 +28,15 @@ public class AnstalldMeny extends javax.swing.JFrame {
         this.admins = admins;
         this.anvandare = anvandare;
         initComponents();
+        tfSok.addFocusListener(new java.awt.event.FocusAdapter() {
+    @Override
+    public void focusGained(java.awt.event.FocusEvent evt) {
+        // Rensar textfältet om det innehåller standardtext
+        if (tfSok.getText().equals("Ange handläggarens namn eller e-post")) {
+            tfSok.setText("");
+        }
+    }
+});
         setLocationRelativeTo(null); //Den här koden sätter fönstret i mitten av skärmen.
         hamtaAnstallda();
 
@@ -74,6 +84,8 @@ public class AnstalldMeny extends javax.swing.JFrame {
         editAnstalld = new javax.swing.JButton();
         remAnstalld = new javax.swing.JButton();
         newAnstalld = new javax.swing.JButton();
+        tfSok = new javax.swing.JTextField();
+        btnSok = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -118,6 +130,15 @@ public class AnstalldMeny extends javax.swing.JFrame {
             }
         });
 
+        tfSok.setText("Ange handläggarens namn eller e-post");
+
+        btnSok.setText("Sök");
+        btnSok.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSokActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -134,7 +155,10 @@ public class AnstalldMeny extends javax.swing.JFrame {
                         .addComponent(remAnstalld)
                         .addGap(18, 18, 18)
                         .addComponent(newAnstalld)
-                        .addGap(0, 412, Short.MAX_VALUE)))
+                        .addGap(106, 106, 106)
+                        .addComponent(tfSok, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnSok)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -145,7 +169,9 @@ public class AnstalldMeny extends javax.swing.JFrame {
                     .addComponent(fetchanstallda)
                     .addComponent(editAnstalld)
                     .addComponent(remAnstalld)
-                    .addComponent(newAnstalld))
+                    .addComponent(newAnstalld)
+                    .addComponent(tfSok, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSok))
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -154,6 +180,57 @@ public class AnstalldMeny extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Sökfunktion för att hitta handläggare
+     */
+    private void sokHandlaggare() {
+    String sokterm = tfSok.getText().trim();
+
+    if (sokterm.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Ange ett namn eller en e-post för att söka.");
+        return;
+    }
+
+    try {
+        String query = "SELECT * FROM anstalld WHERE LOWER(fornamn) LIKE LOWER('%" + sokterm + "%') "
+                + "OR LOWER(efternamn) LIKE LOWER('%" + sokterm + "%') "
+                + "OR LOWER(epost) LIKE LOWER('%" + sokterm + "%')";
+
+        ArrayList<HashMap<String, String>> resultat = idb.fetchRows(query);
+
+        if (resultat != null) {
+            DefaultTableModel tableModel = new DefaultTableModel();
+            tableModel.setRowCount(0);
+
+            tableModel.addColumn("ID");
+            tableModel.addColumn("Förnamn");
+            tableModel.addColumn("Efternamn");
+            tableModel.addColumn("E-post");
+            tableModel.addColumn("Telefon");
+
+            for (HashMap<String, String> rad : resultat) {
+                tableModel.addRow(new Object[]{
+                    rad.get("aid"),
+                    rad.get("fornamn"),
+                    rad.get("efternamn"),
+                    rad.get("epost"),
+                    rad.get("telefon")
+                });
+            }
+
+            jTable1.setModel(tableModel);
+        } else {
+            JOptionPane.showMessageDialog(this, "Inga handläggare hittades med den angivna söktermen.");
+        }
+    } catch (InfException e) {
+        JOptionPane.showMessageDialog(this, "Fel vid sökning: " + e.getMessage());
+    }
+
+    // Gör fältet tomt efter sökningen
+    tfSok.setText("");
+}
+
+    
     /**
      * Metod som hämtar ut alla anställda för en viss avdelning och stoppar in det i tabellen. Denna skulle kunna skrivas om till en SQL-sats med sub-queries.
      * @param queryAid 
@@ -407,12 +484,18 @@ public class AnstalldMeny extends javax.swing.JFrame {
         taBortAnstalld();        // TODO add your handling code here:
     }//GEN-LAST:event_remAnstalldActionPerformed
 
+    private void btnSokActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSokActionPerformed
+        sokHandlaggare();
+    }//GEN-LAST:event_btnSokActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSok;
     private javax.swing.JButton editAnstalld;
     private javax.swing.JButton fetchanstallda;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JButton newAnstalld;
     private javax.swing.JButton remAnstalld;
+    private javax.swing.JTextField tfSok;
     // End of variables declaration//GEN-END:variables
 }
