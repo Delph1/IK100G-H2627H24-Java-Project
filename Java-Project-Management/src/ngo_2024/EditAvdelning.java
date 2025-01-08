@@ -22,6 +22,7 @@ public class EditAvdelning extends javax.swing.JFrame {
     private StadMeny stad;
     private HashMap<String, String> chefLista;
     private ArrayList<HashMap<String, String>> allaStader;
+    private AvdelningMeny avdelning;
 
 
     /**
@@ -36,6 +37,7 @@ public class EditAvdelning extends javax.swing.JFrame {
         this.stad = new StadMeny(idb);
         this.chefLista = new HashMap<>();
         this.allaStader = new ArrayList<>();
+        this.avdelning = new AvdelningMeny(idb);
         skapaChefHashMap();
         initComponents();
         setLocationRelativeTo(null);
@@ -63,18 +65,15 @@ public class EditAvdelning extends javax.swing.JFrame {
      * Första String är aid, det andra är en konkatenering av Förnamn och Efternamn.
      * @return HashMap<String, String>
      */
-    private HashMap<String, String> skapaChefHashMap()
-    {
+    private HashMap<String, String> skapaChefHashMap() {
         ArrayList<HashMap<String, String>> allaAnstallda = anstalld.getAllaAnstallda();
-        HashMap<String, String> enAnstalld = new HashMap<>();
-        for (int i = 0; i < allaAnstallda.size(); i++)
-        {
+        HashMap<String, String> enAnstalld;
+        for (int i = 0; i < allaAnstallda.size(); i++) {
             enAnstalld = allaAnstallda.get(i);
             {
                 chefLista.put(enAnstalld.get("aid"), enAnstalld.get("fornamn") + " " + enAnstalld.get("efternamn"));
             }
         }
-        
         return chefLista;
     }
 
@@ -82,16 +81,13 @@ public class EditAvdelning extends javax.swing.JFrame {
      * Metod för att skapa upp alla val i komboboxen med Chefen, med dens namn. 
      * @param chefLista 
      */
-    private void populeraCbChefNamn(HashMap<String, String> chefLista)
-    {
+    private void populeraCbChefNamn(HashMap<String, String> chefLista) {
         //Lägger till nuvarande chefen först i listan
         cbChefNamn.addItem(chefLista.get(txtChefId.getText()));
 
         //lägger till alla andra efter det.
-        for(String key : chefLista.keySet())
-        {
-            if (!key.equals(txtChefId.getText()))
-            {
+        for (String key : chefLista.keySet()) {
+            if (!key.equals(txtChefId.getText())) {
                 cbChefNamn.addItem(chefLista.get(key));
             }
         }
@@ -100,22 +96,17 @@ public class EditAvdelning extends javax.swing.JFrame {
     /**
      * Metod som hämtar ut alla städer och sedan skapar upp en vallista i komboboxen för Stad. 
      */
-    private void populeraCbStad()
-    {
+    private void populeraCbStad() {
         allaStader = stad.getAllaStader();
         //Lägger till nuvarande staden först i listan
-        for(HashMap<String, String> enStad : allaStader)
-        {
-            if (enStad.get("sid").equals(txtStadId.getText()))
-            {
+        for (HashMap<String, String> enStad : allaStader) {
+            if (enStad.get("sid").equals(txtStadId.getText())) {
                 cbStadNamn.addItem(enStad.get("namn"));
             }
         }
         //och sedan resten.
-        for(HashMap<String, String> enStad : allaStader)
-        {
-            if (!enStad.get("sid").equals(txtStadId.getText()))
-            {
+        for (HashMap<String, String> enStad : allaStader) {
+            if (!enStad.get("sid").equals(txtStadId.getText())) {
                 cbStadNamn.addItem(enStad.get("namn"));
             }
         }
@@ -125,31 +116,22 @@ public class EditAvdelning extends javax.swing.JFrame {
      * Metod som hämtar ut avdelningsdata för en vald avdelning
      * @param queryAid 
      */
-    private void getAvdelningsdata(String queryAid)
-    {
-        try {
-            String query = "SELECT * FROM avdelning WHERE avdid = " + queryAid;
-            System.out.println(query);
+    private void getAvdelningsdata(String queryAid) {
+        HashMap<String, String> resultat = avdelning.getEnAvdelning(queryAid); // Hämta rad som en HashMap
 
-            HashMap<String, String> resultat = idb.fetchRow(query); // Hämta rad som en HashMap
+        if (resultat != null) {
+            // Hämta och sätt värden i motsvarande textfält
+            txtNamn.setText(resultat.get("namn"));
+            txtBeskrivning.setText(resultat.get("beskrivning"));
+            txtAdress.setText(resultat.get("adress"));
+            txtEpost.setText(resultat.get("epost"));
+            txtTelefon.setText(resultat.get("telefon"));
+            txtStadId.setText(resultat.get("stad"));
+            txtChefId.setText(resultat.get("chef"));
 
-                if (resultat != null) {
-                    // Hämta och sätt värden i motsvarande textfält
-
-                    txtNamn.setText(resultat.get("namn"));
-                    txtBeskrivning.setText(resultat.get("beskrivning"));
-                    txtAdress.setText(resultat.get("adress"));       
-                    txtEpost.setText(resultat.get("epost"));  
-                    txtTelefon.setText(resultat.get("telefon"));
-                    txtStadId.setText(resultat.get("stad")); 
-                    txtChefId.setText(resultat.get("chef"));
-                   
-                } else {
-                    JOptionPane.showMessageDialog(null, "Ingen avdelning hittades med det angivna ID:t.");
-                }
-            } catch (InfException e) {
-                System.out.println("Ett fel inträffade: " + e.getMessage());
-            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingen avdelning hittades med det angivna ID:t.");
+        }
     }
     
     /**
@@ -351,75 +333,68 @@ public class EditAvdelning extends javax.swing.JFrame {
      */
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
+
         //Validering nedan
-        if (Validering.faltEjTomtKontroll(txtNamn) &&
-            Validering.faltEjTomtKontroll(txtBeskrivning) &&
-            Validering.faltEjTomtKontroll(txtAdress) &&
-            Validering.faltEjTomtKontroll(txtEpost) &&
-            Validering.faltEjTomtKontroll(txtTelefon) &&
-            Validering.faltEjTomtKontroll(txtStadId) &&
-            Validering.faltEjTomtKontroll(txtChefId))
-        {
-            
-            try
-            {
-                String namn = txtNamn.getText();
-                String beskrivning = txtBeskrivning.getText();
-                String adress = txtAdress.getText();
-                String epost = txtEpost.getText();
-                String telefon = txtTelefon.getText();
-                int stad = Integer.parseInt(txtStadId.getText());
-                int chef = Integer.parseInt(txtChefId.getText());
+        if (Validering.faltEjTomtKontroll(txtNamn)
+                && Validering.faltEjTomtKontroll(txtBeskrivning)
+                && Validering.faltEjTomtKontroll(txtAdress)
+                && Validering.faltEjTomtKontroll(txtEpost)
+                && Validering.faltEjTomtKontroll(txtTelefon)
+                && Validering.faltEjTomtKontroll(txtStadId)
+                && Validering.faltEjTomtKontroll(txtChefId)) {
+            String namn = txtNamn.getText();
+            String beskrivning = txtBeskrivning.getText();
+            String adress = txtAdress.getText();
+            String epost = txtEpost.getText();
+            String telefon = txtTelefon.getText();
+            int stad = Integer.parseInt(txtStadId.getText());
+            int chef = Integer.parseInt(txtChefId.getText());
 
-                if(queryAid == null)
-                {
-                int avdid = Integer.parseInt(idb.getAutoIncrement("avdelning", "avdid"));
-                String query = "INSERT INTO avdelning (avdid, namn, beskrivning, adress, epost, telefon, stad, chef)"
-                        + " VALUES ("
-                        + avdid + ", '"
-                        + namn + "', '"
-                        + beskrivning + "', '"
-                        + adress + "', '"
-                        + epost + "', '"
-                        + telefon + "', " 
-                        + stad + ", "
-                        + chef + ")";
-                System.out.println(query);
-                idb.insert(query);
-
+            if (queryAid == null) {
+                try {
+                    int avdid = Integer.parseInt(idb.getAutoIncrement("avdelning", "avdid"));
+                    String query = "INSERT INTO avdelning (avdid, namn, beskrivning, adress, epost, telefon, stad, chef)"
+                            + " VALUES ("
+                            + avdid + ", '"
+                            + namn + "', '"
+                            + beskrivning + "', '"
+                            + adress + "', '"
+                            + epost + "', '"
+                            + telefon + "', "
+                            + stad + ", "
+                            + chef + ")";
+                    System.out.println(query);
+                    idb.insert(query);
+                } catch (InfException e) {
+                    JOptionPane.showMessageDialog(this, "Avdelningen gick inte att skapa. Kontrollera att databasen fungerar som den ska.");
                 }
-                else
-                {
-                String query = "UPDATE avdelning "
-                        + "SET namn = '" + namn + "', "
-                        + "beskrivning = '" + beskrivning + "', " 
-                        + "adress = '" + adress + "', "
-                        + "epost = '" + epost + "', "
-                        + "telefon = '" + telefon + "', " 
-                        + "stad = " + stad + ", "
-                        + "chef = " + chef
-                        + " WHERE avdid = " + queryAid;
-                System.out.println(query);
-                idb.update(query);
-
+            } else {
+                try {
+                    String query = "UPDATE avdelning "
+                            + "SET namn = '" + namn + "', "
+                            + "beskrivning = '" + beskrivning + "', "
+                            + "adress = '" + adress + "', "
+                            + "epost = '" + epost + "', "
+                            + "telefon = '" + telefon + "', "
+                            + "stad = " + stad + ", "
+                            + "chef = " + chef
+                            + " WHERE avdid = " + queryAid;
+                    System.out.println(query);
+                    idb.update(query);
+                } catch (InfException e) {
+                    JOptionPane.showMessageDialog(this, "Avdelningen gick inte att uppdatera. Kontrollera att databasen fungerar som den ska.");
                 }
-
-            JOptionPane.showMessageDialog(null, "Avdelningen har sparats.");
+            }
             this.setVisible(false);
-
-
-            }
-            catch(InfException e)
-            {
-                System.out.println("Ett fel inträffade: " + e.getMessage());
-            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
-
+    
+    /**
+     * När man klickar och väljer en chef i listan sätts rätt id in i ID-rutan.
+     * @param evt 
+     */
     private void cbChefNamnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbChefNamnActionPerformed
-        // Uppdaterar txtChefId med rätt Id när man väljer en ny chef i listan.
-        String nyChef = cbChefNamn.getSelectedItem().toString();
+       String nyChef = cbChefNamn.getSelectedItem().toString();
         for (String chef : chefLista.keySet())
         {
             if (chefLista.get(chef).equals(nyChef))
@@ -429,8 +404,11 @@ public class EditAvdelning extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cbChefNamnActionPerformed
 
+    /**
+     * Uppdaterar txtStadId med rätt Id när man väljer en ny stad i listan.
+     * @param evt 
+     */
     private void cbStadNamnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbStadNamnActionPerformed
-        // Uppdaterar txtStadId med rätt Id när man väljer en ny stad i listan.
         String nyStad = cbStadNamn.getSelectedItem().toString();
         for(HashMap<String, String> enStad : allaStader)
         {

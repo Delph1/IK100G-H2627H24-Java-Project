@@ -314,6 +314,18 @@ public class AvdelningMeny extends javax.swing.JFrame {
         }
     }
     
+    public HashMap<String, String> getEnAvdelning(String avdid) {
+        HashMap<String, String> enAvdelning;
+        try {
+            String query = "SELECT * FROM avdelning WHERE avdid = " + avdid;
+            enAvdelning = idb.fetchRow(query);
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(null, "Något gick fel i databassökningen. Kontrollera att databasen fungerar som den ska.");
+            enAvdelning = null;
+        }
+        return enAvdelning;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNyAvdelning;
     private javax.swing.JButton btnRadera;
