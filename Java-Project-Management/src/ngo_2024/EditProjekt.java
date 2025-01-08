@@ -23,6 +23,7 @@ public class EditProjekt extends javax.swing.JFrame {
     private boolean nyttProjekt;
     private boolean admin;  //Ska användas för att kunna ändra projektchef, bara för admin, just nu kan alla
     private SimpleDateFormat datumformat;
+    private LandMeny land;
 
     /**
      * För att skapa nya projekt, vilket bara admin kan, därav den parametervariabeln
@@ -59,6 +60,7 @@ public class EditProjekt extends javax.swing.JFrame {
     public EditProjekt(InfDB idb, int pid) {
         this.idb = idb;
         this.datumformat = new SimpleDateFormat("yyyy-MM-dd");
+        this.land = new LandMeny(idb);
         initComponents();
         setLocationRelativeTo(null);    //Sätter rutan mitt i skärmen
         fyllCmbStatus();    //Fyller Status-comboboxen
@@ -83,6 +85,7 @@ public class EditProjekt extends javax.swing.JFrame {
         this.idb = idb;
         this.admin = admin;
         this.datumformat = new SimpleDateFormat("yyyy-MM-dd");
+        this.land = new LandMeny(idb);
         initComponents();
         setLocationRelativeTo(null);    //Sätter rutan mitt i skärmen
         fyllCmbStatus();    //Fyller Status-comboboxen
@@ -383,23 +386,15 @@ public class EditProjekt extends javax.swing.JFrame {
                 cmbProjektChef.addItem(fulltNamn);
             }
         } catch (InfException e) {
-            System.out.println(e.getMessage());
-            JOptionPane.showMessageDialog(null, "Databasfel");
+            JOptionPane.showMessageDialog(this, "Något gick fel när chef-data skulle hämtas från databasen. Kontrollera att databasen fungerar som den ska.");
         }
     }
 
     private void fyllCmbLand() {
-        String sqlfråga = "select distinct namn from land;";
-        ArrayList<String> allaLänder;
+        ArrayList<String> allaLänder = land.getAllaLandNamn();
         cmbLand.addItem("");
-        try {
-            allaLänder = idb.fetchColumn(sqlfråga);
-            for (String land : allaLänder) {
-                cmbLand.addItem(land);
-            }
-        } catch (InfException e) {
-            System.out.println(e.getMessage());
-            JOptionPane.showMessageDialog(null, "Databasfel");
+        for (String ettLand : allaLänder) {
+            cmbLand.addItem(ettLand);
         }
     }
 
@@ -414,7 +409,7 @@ public class EditProjekt extends javax.swing.JFrame {
             try {
                 String query = "SELECT projektnamn, beskrivning, startdatum, slutdatum, kostnad, status, prioritet, projektchef, land FROM projekt WHERE pid = " + pid;
                 HashMap<String, String> resultat = idb.fetchRow(query); // Hämta rad som en HashMap
-                
+
                 // Hämta och sätt värden i motsvarande textfält
                 nyttProjekt = false;
                 txtProjektNamn.setText(resultat.get("projektnamn"));          // Projektnamn
@@ -431,33 +426,23 @@ public class EditProjekt extends javax.swing.JFrame {
                         String efternamn = idb.fetchSingle(sqlEfternamn);
                         fulltNamn = förnamn + " " + efternamn;
                     } catch (InfException e) {
-                        System.out.println(e.getMessage());
-                        JOptionPane.showMessageDialog(null, "Databasfel");
+                        JOptionPane.showMessageDialog(this, "Det gick inte att hämta ut namndata från databasen. Kontrollera att databasen fungerar som den ska.");
                     }
                     cmbProjektChef.setSelectedItem(fulltNamn);                  //Projektchef
                 } else {
                     lblProjektChef.setVisible(false);
                     cmbProjektChef.setVisible(false); //Visar inte ProjektChef om det inte är admin som redigerar
                 }
-                String sqlLand = "select namn from land where lid = " + resultat.get("land");
-                String land = "";
-                try {
-                    land = idb.fetchSingle(sqlLand);
-                } catch (InfException e) {
-                    System.out.println(e.getMessage());
-                    JOptionPane.showMessageDialog(null, "Databasfel");
-                }
-                cmbLand.setSelectedItem(land);
+                String landNamn = land.getLandNamnFranId(resultat.get("land"));
+                cmbLand.setSelectedItem(landNamn);
                 cmbStatus.setSelectedItem(resultat.get("status"));          //Status         
                 cmbPrioritet.setSelectedItem(resultat.get("prioritet")); // Prioritet
 
             } catch (InfException e) {
-                System.out.println("Ett fel inträffade: " + e.getMessage());
-                JOptionPane.showMessageDialog(null, "Databasfel");
+                JOptionPane.showMessageDialog(this, "Något gick fel när projektdata skulle hämtas ur databasen.");
                 txtProjektID.requestFocus();
             } catch (Exception ex) {
-                System.out.println("Annat fel" + ex.getMessage());
-                JOptionPane.showMessageDialog(null, "Annat fel");
+                JOptionPane.showMessageDialog(this, "Datum är inte korrekt angivna.");
             }
         }
     }
@@ -470,7 +455,7 @@ public class EditProjekt extends javax.swing.JFrame {
         String status = null;
         String prioritet = null;
         int projektChef = 0;
-        int land = 0;
+        int lid = 0;
 
         String startDatum = "";
         String slutDatum = "";
@@ -479,8 +464,7 @@ public class EditProjekt extends javax.swing.JFrame {
             startDatum = datumformat.format(jDateStartdatum.getDate());
             slutDatum = datumformat.format(jDateSlutdatum.getDate());
         } catch (NullPointerException e) {
-            System.out.println(e.getMessage());
-            JOptionPane.showMessageDialog(null, "Se över dina sökparametrar en gång till. Du måste ange ett datum i båda datumfälten och Startdatum måste komma före Slutdatum.");
+            JOptionPane.showMessageDialog(this, "Se över dina sökparametrar en gång till. Du måste ange ett datum i båda datumfälten och Startdatum måste komma före Slutdatum.");
         }
 
         // Lägg till korrekt input från fälten som kan läggas till databasen
@@ -511,33 +495,27 @@ public class EditProjekt extends javax.swing.JFrame {
             try {
                 projektChef = Integer.parseInt(idb.fetchSingle(sqlAid));
             } catch (InfException e) {
-                System.out.println(e.getMessage());
+                JOptionPane.showMessageDialog(this, "Kunde inte hämta uppgifter om chef.");
             }
-
+            
             //Hämta Lid för land utifrån namnet i comboboxen
-            try {
-                String sqlLand = "select lid from land where namn = '" + cmbLand.getSelectedItem().toString() + "'";
-                land = Integer.parseInt(idb.fetchSingle(sqlLand));
-            } catch (InfException e) {
-                System.out.println(e.getMessage());
-                JOptionPane.showMessageDialog(null, "Kunde inte hitta land");
-            }
+            String sqlLand = cmbLand.getSelectedItem().toString();
+            lid = land.getLidFranNamn(sqlLand);
 
             if (nyttProjekt) {
                 try {
                     nyttPid = Integer.parseInt(idb.getAutoIncrement("projekt", "pid")); //skapar nytt PID från databasens sista värde
                 } catch (InfException e) {
-                    System.out.println(e.getMessage());
+                    JOptionPane.showMessageDialog(this, "Kunde inte hämta nästa ID-nummer för projekt.");
                 }
                 String nyFråga = "insert into projekt values (" + nyttPid + ", '" + projektNamn + "', '" + beskrivning + "', '" + startDatum
-                        + "', '" + slutDatum + "', " + kostnad + ", '" + status + "', '" + prioritet + "', " + projektChef + ", " + land + ")";
+                        + "', '" + slutDatum + "', " + kostnad + ", '" + status + "', '" + prioritet + "', " + projektChef + ", " + lid + ")";
                 try {
                     idb.insert(nyFråga);
-                    JOptionPane.showMessageDialog(null, "Projektet har lagts till!");
+                    JOptionPane.showMessageDialog(this, "Projektet har lagts till!");
                     dispose(); //Stänger fönstret efter projektet lagts till
                 } catch (InfException e) {
-                    System.out.println(e.getMessage());
-                    JOptionPane.showMessageDialog(null, "Kunde inte lägga till projekt");
+                    JOptionPane.showMessageDialog(this, "Kunde inte lägga till projekt");
                 }
             } else {
                 String uppdateraFråga;
@@ -545,19 +523,18 @@ public class EditProjekt extends javax.swing.JFrame {
                     uppdateraFråga = "update projekt set projektnamn = '" + projektNamn + "', beskrivning = '" + beskrivning
                             + "', startdatum = '" + startDatum + "', slutdatum = '" + slutDatum + "', kostnad = " + kostnad
                             + ", status = '" + status + "', prioritet = '" + prioritet + "', projektchef = " + projektChef
-                            + ", land = " + land + " where pid = " + Integer.valueOf(txtProjektID.getText());
+                            + ", land = " + lid + " where pid = " + Integer.valueOf(txtProjektID.getText());
                 } else {    //Om bara projektchef redigerar projektet kan inte val av projektchef göras
                     uppdateraFråga = "update projekt set projektnamn = '" + projektNamn + "', beskrivning = '" + beskrivning
                             + "', startdatum = '" + startDatum + "', slutdatum = '" + slutDatum + "', kostnad = " + kostnad
-                            + ", status = '" + status + "', prioritet = '" + prioritet + "', land = " + land + " where pid = " + Integer.valueOf(txtProjektID.getText());
+                            + ", status = '" + status + "', prioritet = '" + prioritet + "', land = " + lid + " where pid = " + Integer.valueOf(txtProjektID.getText());
                 }
                 try {
                     idb.update(uppdateraFråga);
                     JOptionPane.showMessageDialog(null, "Projektet har uppdaterats!");
                     dispose(); //Stänger fönstret efter projektet uppdaterats
                 } catch (InfException e) {
-                    System.out.println(e.getMessage());
-                    JOptionPane.showMessageDialog(null, "Kunde inte uppdatera projekt");
+                    JOptionPane.showMessageDialog(null, "Kunde inte uppdatera projekt. Något gick fel när data skulle sparas i databasen.");
                 }
             }
         } else if (cmbStatus.getSelectedIndex() == 0
