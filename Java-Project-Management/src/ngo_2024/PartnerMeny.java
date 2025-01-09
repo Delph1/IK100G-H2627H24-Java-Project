@@ -22,6 +22,7 @@ public class PartnerMeny extends javax.swing.JFrame {
     private String aid;
     /**
      * Creates new form PartnerMeny
+     * @param idb
      */
     public PartnerMeny(InfDB idb) {
         this.idb = idb;
@@ -159,7 +160,6 @@ public class PartnerMeny extends javax.swing.JFrame {
         int selectedRow = jTable1.getSelectedRow();
         if (selectedRow != -1) {
             Object partner = jTable1.getValueAt(selectedRow, 0);
-            String queryAid = partner.toString();
 
             //Först kollar vi om en partner är knuten till ett projekt och raderar den relationen.
             try {
