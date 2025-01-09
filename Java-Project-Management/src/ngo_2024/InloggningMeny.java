@@ -168,7 +168,7 @@ public class InloggningMeny extends javax.swing.JFrame {
     
     private void loggaIn(String användarnamn, String lösenord)
     {
-        if (Validering.faltEjTomtKontroll(txtAnvändarnamn) && Validering.emailKontroll(txtAnvändarnamn.getText()) && (Validering.faltEjTomtKontroll(txtLösenord))) {
+        if (Validering.faltEjTomtKontroll(txtAnvändarnamn) && Validering.epostKontroll(txtAnvändarnamn.getText()) && (Validering.faltEjTomtKontroll(txtLösenord))) {
 
             try {
                 String sqlfråga = "Select losenord FROM anstalld WHERE epost = '" + användarnamn + "'";
@@ -251,16 +251,20 @@ public class InloggningMeny extends javax.swing.JFrame {
     private void btnÅterställLösenordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnÅterställLösenordActionPerformed
         String dialog = "Ange din e-postadress i rutan nedan,";
         String svar = JOptionPane.showInputDialog(this, dialog);
-        boolean finns = anstalld.finnsEpost(dialog);
-        if (finns)
-        {
-            String nyttLosen = anstalld.genereraLösenord(10);
-            boolean uppdateraLosen = anstalld.uppdateraLosenord(svar, nyttLosen);
-            if (uppdateraLosen)
+        if (Validering.epostKontroll(svar)) {
+            boolean finns = anstalld.finnsEpost(dialog);
+            if (finns)
             {
-                //Det nya lösenordet borde givetvis mejlas ut till användare egentligen, men att skriva en sådan funktion känns lite överkurs i detta skede när vi inte har tillgång till deras domän. 
-                JOptionPane.showMessageDialog(this, "Ett nytt lösenord har slumpats fram till dig: " + nyttLosen);
+                String nyttLosen = anstalld.genereraLösenord(10);
+                boolean uppdateraLosen = anstalld.uppdateraLosenord(svar, nyttLosen);
+                if (uppdateraLosen)
+                {
+                    //Det nya lösenordet borde givetvis mejlas ut till användare egentligen, men att skriva en sådan funktion känns lite överkurs i detta skede när vi inte har tillgång till deras domän. 
+                    JOptionPane.showMessageDialog(this, "Ett nytt lösenord har slumpats fram till dig: " + nyttLosen);
+                }
             }
+        } else {
+                JOptionPane.showMessageDialog(this, "Epostadressen är inte korrekt formaterad.");
         }
     }//GEN-LAST:event_btnÅterställLösenordActionPerformed
 

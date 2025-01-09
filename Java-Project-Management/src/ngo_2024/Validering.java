@@ -12,14 +12,14 @@ import javax.swing.JOptionPane;
 /**
  *
  * @author Fredrik Magnusson
- * Denna klass jobbar med att validera data inputs utifrån vissa kriterier
- * Används med Validering. och sedan valen nedan
- * emailKontroll = kontrollerar att en epost är korrekt formaterad.
- * faltKontroll = kontrollerar att ett fält inte är tom.
+ Denna klass jobbar med att validera data inputs utifrån vissa kriterier
+ Används med Validering. och sedan valen nedan
+ epostKontroll = kontrollerar att en epost är korrekt formaterad.
+ faltKontroll = kontrollerar att ett fält inte är tom.
  */
 public class Validering {
 
-    public static boolean emailKontroll(String param) {
+    public static boolean epostKontroll(String param) {
         boolean resultat = true;
 
         // Fält kontrolleras här med Regex om det är en epost, dvs innehåller ett @ och efter det en punkt, och om den följer hur en mail ska se ut.
@@ -27,7 +27,8 @@ public class Validering {
 
             JOptionPane.showMessageDialog(null, "Ogiltig Epost.\nVar vänlig kontrollera stavningen.");
             resultat = false;
-        }       return resultat;
+        }
+        return resultat;
     }
     
     public static boolean faltEjTomtKontroll(JTextField param) {
@@ -36,8 +37,9 @@ public class Validering {
         // Kontrollerar här om ett fält är tomt, och om den är det visas en textruta och if-satsen avslutas
         if (param.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Fältet är tomt.\nVar vänlig fyll i fältet.");
-            resultat = false;           
-        }       return resultat;
+            resultat = false;
+        }
+        return resultat;
     }
     
     public static boolean arHeltal(JTextField param) {

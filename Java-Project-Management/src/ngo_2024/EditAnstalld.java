@@ -425,7 +425,7 @@ public class EditAnstalld extends javax.swing.JFrame {
                 && Validering.faltEjTomtKontroll(txtEfternamn)
                 && Validering.faltEjTomtKontroll(txtAdress)
                 && Validering.faltEjTomtKontroll(txtEpost)
-                && Validering.emailKontroll(txtEpost.getText())
+                && Validering.epostKontroll(txtEpost.getText())
                 && Validering.faltEjTomtKontroll(txtTelefonNr)
                 && Validering.datumKontroll(ansdatum)
                 && Validering.faltEjTomtKontroll(txtLosen)) {
