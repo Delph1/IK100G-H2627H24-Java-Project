@@ -116,6 +116,7 @@ public class EditStad extends javax.swing.JFrame {
         cbLand = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Redigera stad");
 
         btSpara.setText("Spara");
         btSpara.addActionListener(new java.awt.event.ActionListener() {

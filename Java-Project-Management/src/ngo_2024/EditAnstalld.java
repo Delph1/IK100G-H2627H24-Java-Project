@@ -113,6 +113,7 @@ public class EditAnstalld extends javax.swing.JFrame {
             if (queryAid.equals(anvandare)) {
                 jCheckBoxAdmin.setEnabled(false); // Gör checkboxen oklickbar
                 jCheckBoxHandlaggare.setEnabled(false); // Gör checkboxen oklickbar
+                this.setTitle("Mina uppgifter");
             } else {
                 // Kontrollera om admins är null
                 if (admins != null) {
@@ -254,6 +255,7 @@ public class EditAnstalld extends javax.swing.JFrame {
         jDateAnstallningsdatum = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Redigera anställd");
 
         txtFornamn.setActionCommand("<Not Set>");
 

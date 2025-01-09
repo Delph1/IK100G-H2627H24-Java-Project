@@ -139,6 +139,7 @@ public class StadMeny extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Stad");
 
         btnUppdatera.setText("Uppdatera");
         btnUppdatera.addActionListener(new java.awt.event.ActionListener() {
