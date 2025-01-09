@@ -249,7 +249,6 @@ public class AnstalldMeny extends javax.swing.JFrame {
             // SQL-frågan för att hämta data från samma avdelning som användaren
             String query = "SELECT aid, fornamn, efternamn, adress, epost, telefon, anstallningsdatum, losenord, avdelning "
                     + "FROM anstalld WHERE avdelning IN (SELECT avdelning FROM anstalld WHERE aid = '" + queryAid + "')";
-            System.out.println("SQL-fråga: " + query); // Logga frågan Markera bort
             ArrayList<HashMap<String, String>> resultat = idb.fetchRows(query);
 
             if (resultat != null) {
@@ -300,7 +299,6 @@ public class AnstalldMeny extends javax.swing.JFrame {
         try {
             // SQL-frågan för att hämta data
             String query = "SELECT aid, fornamn, efternamn, adress, epost, telefon, anstallningsdatum, losenord, avdelning FROM anstalld";
-            System.out.println("SQL-fråga: " + query); // Logga frågan Markera bort
             ArrayList<HashMap<String, String>> resultat = idb.fetchRows(query);
 
             if (resultat != null) {
