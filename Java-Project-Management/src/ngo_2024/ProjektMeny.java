@@ -606,7 +606,7 @@ public class ProjektMeny extends javax.swing.JFrame {
 
         ArrayList<HashMap<String, String>> allaProjekt;
         try {
-            String sqlfråga = "SELECT * FROM projekt where pid in (select pid from ans_proj where aid =" + aid + ");";
+            String sqlfråga = "SELECT * FROM projekt WHERE pid IN (SELECT pid FROM ans_proj WHERE aid = "+ aid + ") UNION SELECT * FROM projekt WHERE projektchef = " + aid + ";";
             allaProjekt = idb.fetchRows(sqlfråga);
             if (allaProjekt.isEmpty()) {
                 ingaProjekt();
@@ -624,7 +624,7 @@ public class ProjektMeny extends javax.swing.JFrame {
     private void hamtaProjektAvdelning(String aid) {
         String valdAvdelning = "Välj avdelning";
         try {
-            String query = "SELECT * FROM projekt WHERE pid IN (SELECT pid FROM ans_proj WHERE aid = "+ aid + ") UNION SELECT * FROM projekt WHERE projektchef = " + aid + ";";
+            String query = "Select namn from avdelning where avdid = (select avdelning from anstalld where aid = " + aid + ");";
             valdAvdelning = idb.fetchSingle(query);
         } catch (InfException e) {
             System.out.println(e.getMessage());
