@@ -22,6 +22,8 @@ public class Statistik extends javax.swing.JFrame {
     private String aid;
     /**
      * Creates new form Statistik
+     * @param idb
+     * @param aid
      */
     public Statistik(InfDB idb, String aid) {
         this.idb = idb;
@@ -386,7 +388,7 @@ public class Statistik extends javax.swing.JFrame {
             for(HashMap<String,String> rad : allaLänder) {
                 String land = rad.get("namn");
                 double kostnad = Double.parseDouble(rad.get("kostnad"));
-                double utgångsKostnad = 0;
+                double utgångsKostnad;
                 if (summaKostnad.containsKey(land)) {   //Om Land redan finns i summa-listan, lägg till nya värdet
                     utgångsKostnad = Double.parseDouble(summaKostnad.get(land));
                     utgångsKostnad += kostnad;
