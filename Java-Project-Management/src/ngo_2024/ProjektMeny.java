@@ -628,7 +628,7 @@ public class ProjektMeny extends javax.swing.JFrame {
     private void hamtaProjektAvdelning(String aid) {
         String valdAvdelning = "Välj avdelning";
         try {
-            String query = "SELECT * FROM projekt WHERE pid IN (SELECT pid FROM ans_proj WHERE aid = "+ aid + ") UNION SELECT * FROM projekt WHERE projektchef = " + aid + ";";
+            String query = "Select namn from avdelning where avdid = (select avdelning from anstalld where aid = " + aid + ");";
             valdAvdelning = idb.fetchSingle(query);
         } catch (InfException e) {
             System.out.println(e.getMessage());
@@ -648,37 +648,6 @@ public class ProjektMeny extends javax.swing.JFrame {
         } catch (InfException e) {
             System.out.println(e.getMessage());
             JOptionPane.showMessageDialog(this, "Något gick fel när projekt för denna avdelning skulle hämtas ur databasen.");
-        }
-    }
-    
-    private void hamtaProjektSomProjektChef(String aid) {
-        btnLäggTillProjekt.setVisible(false);
-        btnTaBortProjekt.setVisible(false);
-        lblSokDatum.setVisible(false);
-        jDateStartdatumSök.setVisible(false);
-        lblBindeStreck.setVisible(false);
-        jDateSlutdatumSök.setVisible(false);
-        btnDatumSök.setVisible(false);
-        cmbAvdelningsVal.setVisible(false);
-        cmbStatus.setVisible(false);
-        lblAvdelning.setVisible(false);
-        lblStatus.setVisible(false);
-        String PCAid = aid;
-
-        ArrayList<HashMap<String, String>> allaProjekt = new ArrayList<>();
-        try {
-            String sqlfråga = "SELECT * FROM projekt where projektchef =" + PCAid;
-            allaProjekt = idb.fetchRows(sqlfråga);
-        } catch (InfException e) {
-            System.out.println("Kunde inte hämta projekt.\n" + e.getMessage());
-            JOptionPane.showMessageDialog(this, "Kunde inte hämta projekt.");
-        }
-        if (allaProjekt.isEmpty()) {
-            ingaProjekt();
-            JOptionPane.showMessageDialog(this, "Du är inte projektchef för några projekt");
-        } else {
-            this.setTitle("Mina projekt");
-            formateraTabell(allaProjekt);
         }
     }
 
