@@ -20,13 +20,13 @@ public class InloggningMeny extends javax.swing.JFrame {
     
     /**
      * Creates new form Inloggning
+     * @param idb
      */
     public InloggningMeny( InfDB idb) {
         this.idb = idb;
         this.anstalld = new EditAnstalld(idb);
         initComponents();
         lblMeddelande.setVisible(false);
-        String nivå;
         setLocationRelativeTo(null); //Den här koden sätter fönstret i mitten av skärmen.
         txtLösenord.setText("");
     }
