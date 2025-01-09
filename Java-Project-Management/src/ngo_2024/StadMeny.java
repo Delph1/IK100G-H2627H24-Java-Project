@@ -15,7 +15,11 @@ public class StadMeny extends javax.swing.JFrame {
 
     private InfDB idb;
     private LandMeny land;
-
+    
+    /**
+     * 
+     * @param idb 
+     */
     public StadMeny(InfDB idb) {
         this.idb = idb;
         this.land = new LandMeny(idb);
@@ -138,7 +142,7 @@ public class StadMeny extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Stad");
 
         btnUppdatera.setText("Uppdatera");

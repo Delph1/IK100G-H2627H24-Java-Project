@@ -24,6 +24,8 @@ public class EditPartner extends javax.swing.JFrame {
     
     /**
      * Creates new form EditPartner
+     * @param idb
+     * @param queryAid
      */
     public EditPartner(InfDB idb, String queryAid) {
         this.idb = idb;

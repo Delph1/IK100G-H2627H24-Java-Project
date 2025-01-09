@@ -20,13 +20,13 @@ public class InloggningMeny extends javax.swing.JFrame {
     
     /**
      * Creates new form Inloggning
+     * @param idb
      */
     public InloggningMeny( InfDB idb) {
         this.idb = idb;
         this.anstalld = new EditAnstalld(idb);
         initComponents();
         lblMeddelande.setVisible(false);
-        String nivå;
         setLocationRelativeTo(null); //Den här koden sätter fönstret i mitten av skärmen.
         txtLösenord.setText("");
         jButton1.setVisible(false); //För utvecklarnas egen testning, ej för granskning
@@ -165,7 +165,7 @@ public class InloggningMeny extends javax.swing.JFrame {
     
     private void loggaIn(String användarnamn, String lösenord)
     {
-        if (Validering.faltEjTomtKontroll(txtAnvändarnamn) && Validering.emailKontroll(txtAnvändarnamn) && (Validering.faltEjTomtKontroll(txtLösenord))) {
+        if (Validering.faltEjTomtKontroll(txtAnvändarnamn) && Validering.epostKontroll(txtAnvändarnamn.getText()) && (Validering.faltEjTomtKontroll(txtLösenord))) {
 
             try {
                 String sqlfråga = "Select losenord FROM anstalld WHERE epost = '" + användarnamn + "'";
@@ -235,7 +235,7 @@ public class InloggningMeny extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtLösenordKeyPressed
 
-    private void btnÅterställLösenordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnÅterställLösenordActionPerformed
+    private void btnÅterställLösenordActionPerformed(java.awt.event.ActionEvent evt) {                                                     
         String dialog = "Ange din e-postadress i rutan nedan,";
         boolean pågår = true; //Fortsätta visa dialogruta tills anv får lösenord eller trycker cancel/kryss
         while (pågår) {  
@@ -245,22 +245,27 @@ public class InloggningMeny extends javax.swing.JFrame {
             } else {
                 if (!svar.isBlank()) {
                     pågår = false;
-                    boolean finns = anstalld.finnsEpost(dialog);
-                    if (finns) {
-                        String nyttLosen = anstalld.genereraLösenord(10);
-                        boolean uppdateraLosen = anstalld.uppdateraLosenord(svar, nyttLosen);
-                        if (uppdateraLosen) {
-                            //Det nya lösenordet borde givetvis mejlas ut till användare egentligen, men att skriva en sådan funktion känns lite överkurs i detta skede när vi inte har tillgång till deras domän. 
-                            JOptionPane.showMessageDialog(this, "Ett nytt lösenord har slumpats fram till dig: " + nyttLosen);
-                            pågår = false;
+                    if (Validering.epostKontroll(svar)) {
+                        boolean finns = anstalld.finnsEpost(svar);
+                        if (finns) { 
+                            String nyttLosen = anstalld.genereraLösenord(10);
+                            boolean uppdateraLosen = anstalld.uppdateraLosenord(svar, nyttLosen);
+                            if (uppdateraLosen) {
+                                //Det nya lösenordet borde givetvis mejlas ut till användare egentligen, men att skriva en sådan funktion känns lite överkurs i detta skede när vi inte har tillgång till deras domän. 
+                                JOptionPane.showMessageDialog(this, "Ett nytt lösenord har slumpats fram till dig: " + nyttLosen);
+                            }
+                        } else {
+                                JOptionPane.showMessageDialog(this, "Epostadressen hittades inte i systemet.");                            
                         }
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Epostadressen är inte korrekt formaterad.");
                     }
                 } else {
                     JOptionPane.showMessageDialog(this, "Vänligen skriv in en epostadress ");
                 }
             }
         }
-    }//GEN-LAST:event_btnÅterställLösenordActionPerformed
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

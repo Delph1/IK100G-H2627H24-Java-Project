@@ -5,14 +5,12 @@
 package ngo_2024;
 
 import java.util.HashMap;
-import javax.swing.JOptionPane;
 import oru.inf.InfDB;
 import oru.inf.InfException;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JButton;
-import javax.swing.ImageIcon;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.Random;
@@ -34,6 +32,10 @@ public class Huvudmeny extends javax.swing.JFrame {
 
     /**
      * Creates new form Huvudmeny
+     * @param idb
+     * @param queryAid
+     * @param admins
+     * @param projl
      */
     public Huvudmeny(InfDB idb, String queryAid, String admins, String projl) {
         initComponents();
@@ -52,32 +54,60 @@ public class Huvudmeny extends javax.swing.JFrame {
         fyllFunFacts();
         lblFunFact.setText(genereraFunFact());
     }
-private void kontrolleraBehorigheter() {
-    try {
-        
-        String projektledareQuery = "SELECT COUNT(*) FROM projekt WHERE projektchef = '" + queryAid + "'";
-        int antalProjekt = Integer.parseInt(idb.fetchSingle(projektledareQuery));
+    
+    /**
+     * Metod som kontrollerar behörighet för person som loggat in.
+     */
+    private void kontrolleraBehorigheter() {
+        try {
 
-        if (antalProjekt > 0) {
-            menyProjektledning.setVisible(true);
-        } else {
-            menyProjektledning.setVisible(false);
+            String projektledareQuery = "SELECT COUNT(*) FROM projekt WHERE projektchef = '" + queryAid + "'";
+            int antalProjekt = Integer.parseInt(idb.fetchSingle(projektledareQuery));
+
+            if (antalProjekt > 0) {
+
+                mvprojAndraPartnersForProjekt.setVisible(true);
+                mvprojStatistik.setVisible(true);
+
+            } else {
+                mvprojAndraPartnersForProjekt.setVisible(false);
+                mvprojStatistik.setVisible(false);
+            }
+
+            String adminQuery = "SELECT behorighetsniva FROM admin WHERE aid = '" + queryAid + "'";
+            String behorighetsniva = idb.fetchSingle(adminQuery);
+
+            if (behorighetsniva != null && behorighetsniva.equals("1")) {
+                menyAdministration.setVisible(true);
+            } else {
+                menyAdministration.setVisible(false);
+            }
+
+        } catch (InfException e) {
+            System.out.println("Ett fel inträffade vid kontroll av behörigheter: " + e.getMessage());
         }
-
-        
-        String adminQuery = "SELECT behorighetsniva FROM admin WHERE aid = '" + queryAid + "'";
-        String behorighetsniva = idb.fetchSingle(adminQuery);
-
-        if (behorighetsniva != null && behorighetsniva.equals("1")) {
-            menyAdministration.setVisible(true);
-        } else {
-            menyAdministration.setVisible(false);
-        }
-
-    } catch (InfException e) {
-        System.out.println("Ett fel inträffade vid kontroll av behörigheter: " + e.getMessage());
     }
-}
+    
+    private void visaAnvandaresNamnOchEpost(String queryAid) {
+        String roll = ((admins == null) ? "Handläggare" : "Administratör"); //Korthands-if
+        HashMap<String, String> resultat = anstalld.getEnAnstalld(queryAid);
+        lblNamn.setText(resultat.get("fornamn") + " " + resultat.get("efternamn"));
+        lblEpost.setText(resultat.get("epost"));
+        lblRoll.setText(roll);
+    }
+    
+    private void fyllFunFacts() {
+        funFacts.add("Det här projektet har hittills haft 129 pull requests i GitHub");
+        funFacts.add("Den samlade åldern för oss i grupp 3 är 138 år");
+        funFacts.add("Tre katter har varit involverade i utvecklingen");
+        funFacts.add("Antal svordomar över Netbeans och/eller Github: 14327. Nej vänta, 14328");
+        funFacts.add("<html>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Har du läst allt detta är jag väldigt imponerad. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</html>");
+    }
+    
+    private String genereraFunFact() {
+        int index = randomGenerator.nextInt(funFacts.size());
+        return funFacts.get(index);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -100,17 +130,15 @@ private void kontrolleraBehorigheter() {
         jMenuBar1 = new javax.swing.JMenuBar();
         menyMinaUppgifter = new javax.swing.JMenu();
         mvminMinaUppgifter = new javax.swing.JMenuItem();
-        mvpersPersonalPaMinAvdelning = new javax.swing.JMenuItem();
+        mvminPersonalPaMinAvdelning = new javax.swing.JMenuItem();
         mvminLoggaUt = new javax.swing.JMenuItem();
         menyProjekt = new javax.swing.JMenu();
         mvprojMinaProjekt = new javax.swing.JMenuItem();
         mvprojAllaProjekt = new javax.swing.JMenuItem();
         mvprojProjektPartners = new javax.swing.JMenuItem();
+        mvprojAndraPartnersForProjekt = new javax.swing.JMenuItem();
         mvprojHallarbhetsmal = new javax.swing.JMenuItem();
-        menyProjektledning = new javax.swing.JMenu();
-        mvproledMinaProjekt = new javax.swing.JMenuItem();
-        mvproledAndraPartnersForProjekt = new javax.swing.JMenuItem();
-        mvproledStatistik = new javax.swing.JMenuItem();
+        mvprojStatistik = new javax.swing.JMenuItem();
         menyAdministration = new javax.swing.JMenu();
         mvadnPersonal = new javax.swing.JMenuItem();
         mvadnAvdelningar = new javax.swing.JMenuItem();
@@ -184,13 +212,13 @@ private void kontrolleraBehorigheter() {
         });
         menyMinaUppgifter.add(mvminMinaUppgifter);
 
-        mvpersPersonalPaMinAvdelning.setText("Personal på min avdelning");
-        mvpersPersonalPaMinAvdelning.addActionListener(new java.awt.event.ActionListener() {
+        mvminPersonalPaMinAvdelning.setText("Personal på min avdelning");
+        mvminPersonalPaMinAvdelning.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mvpersPersonalPaMinAvdelningActionPerformed(evt);
+                mvminPersonalPaMinAvdelningActionPerformed(evt);
             }
         });
-        menyMinaUppgifter.add(mvpersPersonalPaMinAvdelning);
+        menyMinaUppgifter.add(mvminPersonalPaMinAvdelning);
 
         mvminLoggaUt.setText("Logga ut");
         mvminLoggaUt.addActionListener(new java.awt.event.ActionListener() {
@@ -204,7 +232,7 @@ private void kontrolleraBehorigheter() {
 
         menyProjekt.setText("Projekt");
 
-        mvprojMinaProjekt.setText("Mitt deltagande");
+        mvprojMinaProjekt.setText("Mina projekt");
         mvprojMinaProjekt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mvprojMinaProjektActionPerformed(evt);
@@ -228,6 +256,14 @@ private void kontrolleraBehorigheter() {
         });
         menyProjekt.add(mvprojProjektPartners);
 
+        mvprojAndraPartnersForProjekt.setText("Ändra partners för projekt");
+        mvprojAndraPartnersForProjekt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mvprojAndraPartnersForProjektActionPerformed(evt);
+            }
+        });
+        menyProjekt.add(mvprojAndraPartnersForProjekt);
+
         mvprojHallarbhetsmal.setText("Hållbarhetsmål");
         mvprojHallarbhetsmal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -236,35 +272,15 @@ private void kontrolleraBehorigheter() {
         });
         menyProjekt.add(mvprojHallarbhetsmal);
 
+        mvprojStatistik.setText("Statistik");
+        mvprojStatistik.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mvprojStatistikActionPerformed(evt);
+            }
+        });
+        menyProjekt.add(mvprojStatistik);
+
         jMenuBar1.add(menyProjekt);
-
-        menyProjektledning.setText("Projektledning");
-
-        mvproledMinaProjekt.setText("Mina projekt");
-        mvproledMinaProjekt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mvproledMinaProjektActionPerformed(evt);
-            }
-        });
-        menyProjektledning.add(mvproledMinaProjekt);
-
-        mvproledAndraPartnersForProjekt.setText("Ändra partners för projekt");
-        mvproledAndraPartnersForProjekt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mvproledAndraPartnersForProjektActionPerformed(evt);
-            }
-        });
-        menyProjektledning.add(mvproledAndraPartnersForProjekt);
-
-        mvproledStatistik.setText("Statistik");
-        mvproledStatistik.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mvproledStatistikActionPerformed(evt);
-            }
-        });
-        menyProjektledning.add(mvproledStatistik);
-
-        jMenuBar1.add(menyProjektledning);
 
         menyAdministration.setText("Administration");
         menyAdministration.setToolTipText("");
@@ -376,6 +392,10 @@ private void kontrolleraBehorigheter() {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Knappar följer nedan
+     */
+    
     private void mvhjOmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvhjOmActionPerformed
 
         JFrame omRuta = new JFrame("Om NGO-matic");
@@ -387,18 +407,18 @@ private void kontrolleraBehorigheter() {
         JLabel titelLabel = new JLabel("<html><h1 style='color:blue; text-align:center;'>NGO-matic</h1></html>", JLabel.CENTER);
 
         String infoText = "<html>"
-        + "<p style='text-align:center;'>Ett program utvecklat för <b>SDG Sweden</b><br> som en del av kursen <i>IK100G Informatik 30hp</i> <br>delkursen <b>Systemutvecklingsprojekt</b>.</p>"
-        + "<br>"
-        + "<h3 style='text-align:center;'>Utvecklat av:</h3>"
-        + "<ul>"
-        + "<li style='text-align:left;'>Andreas Galistel</li>"
-        + "<li style='text-align:left;'>Claudia Kourieh</li>"
-        + "<li style='text-align:left;'>Fredrik Magnusson</li>"
-        + "<li style='text-align:left;'>Märta Sjöblom</li>"
-        + "</ul>"
-        + "<br>"
-        + "<p style='text-align:center;'>NGO-matic är designat för att hjälpa <b>SDG Sweden</b><br>som arbetar med tekniska lösningar för utvecklingsländer.</p>"
-        + "</html>";
+                + "<p style='text-align:center;'>Ett program utvecklat för <b>SDG Sweden</b><br> som en del av kursen <i>IK100G Informatik 30hp</i> <br>delkursen <b>Systemutvecklingsprojekt</b>.</p>"
+                + "<br>"
+                + "<h3 style='text-align:center;'>Utvecklat av:</h3>"
+                + "<ul>"
+                + "<li style='text-align:left;'>Andreas Galistel</li>"
+                + "<li style='text-align:left;'>Claudia Kourieh</li>"
+                + "<li style='text-align:left;'>Fredrik Magnusson</li>"
+                + "<li style='text-align:left;'>Märta Sjöblom</li>"
+                + "</ul>"
+                + "<br>"
+                + "<p style='text-align:center;'>NGO-matic är designat för att hjälpa <b>SDG Sweden</b><br>som arbetar med tekniska lösningar för utvecklingsländer.</p>"
+                + "</html>";
 
         JLabel infoLabel = new JLabel(infoText, JLabel.CENTER);
         JButton stangKnapp = new JButton("Stäng");
@@ -433,17 +453,13 @@ private void kontrolleraBehorigheter() {
         new AnstalldMeny(idb, admins, anvandare).setVisible(true);
     }//GEN-LAST:event_mvadnPersonalActionPerformed
 
-    private void mvproledStatistikActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvproledStatistikActionPerformed
+    private void mvprojStatistikActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvprojStatistikActionPerformed
         new Statistik(idb, queryAid).setVisible(true);
-    }//GEN-LAST:event_mvproledStatistikActionPerformed
+    }//GEN-LAST:event_mvprojStatistikActionPerformed
 
-    private void mvproledAndraPartnersForProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvproledAndraPartnersForProjektActionPerformed
+    private void mvprojAndraPartnersForProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvprojAndraPartnersForProjektActionPerformed
         new EditProjektPartner(idb, queryAid).setVisible(true);
-    }//GEN-LAST:event_mvproledAndraPartnersForProjektActionPerformed
-
-    private void mvproledMinaProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvproledMinaProjektActionPerformed
-        new ProjektMeny(idb, queryAid, true).setVisible(true);
-    }//GEN-LAST:event_mvproledMinaProjektActionPerformed
+    }//GEN-LAST:event_mvprojAndraPartnersForProjektActionPerformed
 
     private void mvprojHallarbhetsmalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvprojHallarbhetsmalActionPerformed
         new HallbarhetsmalMeny(idb, true).setVisible(true);
@@ -458,12 +474,13 @@ private void kontrolleraBehorigheter() {
     }//GEN-LAST:event_mvprojAllaProjektActionPerformed
 
     private void mvprojMinaProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvprojMinaProjektActionPerformed
-        new ProjektMeny(idb, queryAid).setVisible(true);
+        if (projl != null){
+            new ProjektMeny(idb, queryAid, true).setVisible(true);
+        }
+        else {
+            new ProjektMeny(idb, queryAid).setVisible(true);
+        }
     }//GEN-LAST:event_mvprojMinaProjektActionPerformed
-
-    /**
-     * Knappar följer nedan
-     */
     
     private void mvminLoggaUtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvminLoggaUtActionPerformed
         new InloggningMeny(idb).setVisible (true);
@@ -474,36 +491,14 @@ private void kontrolleraBehorigheter() {
         new EditAnstalld(idb, queryAid, admins, anvandare).setVisible(true);
     }//GEN-LAST:event_mvminMinaUppgifterActionPerformed
 
-    private void mvpersPersonalPaMinAvdelningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvpersPersonalPaMinAvdelningActionPerformed
+    private void mvminPersonalPaMinAvdelningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvminPersonalPaMinAvdelningActionPerformed
         new AnstalldMeny(idb, anvandare).setVisible(true);
-    }//GEN-LAST:event_mvpersPersonalPaMinAvdelningActionPerformed
+    }//GEN-LAST:event_mvminPersonalPaMinAvdelningActionPerformed
 
     private void mvadnStadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvadnStadActionPerformed
         new StadMeny(idb).setVisible(true);
     }//GEN-LAST:event_mvadnStadActionPerformed
-
-    private void visaAnvandaresNamnOchEpost(String queryAid)
-    {
-        String roll = ((admins == null) ? "Handläggare" : "Administratör"); //Korthands-if
-        HashMap<String, String> resultat = anstalld.getEnAnstalld(queryAid);
-        lblNamn.setText(resultat.get("fornamn") + " " + resultat.get("efternamn"));
-        lblEpost.setText(resultat.get("epost"));
-        lblRoll.setText(roll);
-    }
-    
-    private void fyllFunFacts() {
-        funFacts.add("Det här projektet har hittills haft 107 pull requests i GitHub");
-        funFacts.add("Den samlade åldern för oss i grupp 3 är 138 år");
-        funFacts.add("Tre katter har varit involverade i utvecklingen");
-        funFacts.add("Antal svordomar över Netbeans och/eller Github: 14327. Nej vänta, 14328");
-        funFacts.add("<html>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Har du läst allt detta är jag väldigt imponerad. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</html>");
-    }
-    
-    private String genereraFunFact(){
-        int index = randomGenerator.nextInt(funFacts.size());
-        return funFacts.get(index);
-    }
-            
+  
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
@@ -520,7 +515,6 @@ private void kontrolleraBehorigheter() {
     private javax.swing.JMenu menyHjalp;
     private javax.swing.JMenu menyMinaUppgifter;
     private javax.swing.JMenu menyProjekt;
-    private javax.swing.JMenu menyProjektledning;
     private javax.swing.JMenuItem mvadnAvdelningar;
     private javax.swing.JMenuItem mvadnHallbarhetsmal;
     private javax.swing.JMenuItem mvadnLand;
@@ -531,13 +525,12 @@ private void kontrolleraBehorigheter() {
     private javax.swing.JMenuItem mvhjOm;
     private javax.swing.JMenuItem mvminLoggaUt;
     private javax.swing.JMenuItem mvminMinaUppgifter;
-    private javax.swing.JMenuItem mvpersPersonalPaMinAvdelning;
+    private javax.swing.JMenuItem mvminPersonalPaMinAvdelning;
     private javax.swing.JMenuItem mvprojAllaProjekt;
+    private javax.swing.JMenuItem mvprojAndraPartnersForProjekt;
     private javax.swing.JMenuItem mvprojHallarbhetsmal;
     private javax.swing.JMenuItem mvprojMinaProjekt;
     private javax.swing.JMenuItem mvprojProjektPartners;
-    private javax.swing.JMenuItem mvproledAndraPartnersForProjekt;
-    private javax.swing.JMenuItem mvproledMinaProjekt;
-    private javax.swing.JMenuItem mvproledStatistik;
+    private javax.swing.JMenuItem mvprojStatistik;
     // End of variables declaration//GEN-END:variables
 }

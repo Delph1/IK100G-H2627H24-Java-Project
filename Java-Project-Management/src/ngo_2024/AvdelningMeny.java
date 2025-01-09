@@ -38,6 +38,7 @@ public class AvdelningMeny extends javax.swing.JFrame {
 
         /**
      * Metod som hämtar ut alla avdelningar och matar in dem i tabellen i fönstret. 
+     * @return 
      */
     public ArrayList<HashMap<String, String>> getAvdelningar() {
         ArrayList<HashMap<String, String>> resultat;

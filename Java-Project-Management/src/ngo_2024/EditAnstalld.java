@@ -80,10 +80,10 @@ public class EditAnstalld extends javax.swing.JFrame {
                         comboAvdelning.setSelectedItem(avdelningsNamn); // om man valt en anställd som ska ändras, väljer rätt namn på avdelningen i comboboxen
                     }
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(this, "Datum är felaktigt formaterat");
+                    JOptionPane.showMessageDialog(null, "Datum är felaktigt formaterat");
                 }
             } catch (InfException e) {
-                JOptionPane.showMessageDialog(this, "Det gick inte att hämta information om den anställde från databasen. Kontrollera att databasen fungerar som den ska.");
+                JOptionPane.showMessageDialog(null, "Det gick inte att hämta information om den anställde från databasen. Kontrollera att databasen fungerar som den ska.");
             }
             // Kontrollera om admins är null
             if (admins != null) {
@@ -97,7 +97,7 @@ public class EditAnstalld extends javax.swing.JFrame {
                 String sqlFrågaAdmin = "Select behorighetsniva FROM admin WHERE aid = '" + queryAid + "'";
                 adminst = idb.fetchSingle(sqlFrågaAdmin); // Hämtar resultatet
             } catch (InfException e) {
-                JOptionPane.showMessageDialog(this, "Det gick inte att hämta information om behörighetsnivå från databasen. Kontrollera att databasen fungerar som den ska.");
+                JOptionPane.showMessageDialog(null, "Det gick inte att hämta information om behörighetsnivå från databasen. Kontrollera att databasen fungerar som den ska.");
                 adminst = null;
             }
             String handlaggare;
@@ -105,7 +105,7 @@ public class EditAnstalld extends javax.swing.JFrame {
                 String sqlFrågahandl = "Select aid FROM handlaggare WHERE aid = '" + queryAid + "'";
                 handlaggare = idb.fetchSingle(sqlFrågahandl); // Hämtar resultatet
             } catch (InfException e) {
-                JOptionPane.showMessageDialog(this, "Det gick inte att hämta information om handläggare från databasen. Kontrollera att databasen fungerar som den ska.");
+                JOptionPane.showMessageDialog(null, "Det gick inte att hämta information om handläggare från databasen. Kontrollera att databasen fungerar som den ska.");
                 handlaggare = null;
             }
                 
@@ -145,9 +145,9 @@ public class EditAnstalld extends javax.swing.JFrame {
     private void fyllComboBox() {
         ArrayList<HashMap<String, String>> avdelningar = avdelning.getAvdelningar();
         if (avdelningar != null)
-        for (HashMap<String, String> avdelning : avdelningar) {
-            String avdid = avdelning.get("avdid");
-            String namn = avdelning.get("namn");
+        for (HashMap<String, String> enAvdelning : avdelningar) {
+            String avdid = enAvdelning.get("avdid");
+            String namn = enAvdelning.get("namn");
 
             avdelningMap.put(namn, avdid);
             comboAvdelning.addItem(namn); // Lägg till namnet i comboboxen
@@ -208,8 +208,9 @@ public class EditAnstalld extends javax.swing.JFrame {
     
     /**
      * Metod som uppdaterar lösenord för en användare
-     * @param aid
+     * @param epost
      * @param nyttLosen 
+     * @return
      */
     public boolean uppdateraLosenord(String epost, String nyttLosen) {
         boolean success = false;
@@ -424,7 +425,7 @@ public class EditAnstalld extends javax.swing.JFrame {
                 && Validering.faltEjTomtKontroll(txtEfternamn)
                 && Validering.faltEjTomtKontroll(txtAdress)
                 && Validering.faltEjTomtKontroll(txtEpost)
-                && Validering.emailKontroll(txtEpost)
+                && Validering.epostKontroll(txtEpost.getText())
                 && Validering.faltEjTomtKontroll(txtTelefonNr)
                 && Validering.datumKontroll(ansdatum)
                 && Validering.faltEjTomtKontroll(txtLosen)) {

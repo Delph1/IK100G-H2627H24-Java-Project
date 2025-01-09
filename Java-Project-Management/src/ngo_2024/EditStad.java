@@ -59,8 +59,8 @@ public class EditStad extends javax.swing.JFrame {
     private void fyllComboBoxMedLand() {
         ArrayList<HashMap<String, String>> landLista = land.getLander();
         if (landLista != null) {
-            for (HashMap<String, String> land : landLista) {
-                cbLand.addItem(land.get("lid") + " - " + land.get("namn"));
+            for (HashMap<String, String> ettLand : landLista) {
+                cbLand.addItem(ettLand.get("lid") + " - " + ettLand.get("namn"));
             }
         }
     }
@@ -115,7 +115,7 @@ public class EditStad extends javax.swing.JFrame {
         lbLand = new javax.swing.JLabel();
         cbLand = new javax.swing.JComboBox<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Redigera stad");
 
         btSpara.setText("Spara");
