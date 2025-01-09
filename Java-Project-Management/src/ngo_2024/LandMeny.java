@@ -20,6 +20,7 @@ public class LandMeny extends javax.swing.JFrame {
     private InfDB idb; 
     /**
      * Konstruktur för LandMeny
+     * @param idb
      */
     public LandMeny(InfDB idb) {
         this.idb = idb;
@@ -30,6 +31,7 @@ public class LandMeny extends javax.swing.JFrame {
 
     /**
      * Hämtar ut alla länder från databasen
+     * @return
      */
     public ArrayList<HashMap<String, String>> getLander() {
         ArrayList<HashMap<String, String>> resultat;
