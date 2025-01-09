@@ -97,7 +97,7 @@ public class Huvudmeny extends javax.swing.JFrame {
     }
     
     private void fyllFunFacts() {
-        funFacts.add("Det här projektet har hittills haft 107 pull requests i GitHub");
+        funFacts.add("Det här projektet har hittills haft 129 pull requests i GitHub");
         funFacts.add("Den samlade åldern för oss i grupp 3 är 138 år");
         funFacts.add("Tre katter har varit involverade i utvecklingen");
         funFacts.add("Antal svordomar över Netbeans och/eller Github: 14327. Nej vänta, 14328");
