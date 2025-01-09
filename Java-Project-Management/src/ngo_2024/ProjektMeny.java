@@ -28,6 +28,7 @@ public class ProjektMeny extends javax.swing.JFrame {
     
     /**
      * Admin-vy
+     * @param idb
      */
     public ProjektMeny(InfDB idb) {
         this.idb = idb;
