@@ -59,9 +59,13 @@ private void kontrolleraBehorigheter() {
         int antalProjekt = Integer.parseInt(idb.fetchSingle(projektledareQuery));
 
         if (antalProjekt > 0) {
-            menyProjektledning.setVisible(true);
+            
+            mvprojAndraPartnersForProjekt.setVisible(true);
+            mvprojStatistik.setVisible(true);
+            
         } else {
-            menyProjektledning.setVisible(false);
+            mvprojAndraPartnersForProjekt.setVisible(false);
+            mvprojStatistik.setVisible(false);
         }
 
         
@@ -100,17 +104,15 @@ private void kontrolleraBehorigheter() {
         jMenuBar1 = new javax.swing.JMenuBar();
         menyMinaUppgifter = new javax.swing.JMenu();
         mvminMinaUppgifter = new javax.swing.JMenuItem();
-        mvpersPersonalPaMinAvdelning = new javax.swing.JMenuItem();
+        mvminPersonalPaMinAvdelning = new javax.swing.JMenuItem();
         mvminLoggaUt = new javax.swing.JMenuItem();
         menyProjekt = new javax.swing.JMenu();
         mvprojMinaProjekt = new javax.swing.JMenuItem();
         mvprojAllaProjekt = new javax.swing.JMenuItem();
         mvprojProjektPartners = new javax.swing.JMenuItem();
+        mvprojAndraPartnersForProjekt = new javax.swing.JMenuItem();
         mvprojHallarbhetsmal = new javax.swing.JMenuItem();
-        menyProjektledning = new javax.swing.JMenu();
-        mvproledMinaProjekt = new javax.swing.JMenuItem();
-        mvproledAndraPartnersForProjekt = new javax.swing.JMenuItem();
-        mvproledStatistik = new javax.swing.JMenuItem();
+        mvprojStatistik = new javax.swing.JMenuItem();
         menyAdministration = new javax.swing.JMenu();
         mvadnPersonal = new javax.swing.JMenuItem();
         mvadnAvdelningar = new javax.swing.JMenuItem();
@@ -184,13 +186,13 @@ private void kontrolleraBehorigheter() {
         });
         menyMinaUppgifter.add(mvminMinaUppgifter);
 
-        mvpersPersonalPaMinAvdelning.setText("Personal på min avdelning");
-        mvpersPersonalPaMinAvdelning.addActionListener(new java.awt.event.ActionListener() {
+        mvminPersonalPaMinAvdelning.setText("Personal på min avdelning");
+        mvminPersonalPaMinAvdelning.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mvpersPersonalPaMinAvdelningActionPerformed(evt);
+                mvminPersonalPaMinAvdelningActionPerformed(evt);
             }
         });
-        menyMinaUppgifter.add(mvpersPersonalPaMinAvdelning);
+        menyMinaUppgifter.add(mvminPersonalPaMinAvdelning);
 
         mvminLoggaUt.setText("Logga ut");
         mvminLoggaUt.addActionListener(new java.awt.event.ActionListener() {
@@ -204,7 +206,7 @@ private void kontrolleraBehorigheter() {
 
         menyProjekt.setText("Projekt");
 
-        mvprojMinaProjekt.setText("Mitt deltagande");
+        mvprojMinaProjekt.setText("Mina projekt");
         mvprojMinaProjekt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mvprojMinaProjektActionPerformed(evt);
@@ -228,6 +230,14 @@ private void kontrolleraBehorigheter() {
         });
         menyProjekt.add(mvprojProjektPartners);
 
+        mvprojAndraPartnersForProjekt.setText("Ändra partners för projekt");
+        mvprojAndraPartnersForProjekt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mvprojAndraPartnersForProjektActionPerformed(evt);
+            }
+        });
+        menyProjekt.add(mvprojAndraPartnersForProjekt);
+
         mvprojHallarbhetsmal.setText("Hållbarhetsmål");
         mvprojHallarbhetsmal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -236,35 +246,15 @@ private void kontrolleraBehorigheter() {
         });
         menyProjekt.add(mvprojHallarbhetsmal);
 
+        mvprojStatistik.setText("Statistik");
+        mvprojStatistik.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mvprojStatistikActionPerformed(evt);
+            }
+        });
+        menyProjekt.add(mvprojStatistik);
+
         jMenuBar1.add(menyProjekt);
-
-        menyProjektledning.setText("Projektledning");
-
-        mvproledMinaProjekt.setText("Mina projekt");
-        mvproledMinaProjekt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mvproledMinaProjektActionPerformed(evt);
-            }
-        });
-        menyProjektledning.add(mvproledMinaProjekt);
-
-        mvproledAndraPartnersForProjekt.setText("Ändra partners för projekt");
-        mvproledAndraPartnersForProjekt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mvproledAndraPartnersForProjektActionPerformed(evt);
-            }
-        });
-        menyProjektledning.add(mvproledAndraPartnersForProjekt);
-
-        mvproledStatistik.setText("Statistik");
-        mvproledStatistik.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mvproledStatistikActionPerformed(evt);
-            }
-        });
-        menyProjektledning.add(mvproledStatistik);
-
-        jMenuBar1.add(menyProjektledning);
 
         menyAdministration.setText("Administration");
         menyAdministration.setToolTipText("");
@@ -433,17 +423,13 @@ private void kontrolleraBehorigheter() {
         new AnstalldMeny(idb, admins, anvandare).setVisible(true);
     }//GEN-LAST:event_mvadnPersonalActionPerformed
 
-    private void mvproledStatistikActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvproledStatistikActionPerformed
+    private void mvprojStatistikActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvprojStatistikActionPerformed
         new Statistik(idb, queryAid).setVisible(true);
-    }//GEN-LAST:event_mvproledStatistikActionPerformed
+    }//GEN-LAST:event_mvprojStatistikActionPerformed
 
-    private void mvproledAndraPartnersForProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvproledAndraPartnersForProjektActionPerformed
+    private void mvprojAndraPartnersForProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvprojAndraPartnersForProjektActionPerformed
         new EditProjektPartner(idb, queryAid).setVisible(true);
-    }//GEN-LAST:event_mvproledAndraPartnersForProjektActionPerformed
-
-    private void mvproledMinaProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvproledMinaProjektActionPerformed
-        new ProjektMeny(idb, queryAid, true).setVisible(true);
-    }//GEN-LAST:event_mvproledMinaProjektActionPerformed
+    }//GEN-LAST:event_mvprojAndraPartnersForProjektActionPerformed
 
     private void mvprojHallarbhetsmalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvprojHallarbhetsmalActionPerformed
         new HallbarhetsmalMeny(idb, true).setVisible(true);
@@ -458,7 +444,12 @@ private void kontrolleraBehorigheter() {
     }//GEN-LAST:event_mvprojAllaProjektActionPerformed
 
     private void mvprojMinaProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvprojMinaProjektActionPerformed
-        new ProjektMeny(idb, queryAid).setVisible(true);
+        if (projl != null){
+            new ProjektMeny(idb, queryAid, true).setVisible(true);
+        }
+        else {
+            new ProjektMeny(idb, queryAid).setVisible(true);
+        }
     }//GEN-LAST:event_mvprojMinaProjektActionPerformed
 
     /**
@@ -474,9 +465,9 @@ private void kontrolleraBehorigheter() {
         new EditAnstalld(idb, queryAid, admins, anvandare).setVisible(true);
     }//GEN-LAST:event_mvminMinaUppgifterActionPerformed
 
-    private void mvpersPersonalPaMinAvdelningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvpersPersonalPaMinAvdelningActionPerformed
+    private void mvminPersonalPaMinAvdelningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvminPersonalPaMinAvdelningActionPerformed
         new AnstalldMeny(idb, anvandare).setVisible(true);
-    }//GEN-LAST:event_mvpersPersonalPaMinAvdelningActionPerformed
+    }//GEN-LAST:event_mvminPersonalPaMinAvdelningActionPerformed
 
     private void mvadnStadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvadnStadActionPerformed
         new StadMeny(idb).setVisible(true);
@@ -520,7 +511,6 @@ private void kontrolleraBehorigheter() {
     private javax.swing.JMenu menyHjalp;
     private javax.swing.JMenu menyMinaUppgifter;
     private javax.swing.JMenu menyProjekt;
-    private javax.swing.JMenu menyProjektledning;
     private javax.swing.JMenuItem mvadnAvdelningar;
     private javax.swing.JMenuItem mvadnHallbarhetsmal;
     private javax.swing.JMenuItem mvadnLand;
@@ -531,13 +521,12 @@ private void kontrolleraBehorigheter() {
     private javax.swing.JMenuItem mvhjOm;
     private javax.swing.JMenuItem mvminLoggaUt;
     private javax.swing.JMenuItem mvminMinaUppgifter;
-    private javax.swing.JMenuItem mvpersPersonalPaMinAvdelning;
+    private javax.swing.JMenuItem mvminPersonalPaMinAvdelning;
     private javax.swing.JMenuItem mvprojAllaProjekt;
+    private javax.swing.JMenuItem mvprojAndraPartnersForProjekt;
     private javax.swing.JMenuItem mvprojHallarbhetsmal;
     private javax.swing.JMenuItem mvprojMinaProjekt;
     private javax.swing.JMenuItem mvprojProjektPartners;
-    private javax.swing.JMenuItem mvproledAndraPartnersForProjekt;
-    private javax.swing.JMenuItem mvproledMinaProjekt;
-    private javax.swing.JMenuItem mvproledStatistik;
+    private javax.swing.JMenuItem mvprojStatistik;
     // End of variables declaration//GEN-END:variables
 }

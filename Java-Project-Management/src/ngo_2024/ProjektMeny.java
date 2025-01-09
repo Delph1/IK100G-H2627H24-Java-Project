@@ -59,6 +59,7 @@ public class ProjektMeny extends javax.swing.JFrame {
         lblStatus.setVisible(false);
         cmbStatus.setVisible(false);
         btnPartners.setVisible(false);
+        btnÄndraProjekt.setVisible(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE );
         hamtaProjekt(aid);
@@ -105,9 +106,13 @@ public class ProjektMeny extends javax.swing.JFrame {
         fyllCmbStatus();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE );
-        hamtaProjektSomProjektChef(aid);
+        hamtaProjekt(aid);
         this.setTitle("Projektledare");
-        btnPartners.setVisible(false);
+        lblAvdelning.setVisible(false); //Behöver inte kunna se dessa
+        cmbAvdelningsVal.setVisible(false); //Behöver inte kunna se dessa
+        lblStatus.setVisible(false);    //Behöver inte kunna se dessa   
+        cmbStatus.setVisible(false);    //Behöver inte kunna se dessa
+        btnPartners.setVisible(false);  //Behöver inte kunna se dessa
         btnTaBortProjekt.setVisible(false);     //Tolkar det som att ProjektChef inte ska kunna ta bort projekt
         btnAllaProjekt.setVisible(false);   //Behöver inte kunna se dessa
         btnMinaProjekt.setVisible(false); //Behöver inte se projekt de deltar på i denna vy
@@ -141,7 +146,7 @@ public class ProjektMeny extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Projekt");
-        setPreferredSize(new java.awt.Dimension(1000, 480));
+        setPreferredSize(new java.awt.Dimension(1050, 480));
 
         btnÄndraProjekt.setText("Redigera projekt");
         btnÄndraProjekt.addActionListener(new java.awt.event.ActionListener() {
@@ -596,7 +601,6 @@ public class ProjektMeny extends javax.swing.JFrame {
      */
     private void hamtaProjekt(String aid) {
         btnLäggTillProjekt.setVisible(false);
-        btnÄndraProjekt.setVisible(false);
         btnTaBortProjekt.setVisible(false);
         lblSokDatum.setVisible(false);
         jDateStartdatumSök.setVisible(false);
@@ -683,8 +687,20 @@ public class ProjektMeny extends javax.swing.JFrame {
         if (selectedRow != -1) {
             Object projekt = tblProjekt.getValueAt(selectedRow, 0); // Hämta värde från kolumn 0
             int queryPid = Integer.parseInt(projekt.toString()); // Konvertera till String
-            new EditProjekt(idb, queryPid).setVisible(true); //öppnar nytt fönster, skickar med den projektets PID från databasen
-
+            String sqlÄrPL = "select projektchef from projekt where pid ="+queryPid;
+            try {
+                String dbPL = idb.fetchSingle(sqlÄrPL);
+                if (aid.equals(dbPL)) {
+                    new EditProjekt(idb, queryPid).setVisible(true); //öppnar nytt fönster, skickar med den projektets PID från databasen
+                }
+                else {
+                    JOptionPane.showMessageDialog(this, "Du är inte projektchef för det här projektet\noch kan därför inte redigera det.");
+                }
+            }
+            catch (InfException e) {
+                JOptionPane.showMessageDialog(this, "Databasfel");
+            }
+            
             // JOptionPane.showMessageDialog(this, "Valt ID: " + projekt);
         } else {
             JOptionPane.showMessageDialog(this, "Ingen rad är markerad!");
