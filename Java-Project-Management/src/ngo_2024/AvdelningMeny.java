@@ -87,10 +87,12 @@ public class AvdelningMeny extends javax.swing.JFrame {
                 String stadId = tableModel.getValueAt(i, 6).toString();
                 Object stadNamn = stad.getNamn(Integer.parseInt(stadId));
                 tableModel.setValueAt(stadNamn, i, 8);
-
+                
+                if (tableModel.getValueAt(i, 7) != null){
                 String chefId = tableModel.getValueAt(i, 7).toString();
                 Object chefNamn = anstalld.getChefNamn(chefId);
                 tableModel.setValueAt(chefNamn, i, 9);
+                }
             }
         }
         jTable1.setModel(tableModel);
