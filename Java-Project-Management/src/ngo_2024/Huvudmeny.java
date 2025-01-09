@@ -14,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.Random;
 /**
  * Klass för själva huvudmenyn man når allt ifrån. 
  * @author Andreas Galistel
@@ -26,6 +28,9 @@ public class Huvudmeny extends javax.swing.JFrame {
     private String anvandare;
     private String queryAid;
     private AnstalldMeny anstalld;
+    private ArrayList<String> funFacts;
+    private Random randomGenerator;
+    
 
     /**
      * Creates new form Huvudmeny
@@ -42,7 +47,10 @@ public class Huvudmeny extends javax.swing.JFrame {
         this.anstalld = new AnstalldMeny(idb);
         visaAnvandaresNamnOchEpost(queryAid);
         this.setTitle("NGO-matic");
-
+        randomGenerator = new Random();
+        funFacts = new ArrayList<>();
+        fyllFunFacts();
+        lblFunFact.setText(genereraFunFact());
     }
 private void kontrolleraBehorigheter() {
     try {
@@ -86,6 +94,9 @@ private void kontrolleraBehorigheter() {
         lblNamn = new javax.swing.JLabel();
         lblEpost = new javax.swing.JLabel();
         lblRoll = new javax.swing.JLabel();
+        lblValkommen = new javax.swing.JLabel();
+        lblDagens = new javax.swing.JLabel();
+        lblFunFact = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menyMinaUppgifter = new javax.swing.JMenu();
         mvminMinaUppgifter = new javax.swing.JMenuItem();
@@ -152,6 +163,16 @@ private void kontrolleraBehorigheter() {
                 .addComponent(lblEpost)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        lblValkommen.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblValkommen.setText("Välkommen!");
+
+        lblDagens.setText("Dagens fun fact:");
+
+        lblFunFact.setText("Om det inte står ett fun fact här så har något gått väldigt fel ¯\\_(ツ)_/¯");
+        lblFunFact.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        lblFunFact.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
+        lblFunFact.setPreferredSize(new java.awt.Dimension(525, 100));
 
         menyMinaUppgifter.setText("Mina uppgifter");
 
@@ -326,14 +347,28 @@ private void kontrolleraBehorigheter() {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(237, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblDagens)
+                            .addComponent(lblValkommen)
+                            .addComponent(lblFunFact, javax.swing.GroupLayout.PREFERRED_SIZE, 523, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(409, Short.MAX_VALUE)
+                .addGap(75, 75, 75)
+                .addComponent(lblValkommen)
+                .addGap(18, 18, 18)
+                .addComponent(lblDagens)
+                .addGap(18, 18, 18)
+                .addComponent(lblFunFact, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 150, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -456,17 +491,31 @@ private void kontrolleraBehorigheter() {
         lblRoll.setText(roll);
     }
     
-
-
-
+    private void fyllFunFacts() {
+        funFacts.add("Det här projektet har hittills haft 107 pull requests i GitHub");
+        funFacts.add("Den samlade åldern för oss i grupp 3 är 138 år");
+        funFacts.add("Tre katter har varit involverade i utvecklingen");
+        funFacts.add("Antal svordomar över Netbeans och/eller Github: 14327. Nej vänta, 14328");
+        funFacts.add("<html>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Har du läst allt detta är jag väldigt imponerad. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</html>");
+    }
+    
+    private String genereraFunFact(){
+        int index = randomGenerator.nextInt(funFacts.size());
+        return funFacts.get(index);
+    }
+            
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblDagens;
     private javax.swing.JLabel lblEpost;
+    private javax.swing.JLabel lblFunFact;
     private javax.swing.JLabel lblNamn;
     private javax.swing.JLabel lblRoll;
+    private javax.swing.JLabel lblValkommen;
     private javax.swing.JMenu menyAdministration;
     private javax.swing.JMenu menyHjalp;
     private javax.swing.JMenu menyMinaUppgifter;
