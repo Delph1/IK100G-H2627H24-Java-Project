@@ -59,8 +59,8 @@ public class EditStad extends javax.swing.JFrame {
     private void fyllComboBoxMedLand() {
         ArrayList<HashMap<String, String>> landLista = land.getLander();
         if (landLista != null) {
-            for (HashMap<String, String> land : landLista) {
-                cbLand.addItem(land.get("lid") + " - " + land.get("namn"));
+            for (HashMap<String, String> ettLand : landLista) {
+                cbLand.addItem(ettLand.get("lid") + " - " + ettLand.get("namn"));
             }
         }
     }
