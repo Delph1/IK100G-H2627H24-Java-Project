@@ -146,7 +146,7 @@ public class ProjektMeny extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Projekt");
-        setPreferredSize(new java.awt.Dimension(1000, 480));
+        setPreferredSize(new java.awt.Dimension(1050, 480));
 
         btnÄndraProjekt.setText("Redigera projekt");
         btnÄndraProjekt.addActionListener(new java.awt.event.ActionListener() {
