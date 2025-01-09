@@ -148,6 +148,7 @@ public class EditLand extends javax.swing.JFrame {
         btAvbryt = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Redigera land");
 
         lbNamn.setText("Namn");
 
