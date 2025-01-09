@@ -15,7 +15,11 @@ public class StadMeny extends javax.swing.JFrame {
 
     private InfDB idb;
     private LandMeny land;
-
+    
+    /**
+     * 
+     * @param idb 
+     */
     public StadMeny(InfDB idb) {
         this.idb = idb;
         this.land = new LandMeny(idb);
