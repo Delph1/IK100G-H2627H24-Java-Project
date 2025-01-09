@@ -21,7 +21,7 @@ public class EditHallbarhetsmal extends javax.swing.JFrame {
     /**
      * Konstruktor för EditHallbarhetsmal
      *  @param idb
-     *  @param queryAid
+     *  @param queryMid
      */
     public EditHallbarhetsmal(InfDB idb, String queryMid) {
         this.idb = idb;
@@ -60,7 +60,7 @@ public class EditHallbarhetsmal extends javax.swing.JFrame {
                 txtMalnummer.setText(resultat.get("malnummer"));
                 txtBeskrivning.setText(resultat.get("beskrivning"));
                 String prioritet = resultat.get("prioritet");
-                int prio = 0;
+                int prio;
                 prio = switch (prioritet) {
                     case "Låg" ->
                         0;
