@@ -22,6 +22,9 @@ public class AnstalldMeny extends javax.swing.JFrame {
 
     /**
      * Creates new form Anstallda
+     * @param idb
+     * @param admins
+     * @param anvandare
      */
     public AnstalldMeny(InfDB idb, String admins, String anvandare) {
         this.idb = idb;
