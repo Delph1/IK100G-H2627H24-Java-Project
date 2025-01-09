@@ -523,8 +523,8 @@ public class ProjektMeny extends javax.swing.JFrame {
     private void fyllCmbAvdelningar() {
         ArrayList<String> allaAvdelningar = avdelning.getAllaAvdelningsnamn();
         if (allaAvdelningar != null) {
-            for (String avdelning : allaAvdelningar) {
-                cmbAvdelningsVal.addItem(avdelning);
+            for (String enAvdelning : allaAvdelningar) {
+                cmbAvdelningsVal.addItem(enAvdelning);
             }
         }
     }
