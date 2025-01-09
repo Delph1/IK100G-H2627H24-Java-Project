@@ -168,7 +168,7 @@ public class InloggningMeny extends javax.swing.JFrame {
     
     private void loggaIn(String användarnamn, String lösenord)
     {
-        if (Validering.faltEjTomtKontroll(txtAnvändarnamn) && Validering.emailKontroll(txtAnvändarnamn) && (Validering.faltEjTomtKontroll(txtLösenord))) {
+        if (Validering.faltEjTomtKontroll(txtAnvändarnamn) && Validering.emailKontroll(txtAnvändarnamn.getText()) && (Validering.faltEjTomtKontroll(txtLösenord))) {
 
             try {
                 String sqlfråga = "Select losenord FROM anstalld WHERE epost = '" + användarnamn + "'";
