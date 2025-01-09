@@ -237,16 +237,27 @@ public class InloggningMeny extends javax.swing.JFrame {
 
     private void btnÅterställLösenordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnÅterställLösenordActionPerformed
         String dialog = "Ange din e-postadress i rutan nedan,";
-        String svar = JOptionPane.showInputDialog(this, dialog);
-        boolean finns = anstalld.finnsEpost(dialog);
-        if (finns)
-        {
-            String nyttLosen = anstalld.genereraLösenord(10);
-            boolean uppdateraLosen = anstalld.uppdateraLosenord(svar, nyttLosen);
-            if (uppdateraLosen)
-            {
-                //Det nya lösenordet borde givetvis mejlas ut till användare egentligen, men att skriva en sådan funktion känns lite överkurs i detta skede när vi inte har tillgång till deras domän. 
-                JOptionPane.showMessageDialog(this, "Ett nytt lösenord har slumpats fram till dig: " + nyttLosen);
+        boolean pågår = true; //Fortsätta visa dialogruta tills anv får lösenord eller trycker cancel/kryss
+        while (pågår) {  
+            String svar = JOptionPane.showInputDialog(this, dialog);
+            if (svar == null) {
+                pågår = false;
+            } else {
+                if (!svar.isBlank()) {
+                    pågår = false;
+                    boolean finns = anstalld.finnsEpost(dialog);
+                    if (finns) {
+                        String nyttLosen = anstalld.genereraLösenord(10);
+                        boolean uppdateraLosen = anstalld.uppdateraLosenord(svar, nyttLosen);
+                        if (uppdateraLosen) {
+                            //Det nya lösenordet borde givetvis mejlas ut till användare egentligen, men att skriva en sådan funktion känns lite överkurs i detta skede när vi inte har tillgång till deras domän. 
+                            JOptionPane.showMessageDialog(this, "Ett nytt lösenord har slumpats fram till dig: " + nyttLosen);
+                            pågår = false;
+                        }
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "Vänligen skriv in en epostadress ");
+                }
             }
         }
     }//GEN-LAST:event_btnÅterställLösenordActionPerformed
