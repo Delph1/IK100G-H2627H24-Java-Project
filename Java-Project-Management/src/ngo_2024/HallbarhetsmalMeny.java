@@ -22,6 +22,8 @@ public class HallbarhetsmalMeny extends javax.swing.JFrame {
     
     /**
      * Konstruktor för HallbarhetsmalMeny
+     * @param idb
+     * @param endastVisa
      */
     public HallbarhetsmalMeny(InfDB idb, boolean endastVisa) {
         this.idb = idb;
