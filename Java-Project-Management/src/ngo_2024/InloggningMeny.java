@@ -250,21 +250,33 @@ public class InloggningMeny extends javax.swing.JFrame {
 
     private void btnÅterställLösenordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnÅterställLösenordActionPerformed
         String dialog = "Ange din e-postadress i rutan nedan,";
-        String svar = JOptionPane.showInputDialog(this, dialog);
-        if (Validering.epostKontroll(svar)) {
-            boolean finns = anstalld.finnsEpost(dialog);
-            if (finns)
-            {
-                String nyttLosen = anstalld.genereraLösenord(10);
-                boolean uppdateraLosen = anstalld.uppdateraLosenord(svar, nyttLosen);
-                if (uppdateraLosen)
-                {
-                    //Det nya lösenordet borde givetvis mejlas ut till användare egentligen, men att skriva en sådan funktion känns lite överkurs i detta skede när vi inte har tillgång till deras domän. 
-                    JOptionPane.showMessageDialog(this, "Ett nytt lösenord har slumpats fram till dig: " + nyttLosen);
+        boolean pågår = true; //Fortsätta visa dialogruta tills anv får lösenord eller trycker cancel/kryss
+        while (pågår) {  
+            String svar = JOptionPane.showInputDialog(this, dialog);
+            if (svar == null) {
+                pågår = false;
+            } else {
+                if (!svar.isBlank()) {
+                    pågår = false;
+                    if (Validering.epostKontroll(svar)) {
+                        boolean finns = anstalld.finnsEpost(svar);
+                        if (finns) { 
+                            String nyttLosen = anstalld.genereraLösenord(10);
+                            boolean uppdateraLosen = anstalld.uppdateraLosenord(svar, nyttLosen);
+                            if (uppdateraLosen) {
+                                //Det nya lösenordet borde givetvis mejlas ut till användare egentligen, men att skriva en sådan funktion känns lite överkurs i detta skede när vi inte har tillgång till deras domän. 
+                                JOptionPane.showMessageDialog(this, "Ett nytt lösenord har slumpats fram till dig: " + nyttLosen);
+                            }
+                        } else {
+                                JOptionPane.showMessageDialog(this, "Epostadressen hittades inte i systemet.");                            
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Epostadressen är inte korrekt formaterad.");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "Vänligen skriv in en epostadress ");
                 }
             }
-        } else {
-                JOptionPane.showMessageDialog(this, "Epostadressen är inte korrekt formaterad.");
         }
     }//GEN-LAST:event_btnÅterställLösenordActionPerformed
 

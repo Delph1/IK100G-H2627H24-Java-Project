@@ -198,8 +198,10 @@ public class EditAnstalld extends javax.swing.JFrame {
         boolean epostFinns = false;
         try {
             String query = "SELECT losenord FROM anstalld WHERE epost = '" + epost + "'";
-            idb.fetchSingle(query);
-            epostFinns = true;
+            String resultat = idb.fetchSingle(query);
+            if (resultat != null) {
+                epostFinns = true;
+            }
         } catch (InfException e) {
             JOptionPane.showMessageDialog(this, "E-postadressen finns inte i datrabasen.");
         }
@@ -216,7 +218,6 @@ public class EditAnstalld extends javax.swing.JFrame {
         boolean success = false;
         try {
             String query = "UPDATE anstalld SET losenord = '" + nyttLosen + "' WHERE epost = '" + epost + "'";
-            System.out.println(query);
             idb.update(query);
             success = true;
         } catch (InfException e) {
