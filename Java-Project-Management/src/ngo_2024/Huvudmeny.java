@@ -5,14 +5,12 @@
 package ngo_2024;
 
 import java.util.HashMap;
-import javax.swing.JOptionPane;
 import oru.inf.InfDB;
 import oru.inf.InfException;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JButton;
-import javax.swing.ImageIcon;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.Random;
@@ -34,6 +32,10 @@ public class Huvudmeny extends javax.swing.JFrame {
 
     /**
      * Creates new form Huvudmeny
+     * @param idb
+     * @param queryAid
+     * @param admins
+     * @param projl
      */
     public Huvudmeny(InfDB idb, String queryAid, String admins, String projl) {
         initComponents();
@@ -52,36 +54,60 @@ public class Huvudmeny extends javax.swing.JFrame {
         fyllFunFacts();
         lblFunFact.setText(genereraFunFact());
     }
-private void kontrolleraBehorigheter() {
-    try {
-        
-        String projektledareQuery = "SELECT COUNT(*) FROM projekt WHERE projektchef = '" + queryAid + "'";
-        int antalProjekt = Integer.parseInt(idb.fetchSingle(projektledareQuery));
+    
+    /**
+     * Metod som kontrollerar behörighet för person som loggat in.
+     */
+    private void kontrolleraBehorigheter() {
+        try {
 
-        if (antalProjekt > 0) {
-            
-            mvprojAndraPartnersForProjekt.setVisible(true);
-            mvprojStatistik.setVisible(true);
-            
-        } else {
-            mvprojAndraPartnersForProjekt.setVisible(false);
-            mvprojStatistik.setVisible(false);
+            String projektledareQuery = "SELECT COUNT(*) FROM projekt WHERE projektchef = '" + queryAid + "'";
+            int antalProjekt = Integer.parseInt(idb.fetchSingle(projektledareQuery));
+
+            if (antalProjekt > 0) {
+
+                mvprojAndraPartnersForProjekt.setVisible(true);
+                mvprojStatistik.setVisible(true);
+
+            } else {
+                mvprojAndraPartnersForProjekt.setVisible(false);
+                mvprojStatistik.setVisible(false);
+            }
+
+            String adminQuery = "SELECT behorighetsniva FROM admin WHERE aid = '" + queryAid + "'";
+            String behorighetsniva = idb.fetchSingle(adminQuery);
+
+            if (behorighetsniva != null && behorighetsniva.equals("1")) {
+                menyAdministration.setVisible(true);
+            } else {
+                menyAdministration.setVisible(false);
+            }
+
+        } catch (InfException e) {
+            System.out.println("Ett fel inträffade vid kontroll av behörigheter: " + e.getMessage());
         }
-
-        
-        String adminQuery = "SELECT behorighetsniva FROM admin WHERE aid = '" + queryAid + "'";
-        String behorighetsniva = idb.fetchSingle(adminQuery);
-
-        if (behorighetsniva != null && behorighetsniva.equals("1")) {
-            menyAdministration.setVisible(true);
-        } else {
-            menyAdministration.setVisible(false);
-        }
-
-    } catch (InfException e) {
-        System.out.println("Ett fel inträffade vid kontroll av behörigheter: " + e.getMessage());
     }
-}
+    
+    private void visaAnvandaresNamnOchEpost(String queryAid) {
+        String roll = ((admins == null) ? "Handläggare" : "Administratör"); //Korthands-if
+        HashMap<String, String> resultat = anstalld.getEnAnstalld(queryAid);
+        lblNamn.setText(resultat.get("fornamn") + " " + resultat.get("efternamn"));
+        lblEpost.setText(resultat.get("epost"));
+        lblRoll.setText(roll);
+    }
+    
+    private void fyllFunFacts() {
+        funFacts.add("Det här projektet har hittills haft 107 pull requests i GitHub");
+        funFacts.add("Den samlade åldern för oss i grupp 3 är 138 år");
+        funFacts.add("Tre katter har varit involverade i utvecklingen");
+        funFacts.add("Antal svordomar över Netbeans och/eller Github: 14327. Nej vänta, 14328");
+        funFacts.add("<html>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Har du läst allt detta är jag väldigt imponerad. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</html>");
+    }
+    
+    private String genereraFunFact() {
+        int index = randomGenerator.nextInt(funFacts.size());
+        return funFacts.get(index);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -366,6 +392,10 @@ private void kontrolleraBehorigheter() {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Knappar följer nedan
+     */
+    
     private void mvhjOmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvhjOmActionPerformed
 
         JFrame omRuta = new JFrame("Om NGO-matic");
@@ -377,18 +407,18 @@ private void kontrolleraBehorigheter() {
         JLabel titelLabel = new JLabel("<html><h1 style='color:blue; text-align:center;'>NGO-matic</h1></html>", JLabel.CENTER);
 
         String infoText = "<html>"
-        + "<p style='text-align:center;'>Ett program utvecklat för <b>SDG Sweden</b><br> som en del av kursen <i>IK100G Informatik 30hp</i> <br>delkursen <b>Systemutvecklingsprojekt</b>.</p>"
-        + "<br>"
-        + "<h3 style='text-align:center;'>Utvecklat av:</h3>"
-        + "<ul>"
-        + "<li style='text-align:left;'>Andreas Galistel</li>"
-        + "<li style='text-align:left;'>Claudia Kourieh</li>"
-        + "<li style='text-align:left;'>Fredrik Magnusson</li>"
-        + "<li style='text-align:left;'>Märta Sjöblom</li>"
-        + "</ul>"
-        + "<br>"
-        + "<p style='text-align:center;'>NGO-matic är designat för att hjälpa <b>SDG Sweden</b><br>som arbetar med tekniska lösningar för utvecklingsländer.</p>"
-        + "</html>";
+                + "<p style='text-align:center;'>Ett program utvecklat för <b>SDG Sweden</b><br> som en del av kursen <i>IK100G Informatik 30hp</i> <br>delkursen <b>Systemutvecklingsprojekt</b>.</p>"
+                + "<br>"
+                + "<h3 style='text-align:center;'>Utvecklat av:</h3>"
+                + "<ul>"
+                + "<li style='text-align:left;'>Andreas Galistel</li>"
+                + "<li style='text-align:left;'>Claudia Kourieh</li>"
+                + "<li style='text-align:left;'>Fredrik Magnusson</li>"
+                + "<li style='text-align:left;'>Märta Sjöblom</li>"
+                + "</ul>"
+                + "<br>"
+                + "<p style='text-align:center;'>NGO-matic är designat för att hjälpa <b>SDG Sweden</b><br>som arbetar med tekniska lösningar för utvecklingsländer.</p>"
+                + "</html>";
 
         JLabel infoLabel = new JLabel(infoText, JLabel.CENTER);
         JButton stangKnapp = new JButton("Stäng");
@@ -451,10 +481,6 @@ private void kontrolleraBehorigheter() {
             new ProjektMeny(idb, queryAid).setVisible(true);
         }
     }//GEN-LAST:event_mvprojMinaProjektActionPerformed
-
-    /**
-     * Knappar följer nedan
-     */
     
     private void mvminLoggaUtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvminLoggaUtActionPerformed
         new InloggningMeny(idb).setVisible (true);
@@ -472,29 +498,7 @@ private void kontrolleraBehorigheter() {
     private void mvadnStadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvadnStadActionPerformed
         new StadMeny(idb).setVisible(true);
     }//GEN-LAST:event_mvadnStadActionPerformed
-
-    private void visaAnvandaresNamnOchEpost(String queryAid)
-    {
-        String roll = ((admins == null) ? "Handläggare" : "Administratör"); //Korthands-if
-        HashMap<String, String> resultat = anstalld.getEnAnstalld(queryAid);
-        lblNamn.setText(resultat.get("fornamn") + " " + resultat.get("efternamn"));
-        lblEpost.setText(resultat.get("epost"));
-        lblRoll.setText(roll);
-    }
-    
-    private void fyllFunFacts() {
-        funFacts.add("Det här projektet har hittills haft 107 pull requests i GitHub");
-        funFacts.add("Den samlade åldern för oss i grupp 3 är 138 år");
-        funFacts.add("Tre katter har varit involverade i utvecklingen");
-        funFacts.add("Antal svordomar över Netbeans och/eller Github: 14327. Nej vänta, 14328");
-        funFacts.add("<html>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Har du läst allt detta är jag väldigt imponerad. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</html>");
-    }
-    
-    private String genereraFunFact(){
-        int index = randomGenerator.nextInt(funFacts.size());
-        return funFacts.get(index);
-    }
-            
+  
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
