@@ -101,6 +101,7 @@ public class EditHallbarhetsmal extends javax.swing.JFrame {
         btnAvbryt = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Redigera hållbarhetsmål");
 
         lblNamn.setText("Namn:");
 
