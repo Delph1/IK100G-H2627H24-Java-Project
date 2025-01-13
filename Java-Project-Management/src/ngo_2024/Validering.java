@@ -31,6 +31,18 @@ public class Validering {
         return resultat;
     }
     
+    public static boolean telefonnummerKontroll(JTextField param) {
+    boolean resultat = true;
+
+    // Tillåter siffror och eventuellt ett '+' i början
+    if (!param.getText().matches("^\\+?[0-9]{3,15}$")) {
+        JOptionPane.showMessageDialog(null, "Ogiltigt telefonnummer. Var vänlig ange ett giltigt telefonnummer.");
+        resultat = false;
+    }
+
+    return resultat;
+}
+    
     public static boolean faltEjTomtKontroll(JTextField param) {
         boolean resultat = true;
 
