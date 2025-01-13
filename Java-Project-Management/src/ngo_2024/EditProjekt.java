@@ -495,7 +495,7 @@ public class EditProjekt extends javax.swing.JFrame {
                 && Validering.datumKontroll(startDatum)
                 && Validering.datumKontroll(slutDatum)
                 && Validering.datumEfterKontroll(startDatum, slutDatum)
-                && Validering.datumFöreKontroll(slutDatum, startDatum)
+                && Validering.datumForeKontroll(slutDatum, startDatum)
                 && Validering.faltEjTomtKontroll(txtKostnad)
                 && Validering.arDecimal(txtKostnad)
                 && Validering.positivtVarde(txtKostnad)

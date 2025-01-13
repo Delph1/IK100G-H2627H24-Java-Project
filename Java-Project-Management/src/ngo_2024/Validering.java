@@ -106,7 +106,7 @@ public class Validering {
      * @param startDatum
      * @return resultat boolean
      */
-    public static boolean datumFöreKontroll (String slutDatum, String startDatum)
+    public static boolean datumForeKontroll (String slutDatum, String startDatum)
     {
         boolean resultat = true;
         LocalDate slut = LocalDate.parse(slutDatum);
@@ -150,5 +150,17 @@ public class Validering {
             JOptionPane.showMessageDialog(null, "Fältet är tomt.\nVar vänlig fyll i fältet.");
             resultat = false;           
         }       return resultat;
+    }
+    
+    public static boolean telefonKontroll (String telefon) {
+        boolean resultat = true;
+        String telRegex = "^\\+?[0-9 -]*$";
+        
+        // Fält kontrolleras här med Regex om det är ett telefonnummer, dvs innehåller endast siffror, streck och mellanslag.
+        if (!telefon.matches(telRegex)) {
+            JOptionPane.showMessageDialog(null, "Ogiltigt telefonnummer.\nVar vänlig kontrollera fältet.");
+            resultat = false;
+        }
+        return resultat;
     }
 }

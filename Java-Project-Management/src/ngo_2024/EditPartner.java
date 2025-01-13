@@ -263,7 +263,8 @@ public class EditPartner extends javax.swing.JFrame {
                 && Validering.faltEjTomtKontroll(txtStadId)
                 && Validering.comboBoxInteTom(cbStadNamn.getSelectedItem())
                 && Validering.arHeltal(txtStadId)
-                && Validering.positivtVarde(txtStadId)) {
+                && Validering.positivtVarde(txtStadId)
+                && Validering.telefonKontroll(txtTelefon.getText())) {
             String namn = txtNamn.getText();
             String kontaktperson = txtKontaktperson.getText();
             String kontaktepost = txtKontaktepost.getText();

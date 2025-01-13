@@ -434,7 +434,8 @@ public class EditAnstalld extends javax.swing.JFrame {
                 && Validering.epostKontroll(txtEpost.getText())
                 && Validering.faltEjTomtKontroll(txtTelefonNr)
                 && Validering.datumKontroll(ansdatum)
-                && Validering.faltEjTomtKontroll(txtLosen)) {
+                && Validering.faltEjTomtKontroll(txtLosen)
+                && Validering.telefonKontroll(txtTelefonNr.getText())) {
 
             try {
                 if (queryAid == null || queryAid.isEmpty()) {
