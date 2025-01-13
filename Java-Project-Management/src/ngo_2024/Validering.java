@@ -106,7 +106,7 @@ public class Validering {
      * @param startDatum
      * @return resultat boolean
      */
-    public static boolean datumFöreKontroll (String slutDatum, String startDatum)
+    public static boolean datumForeKontroll (String slutDatum, String startDatum)
     {
         boolean resultat = true;
         LocalDate slut = LocalDate.parse(slutDatum);
@@ -154,7 +154,7 @@ public class Validering {
     
     public static boolean telefonKontroll (String telefon) {
         boolean resultat = true;
-        String telRegex = "^[0-9 -]*$";
+        String telRegex = "^\\+?[0-9 -]*$";
         
         // Fält kontrolleras här med Regex om det är ett telefonnummer, dvs innehåller endast siffror, streck och mellanslag.
         if (!telefon.matches(telRegex)) {
