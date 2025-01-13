@@ -257,6 +257,7 @@ public class EditPartner extends javax.swing.JFrame {
         if (Validering.faltEjTomtKontroll(txtNamn)
                 && Validering.faltEjTomtKontroll(txtKontaktperson)
                 && Validering.faltEjTomtKontroll(txtKontaktepost)
+                && Validering.epostKontroll(txtKontaktepost.getText()) // Kontrollera e-post här
                 && Validering.faltEjTomtKontroll(txtTelefon)
                 && Validering.faltEjTomtKontroll(txtAdress)
                 && Validering.faltEjTomtKontroll(txtBranch)
