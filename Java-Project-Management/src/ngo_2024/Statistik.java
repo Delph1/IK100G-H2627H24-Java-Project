@@ -57,17 +57,18 @@ public class Statistik extends javax.swing.JFrame {
         lblTotalKostnadAvd = new javax.swing.JLabel();
         lblRubrik2 = new javax.swing.JLabel();
         lblTotKost = new javax.swing.JLabel();
-        lblPåg = new javax.swing.JLabel();
+        lblPag = new javax.swing.JLabel();
         lblAvs = new javax.swing.JLabel();
         lblAvd = new javax.swing.JLabel();
         lblAlla = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblStatistik = new javax.swing.JTable();
-        btnLänder = new javax.swing.JButton();
-        btnLänderKost = new javax.swing.JButton();
+        btnLander = new javax.swing.JButton();
+        btnLanderKost = new javax.swing.JButton();
         btnPartners = new javax.swing.JButton();
-        sprSök = new javax.swing.JSeparator();
+        sprSok = new javax.swing.JSeparator();
         lblKostnad = new javax.swing.JLabel();
+        lblPlanerade = new javax.swing.JLabel();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -83,7 +84,6 @@ public class Statistik extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(400, 450));
 
         lblTotalKostnadMina.setText("Total kostnad");
 
@@ -104,8 +104,8 @@ public class Statistik extends javax.swing.JFrame {
         lblTotKost.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblTotKost.setText("0");
 
-        lblPåg.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblPåg.setText("0");
+        lblPag.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblPag.setText("0");
 
         lblAvs.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblAvs.setText("0");
@@ -129,17 +129,17 @@ public class Statistik extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(tblStatistik);
 
-        btnLänder.setText("Länder");
-        btnLänder.addActionListener(new java.awt.event.ActionListener() {
+        btnLander.setText("Länder");
+        btnLander.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLänderActionPerformed(evt);
+                btnLanderActionPerformed(evt);
             }
         });
 
-        btnLänderKost.setText("Kostnad länder");
-        btnLänderKost.addActionListener(new java.awt.event.ActionListener() {
+        btnLanderKost.setText("Kostnad länder");
+        btnLanderKost.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLänderKostActionPerformed(evt);
+                btnLanderKostActionPerformed(evt);
             }
         });
 
@@ -153,6 +153,9 @@ public class Statistik extends javax.swing.JFrame {
         lblKostnad.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblKostnad.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblKostnad.setText("Kostnad");
+
+        lblPlanerade.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        lblPlanerade.setText("(inkl. ev. planerade projekt)");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -174,12 +177,15 @@ public class Statistik extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnLänder)
+                                .addComponent(btnLander)
                                 .addGap(27, 27, 27)
-                                .addComponent(btnLänderKost)
+                                .addComponent(btnLanderKost)
                                 .addGap(35, 35, 35)
                                 .addComponent(btnPartners))
-                            .addComponent(lblStatistikRubrik)
+                            .addComponent(lblStatistikRubrik))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblRubrik2)
@@ -188,17 +194,17 @@ public class Statistik extends javax.swing.JFrame {
                                     .addComponent(lblPagaende))
                                 .addGap(37, 37, 37)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(lblPåg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(lblTotKost, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(lblAvs, javax.swing.GroupLayout.Alignment.LEADING))
-                                    .addComponent(lblKostnad))))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(sprMina, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
-                            .addComponent(sprSök))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(lblPag, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(lblTotKost, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(lblAvs, javax.swing.GroupLayout.Alignment.LEADING))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(lblPlanerade))
+                                    .addComponent(lblKostnad)))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(sprMina, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
+                            .addComponent(sprSok, javax.swing.GroupLayout.Alignment.LEADING))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -219,9 +225,11 @@ public class Statistik extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblAvslutade))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblTotKost)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblTotKost)
+                            .addComponent(lblPlanerade))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblPåg)
+                        .addComponent(lblPag)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblAvs)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -235,11 +243,11 @@ public class Statistik extends javax.swing.JFrame {
                     .addComponent(lblTotalKostnadAlla)
                     .addComponent(lblAlla))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(sprSök, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(sprSok, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(2, 2, 2)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnLänder)
-                    .addComponent(btnLänderKost)
+                    .addComponent(btnLander)
+                    .addComponent(btnLanderKost)
                     .addComponent(btnPartners))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -249,13 +257,13 @@ public class Statistik extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnLänderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLänderActionPerformed
-        setLänder();
-    }//GEN-LAST:event_btnLänderActionPerformed
+    private void btnLanderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLanderActionPerformed
+        setLander();
+    }//GEN-LAST:event_btnLanderActionPerformed
 
-    private void btnLänderKostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLänderKostActionPerformed
-        setLänderKostnad();
-    }//GEN-LAST:event_btnLänderKostActionPerformed
+    private void btnLanderKostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLanderKostActionPerformed
+        setLanderKostnad();
+    }//GEN-LAST:event_btnLanderKostActionPerformed
 
     private void btnPartnersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPartnersActionPerformed
         setPartners();
@@ -267,23 +275,23 @@ public class Statistik extends javax.swing.JFrame {
      */
     private void setMinaKostnader() {
         double minKostnad = 0;
-        double pågåendeSumma = 0;
+        double pagaendeSumma = 0;
         double avslutadeSumma = 0;
         try {
-            ArrayList<HashMap<String, String>> minaProjekt = new ArrayList<>();
+            ArrayList<HashMap<String, String>> minaProjekt = new ArrayList<>(); //Hämtar lista på projekt som inloggad är projektchef för
             try {
-                String sqlfråga = "SELECT * FROM projekt where projektchef =" + aid;
-                minaProjekt = idb.fetchRows(sqlfråga);
+                String sqlfraga = "SELECT * FROM projekt where projektchef =" + aid;
+                minaProjekt = idb.fetchRows(sqlfraga);
             } catch (InfException e) {
                 System.out.println("Kunde inte hämta projekt.\n" + e.getMessage());
                 JOptionPane.showMessageDialog(null, "Kunde inte hämta projekt.");
             }
             for (HashMap<String, String> ettProjekt : minaProjekt) {
-                minKostnad += Double.parseDouble(ettProjekt.get("kostnad"));
+                minKostnad += Double.parseDouble(ettProjekt.get("kostnad"));    //Lägger till kostnaden för projektet till totalen, inkl planerade
                 String status = ettProjekt.get("status");
-                if (status.equals("Pågående")) {
-                    pågåendeSumma += Double.parseDouble(ettProjekt.get("kostnad"));
-                } else if (status.equals("Avslutat")) {
+                if (status.equals("Pågående")) {    //Lägger dessutom till kostnaden på pågående om pågående
+                    pagaendeSumma += Double.parseDouble(ettProjekt.get("kostnad"));
+                } else if (status.equals("Avslutat")) { //Lägger dessutom till kostnaden på avslutat om avslutat
                     avslutadeSumma += Double.parseDouble(ettProjekt.get("kostnad"));
                 }
             }
@@ -291,7 +299,7 @@ public class Statistik extends javax.swing.JFrame {
             System.out.println("Inga projekt på denna person" + ex.getMessage());
         }
         lblTotKost.setText("" + minKostnad);
-        lblPåg.setText("" + pågåendeSumma);
+        lblPag.setText("" + pagaendeSumma);
         lblAvs.setText("" + avslutadeSumma);
     }
     
@@ -303,12 +311,12 @@ public class Statistik extends javax.swing.JFrame {
         String sqlAvdKost = "select kostnad from projekt where pid in (select pid from ans_proj where aid in (select aid from anstalld where avdelning = (select avdelning from anstalld where aid = "+aid+")));";
         ArrayList<String> avdKostnader = new ArrayList<>();
         try {
-            avdKostnader = idb.fetchColumn(sqlAvdKost);
+            avdKostnader = idb.fetchColumn(sqlAvdKost); //Hämtar alla kostnader för avdelningen till inloggad person
         }
         catch (InfException e) {
             System.out.println(e.getMessage());
         }
-        for (String enKostnad : avdKostnader) {
+        for (String enKostnad : avdKostnader) { //Summerar kostnaden för alla projekt vid avdelningen
             avdSumma += Double.parseDouble(enKostnad);
         }
         lblAvd.setText(""+avdSumma);
@@ -322,12 +330,12 @@ public class Statistik extends javax.swing.JFrame {
         String sqlTotKost = "select kostnad from projekt;";
         ArrayList<String> totKostnader = new ArrayList<>();
         try {
-            totKostnader = idb.fetchColumn(sqlTotKost);
+            totKostnader = idb.fetchColumn(sqlTotKost); //Hämtar kostnader för alla projekt
         }
         catch (InfException e) {
             System.out.println(e.getMessage());
         }
-        for (String enKostnad : totKostnader) {
+        for (String enKostnad : totKostnader) { //Summerar kostnaderna från ovan till en totalsiffra
             totSumma += Double.parseDouble(enKostnad);
         }
         lblAlla.setText(""+totSumma);
@@ -336,24 +344,24 @@ public class Statistik extends javax.swing.JFrame {
     /**
      * Får ut statistik över vilka länder de projekt jag är, eller har varit, projektansvarig för genomfördes i
      */
-    private void setLänder() {
+    private void setLander() {
         DefaultTableModel tableModel = new DefaultTableModel();
         tableModel.setRowCount(0);
 
         // Lägg till kolumnnamn i modellen
         tableModel.addColumn("Land");
         tableModel.addColumn("Projektstatus");
-        ArrayList<HashMap<String, String>> allaLänder = null;
-        String sqlLänder = "select land.namn, status from land, projekt where land.lid = projekt.land and projektchef = " + aid+" order by land.namn;";
+        ArrayList<HashMap<String, String>> allaLander = null;
+        String sqlLander = "select land.namn, status from land, projekt where land.lid = projekt.land and projektchef = " + aid+" order by land.namn;";
         try {
-            allaLänder = idb.fetchRows(sqlLänder);
+            allaLander = idb.fetchRows(sqlLander);
         } catch (InfException e) {
             System.out.println(e.getMessage());
         }
-        if (allaLänder != null) {
+        if (allaLander != null) {
 
             // Fyller table med data från databasen
-            for (HashMap<String, String> rad : allaLänder) {
+            for (HashMap<String, String> rad : allaLander) {
                 tableModel.addRow(new Object[]{
                     rad.get("namn"),
                     rad.get("status"),});
@@ -369,7 +377,7 @@ public class Statistik extends javax.swing.JFrame {
      * För statistik för de egna projektens land-placering, och den totala kostnaden
      * för projekt i de olika länderna
      */
-    private void setLänderKostnad(){
+    private void setLanderKostnad(){
         DefaultTableModel tableModel = new DefaultTableModel();
         tableModel.setRowCount(0);
         HashMap<String,String> summaKostnad = new HashMap<>();  //Till för att räkna ut summan av kostnader för länder
@@ -377,22 +385,22 @@ public class Statistik extends javax.swing.JFrame {
         // Lägg till kolumnnamn i modellen
         tableModel.addColumn("Land");
         tableModel.addColumn("Totalkostnad");
-        ArrayList<HashMap<String, String>> allaLänder = null;
-        String sqlLänder = "select land.namn, kostnad from land, projekt where land.lid = projekt.land and projektchef = " + aid + " order by land.namn desc";
+        ArrayList<HashMap<String, String>> allaLander = null;
+        String sqlLander = "select land.namn, kostnad from land, projekt where land.lid = projekt.land and projektchef = " + aid + " order by land.namn desc";
         try {
-            allaLänder = idb.fetchRows(sqlLänder);
+            allaLander = idb.fetchRows(sqlLander);  //Hämtar landets namn och kostnaden för alla projekt som inloggad person är projektchef för
         } catch (InfException e) {
             System.out.println(e.getMessage());
         }
-        if (allaLänder != null) {
-            for(HashMap<String,String> rad : allaLänder) {
+        if (allaLander != null) {
+            for(HashMap<String,String> rad : allaLander) {
                 String land = rad.get("namn");
                 double kostnad = Double.parseDouble(rad.get("kostnad"));
-                double utgångsKostnad;
+                double utgangsKostnad;
                 if (summaKostnad.containsKey(land)) {   //Om Land redan finns i summa-listan, lägg till nya värdet
-                    utgångsKostnad = Double.parseDouble(summaKostnad.get(land));
-                    utgångsKostnad += kostnad;
-                    summaKostnad.put(land, "" + utgångsKostnad);
+                    utgangsKostnad = Double.parseDouble(summaKostnad.get(land));
+                    utgangsKostnad += kostnad;
+                    summaKostnad.put(land, "" + utgangsKostnad);
                 } else {    //Om land inte redan finns, lägg till nytt
                     summaKostnad.put(land, "" + kostnad);
                 }
@@ -419,17 +427,17 @@ public class Statistik extends javax.swing.JFrame {
         // Lägg till kolumnnamn i modellen
         tableModel.addColumn("Partner");
         tableModel.addColumn("Projektstatus");
-        ArrayList<HashMap<String, String>> allaLänder = null;
-        String sqlLänder = "select partner.namn, status from projekt join projekt_partner on projekt.pid = projekt_partner.pid join partner on  projekt_partner.partner_pid = partner.pid where projektchef = "+aid;
+        ArrayList<HashMap<String, String>> allaLander = null;
+        String sqlLander = "select partner.namn, status from projekt join projekt_partner on projekt.pid = projekt_partner.pid join partner on  projekt_partner.partner_pid = partner.pid where projektchef = "+aid;
         try {
-            allaLänder = idb.fetchRows(sqlLänder);
+            allaLander = idb.fetchRows(sqlLander); //Hämtar partners namn och status för alla projekt som inloggad person är projektchef för
         } catch (InfException e) {
             System.out.println(e.getMessage());
         }
-        if (allaLänder != null) {
+        if (allaLander != null) {
 
             // Fyller table med data från databasen
-            for (HashMap<String, String> rad : allaLänder) {
+            for (HashMap<String, String> rad : allaLander) {
                 tableModel.addRow(new Object[]{
                     rad.get("namn"),
                     rad.get("status"),});
@@ -443,8 +451,8 @@ public class Statistik extends javax.swing.JFrame {
             
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnLänder;
-    private javax.swing.JButton btnLänderKost;
+    private javax.swing.JButton btnLander;
+    private javax.swing.JButton btnLanderKost;
     private javax.swing.JButton btnPartners;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -455,8 +463,9 @@ public class Statistik extends javax.swing.JFrame {
     private javax.swing.JLabel lblAvs;
     private javax.swing.JLabel lblAvslutade;
     private javax.swing.JLabel lblKostnad;
+    private javax.swing.JLabel lblPag;
     private javax.swing.JLabel lblPagaende;
-    private javax.swing.JLabel lblPåg;
+    private javax.swing.JLabel lblPlanerade;
     private javax.swing.JLabel lblRubrik2;
     private javax.swing.JLabel lblStatistikRubrik;
     private javax.swing.JLabel lblTotKost;
@@ -464,7 +473,7 @@ public class Statistik extends javax.swing.JFrame {
     private javax.swing.JLabel lblTotalKostnadAvd;
     private javax.swing.JLabel lblTotalKostnadMina;
     private javax.swing.JSeparator sprMina;
-    private javax.swing.JSeparator sprSök;
+    private javax.swing.JSeparator sprSok;
     private javax.swing.JTable tblStatistik;
     // End of variables declaration//GEN-END:variables
 }
