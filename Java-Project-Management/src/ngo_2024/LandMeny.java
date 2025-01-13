@@ -140,7 +140,7 @@ public class LandMeny extends javax.swing.JFrame {
                 // Radera landet
                 String query2 = "DELETE FROM land WHERE lid = " + queryLid;
                 idb.delete(query2);
-                getLander();
+                populeraLandTabell(getLander());
             } catch (InfException e) {
                 JOptionPane.showMessageDialog(this, "Landet gick inte att radera. Kontrollera att databasen fungerar som den ska.");
             }
@@ -281,7 +281,7 @@ public class LandMeny extends javax.swing.JFrame {
      */
     
     private void btnUppdateraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUppdateraActionPerformed
-        populeraLandTabell (getLander()); // Uppdatera tabellen med den nya datan
+        populeraLandTabell(getLander()); // Uppdatera tabellen med den nya datan
     }//GEN-LAST:event_btnUppdateraActionPerformed
 
     private void btnÄndraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnÄndraActionPerformed
@@ -297,7 +297,7 @@ public class LandMeny extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNyttLandActionPerformed
 
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
-        getLander();
+        populeraLandTabell(getLander());
     }//GEN-LAST:event_formWindowGainedFocus
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
