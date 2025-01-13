@@ -140,7 +140,7 @@ public class LandMeny extends javax.swing.JFrame {
                 // Radera landet
                 String query2 = "DELETE FROM land WHERE lid = " + queryLid;
                 idb.delete(query2);
-                getLander();
+                populeraLandTabell(getLander());
             } catch (InfException e) {
                 JOptionPane.showMessageDialog(this, "Landet gick inte att radera. Kontrollera att databasen fungerar som den ska.");
             }
