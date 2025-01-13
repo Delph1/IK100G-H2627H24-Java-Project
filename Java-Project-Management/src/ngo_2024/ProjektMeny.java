@@ -357,6 +357,8 @@ public class ProjektMeny extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTaBortProjektActionPerformed
 
     private void cmbAvdelningsValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbAvdelningsValActionPerformed
+        jDateStartdatumSok.setDate(null);   //nollställer datumväljarna
+        jDateSlutdatumSok.setDate(null);    //nollställer datumväljarna
         if (cmbAvdelningsVal.getSelectedIndex() == 0) {
             cmbStatus.setSelectedItem("Välj status");
         } else {
@@ -381,17 +383,20 @@ public class ProjektMeny extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbAvdelningsValActionPerformed
 
     private void btnDatumSokActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDatumSokActionPerformed
-        String startDatum = "1000-01-01";
-        String slutDatum = "3000-12-31";
-        SimpleDateFormat datumformat = new SimpleDateFormat("yyyy-MM-dd");
-        try {
+        String startDatum = "1000-01-01";   //Datum att utgå från 
+        String slutDatum = "3000-12-31";    //"Öppet" slutdatum
+        
+        SimpleDateFormat datumformat = new SimpleDateFormat("yyyy-MM-dd");  //Det format vi vill hämta datumet i från databasen
+        if (jDateStartdatumSok.getDate() != null) { //Om startdatum har angivits i sökningen, uppdatera variabeln
             startDatum = datumformat.format(jDateStartdatumSok.getDate());
-            slutDatum = datumformat.format(jDateSlutdatumSok.getDate());
-        } catch (NullPointerException e) {
-            JOptionPane.showMessageDialog(this, "Se över dina sökparametrar en gång till. Du måste ange ett datum i båda datumfälten och Startdatum måste komma före Slutdatum.");
         }
-        if (!startDatum.isBlank() && Validering.datumKontroll(startDatum) && !slutDatum.isBlank() && Validering.datumKontroll(slutDatum) && jDateStartdatumSok.getDate().before(jDateSlutdatumSok.getDate())) {
-            if (cmbAvdelningsVal.getSelectedIndex() == 0 && cmbStatus.getSelectedIndex() == 0) {
+        if (jDateSlutdatumSok.getDate() != null) {  //Om slutdatum har angivits i sökningen, uppdatera variabeln
+            slutDatum = datumformat.format(jDateSlutdatumSok.getDate());
+        }
+        
+        //Kontrollerar att startdatum inte är efter slutdatum och vice versa
+        if (Validering.datumEfterKontroll(startDatum, slutDatum) && Validering.datumForeKontroll(slutDatum, startDatum)) {  //Kontrollerar att startdatum inte är efter
+            if (cmbAvdelningsVal.getSelectedIndex() == 0 && cmbStatus.getSelectedIndex() == 0) {    //ingen filtrering på avdelning och status, bara datum
                 String datumFraga = "Select * from projekt where startdatum >= '" + startDatum + "' AND slutdatum <= '" + slutDatum + "';";
                 try {
                     ArrayList<HashMap<String, String>> soktaProjekt = idb.fetchRows(datumFraga);
@@ -405,7 +410,7 @@ public class ProjektMeny extends javax.swing.JFrame {
                 } catch (InfException e) {
                     JOptionPane.showMessageDialog(this, "Något gick fel med databasen när projekt skulle hämtas ut med de valda datumen.");
                 }
-            } else if (cmbAvdelningsVal.getSelectedIndex() != 0 && cmbStatus.getSelectedIndex() == 0) {
+            } else if (cmbAvdelningsVal.getSelectedIndex() != 0 && cmbStatus.getSelectedIndex() == 0) { //Filtrera på avdelningn med inte status, plus datum
                 String valdAvdelning = cmbAvdelningsVal.getSelectedItem().toString();
                 String avdDatumFraga = "Select * from projekt where startdatum >= '" + startDatum + "' AND slutdatum <= '" + slutDatum
                         + "' and pid in (select pid from ans_proj where aid in (select aid from anstalld where avdelning =(select avdid from avdelning where namn = '" + valdAvdelning + "')));";
@@ -421,7 +426,7 @@ public class ProjektMeny extends javax.swing.JFrame {
                 } catch (InfException e) {
                     JOptionPane.showMessageDialog(this, "Något gick fel när projekt skulle hämtas ur databasen för valda sökparametrar.");
                 }
-            } else if (cmbAvdelningsVal.getSelectedIndex() == 0 && cmbStatus.getSelectedIndex() != 0) {
+            } else if (cmbAvdelningsVal.getSelectedIndex() == 0 && cmbStatus.getSelectedIndex() != 0) { //filtrera på status men inte avdelning, plus datum
                 String valdStatus = cmbStatus.getSelectedItem().toString();
                 String statDatumFraga = "Select * from projekt where startdatum >= '" + startDatum + "' AND slutdatum <= '" + slutDatum + "' and status = '" + valdStatus + "';";
                 try {
@@ -437,7 +442,7 @@ public class ProjektMeny extends javax.swing.JFrame {
                     System.out.println(e.getMessage());
                     JOptionPane.showMessageDialog(this, "Något gick fel när projekt skulle hämtas ur databasen för valda sökparametrar.");
                 }
-            } else {
+            } else {    //Filtrering på avdelning, status och datum
                 String valdAvdelning = cmbAvdelningsVal.getSelectedItem().toString();
                 String valdStatus = cmbStatus.getSelectedItem().toString();
                 String avdStatusDatumFraga = "Select * from projekt where startdatum >= '" + startDatum + "' AND slutdatum <= '" + slutDatum
@@ -457,15 +462,17 @@ public class ProjektMeny extends javax.swing.JFrame {
                 }
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Se över dina sökparametrar en gång till. Du måste ange ett datum i båda fälten och Startdatum måste komma före Slutdatum.");
+            JOptionPane.showMessageDialog(this, "Se över dina sökparametrar en gång till. Startdatum måste komma före Slutdatum.");
         }
     }//GEN-LAST:event_btnDatumSokActionPerformed
 
     private void cmbStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbStatusActionPerformed
-
-        if (cmbStatus.getSelectedIndex() == 0 && cmbAvdelningsVal.getSelectedIndex() == 0) {
+        jDateStartdatumSok.setDate(null);   //nollställer datumväljarna
+        jDateSlutdatumSok.setDate(null);    //nollställer datumväljarna
+        
+        if (cmbStatus.getSelectedIndex() == 0 && cmbAvdelningsVal.getSelectedIndex() == 0) {    //Om ingen avdelning eller status, visa alla projekt
             hamtaProjekt();
-        } else if (cmbStatus.getSelectedIndex() == 0 && cmbAvdelningsVal.getSelectedIndex() != 0) {
+        } else if (cmbStatus.getSelectedIndex() == 0 && cmbAvdelningsVal.getSelectedIndex() != 0) { //Filtrerar på avdelningen men inte status
             String valdAvdelning = cmbAvdelningsVal.getSelectedItem().toString();
             String avdFraga = "Select * from projekt where pid in (select pid from ans_proj where aid in (select aid from anstalld where avdelning =(select avdid from avdelning where namn = '" + valdAvdelning + "')));";
             try {
@@ -480,7 +487,7 @@ public class ProjektMeny extends javax.swing.JFrame {
             } catch (InfException e) {
                 JOptionPane.showMessageDialog(this, "Något gick fel när projekt skulle hämtas ur databasen för valda sökparametrar.");
             }
-        } else {
+        } else {    //Filtrerar på avdelning och status
             ArrayList<HashMap<String, String>> soktaProjekt;
             String valdStatus = cmbStatus.getSelectedItem().toString();
             String valdAvdelning = cmbAvdelningsVal.getSelectedItem().toString();
@@ -513,6 +520,8 @@ public class ProjektMeny extends javax.swing.JFrame {
 
     private void btnAllaProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAllaProjektActionPerformed
         hamtaProjekt();
+        
+        //Nollställer alla filtreringar
         cmbAvdelningsVal.setSelectedIndex(0);
         cmbStatus.setSelectedIndex(0);
         jDateStartdatumSok.setDate(null);
@@ -534,7 +543,10 @@ public class ProjektMeny extends javax.swing.JFrame {
     private void btnPartnersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPartnersActionPerformed
         new EditProjektPartner(idb).setVisible(true);
     }//GEN-LAST:event_btnPartnersActionPerformed
-
+    
+    /**
+     * Fyller Avdelnings-comboboxen med alla avdelningsnamn
+     */
     private void fyllCmbAvdelningar() {
         ArrayList<String> allaAvdelningar = avdelning.getAllaAvdelningsnamn();
         cmbAvdelningsVal.addItem("Välj avdelning");
@@ -545,6 +557,9 @@ public class ProjektMeny extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Fyller Status-comboboxen med alla status från databasen
+     */
     private void fyllCmbStatus() {
         String sqlfraga = "select distinct status from projekt;";
         ArrayList<String> allaStatus;
@@ -641,6 +656,10 @@ public class ProjektMeny extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Laddar in projekt för anställd med ingående parameter-aid
+     * @param aid 
+     */
     private void hamtaProjektAvdelning(String aid) {
         String valdAvdelning = "Välj avdelning";
         try {
