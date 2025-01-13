@@ -46,11 +46,11 @@ public class EditAvdelning extends javax.swing.JFrame {
         if (queryAid != null)
         {
             getAvdelningsdata(queryAid);
+            txtId.setVisible(false);
         }
         else
             //Om det inte finns döljs fälten för ID, eftersom de är tomma värden och ska inte heller fyllas i.
         {
-            lblId.setVisible(false);
             txtId.setVisible(false);
         }
         //Döljer ID-fälten för Chef och Stad. Istället visar vi de utskrivna fälten som har de faktiska nämnen på chefen och staden. 
@@ -82,16 +82,29 @@ public class EditAvdelning extends javax.swing.JFrame {
      * @param chefLista 
      */
     private void populeraCbChefNamn(HashMap<String, String> chefLista) {
-        //Lägger till nuvarande chefen först i listan
-        cbChefNamn.addItem(chefLista.get(txtChefId.getText()));
+        String nuvarandeChefId = txtChefId.getText();
+        boolean chefFunnen = false;
 
-        //lägger till alla andra efter det.
         for (String key : chefLista.keySet()) {
-            if (!key.equals(txtChefId.getText())) {
-                cbChefNamn.addItem(chefLista.get(key));
+            String chefNamn = chefLista.get(key);
+            cbChefNamn.addItem(chefNamn);
+
+            // Välj nuvarande chef om det är en redigering
+            if (key.equals(nuvarandeChefId)) {
+                cbChefNamn.setSelectedItem(chefNamn);
+                txtChefId.setText(key);
+                chefFunnen = true;
             }
         }
+
+        // Om ingen chef är förvald, välj den första personen
+        if (!chefFunnen && !chefLista.isEmpty()) {
+            String förstaKey = chefLista.keySet().iterator().next();
+            cbChefNamn.setSelectedItem(chefLista.get(förstaKey));
+            txtChefId.setText(förstaKey);
+        }
     }
+
     
     /**
      * Metod som hämtar ut alla städer och sedan skapar upp en vallista i komboboxen för Stad. 
@@ -162,7 +175,6 @@ public class EditAvdelning extends javax.swing.JFrame {
         cbStadNamn = new javax.swing.JComboBox<>();
         cbChefNamn = new javax.swing.JComboBox<>();
         txtId = new javax.swing.JTextField();
-        lblId = new javax.swing.JLabel();
         btnAvbryt = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -217,8 +229,6 @@ public class EditAvdelning extends javax.swing.JFrame {
 
         txtId.setEnabled(false);
 
-        lblId.setText("Id:");
-
         btnAvbryt.setText("Avbryt");
         btnAvbryt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -239,42 +249,27 @@ public class EditAvdelning extends javax.swing.JFrame {
                     .addComponent(lblEpost)
                     .addComponent(lblTelefon)
                     .addComponent(lblStad)
-                    .addComponent(lblChef))
-                .addGap(94, 94, 94)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblChef)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnAvbryt)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtBeskrivning)
-                                    .addComponent(txtNamn)
-                                    .addComponent(txtAdress, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(txtEpost, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
-                                    .addComponent(txtTelefon))
-                                .addGap(37, 37, 37)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblId)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtStadId, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtChefId, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(txtStadId, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtChefId, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(56, 56, 56)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(txtBeskrivning)
+                    .addComponent(txtAdress, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtEpost, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtTelefon)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(cbStadNamn, javax.swing.GroupLayout.Alignment.LEADING, 0, 144, Short.MAX_VALUE)
-                            .addComponent(cbChefNamn, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(17, 17, 17))
+                        .addComponent(btnAvbryt)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
+                        .addComponent(jButton1))
+                    .addComponent(cbChefNamn, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cbStadNamn, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtNamn))
+                .addGap(0, 9, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -282,9 +277,7 @@ public class EditAvdelning extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtNamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblNamn)
-                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblId))
+                    .addComponent(lblNamn))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblBeskrivning)
@@ -300,29 +293,27 @@ public class EditAvdelning extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblTelefon)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtTelefon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtChefId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtStadId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(txtTelefon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblStad)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jButton1)
-                                    .addComponent(btnAvbryt))
-                                .addGap(14, 14, 14))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(24, 24, 24)
-                                .addComponent(lblChef)
-                                .addContainerGap(60, Short.MAX_VALUE))))
+                        .addGap(24, 24, 24)
+                        .addComponent(lblChef)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtStadId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtChefId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(20, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(cbStadNamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(cbChefNamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnAvbryt)
+                            .addComponent(jButton1))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
 
@@ -335,21 +326,24 @@ public class EditAvdelning extends javax.swing.JFrame {
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        //Validering nedan
+        String namn = txtNamn.getText();
+        String beskrivning = txtBeskrivning.getText();
+        String adress = txtAdress.getText();
+        String epost = txtEpost.getText();
+        String telefon = txtTelefon.getText();
+        int stad = Integer.parseInt(txtStadId.getText());
+        int chef = Integer.parseInt(txtChefId.getText());
+
+        //Valideringen
         if (Validering.faltEjTomtKontroll(txtNamn)
                 && Validering.faltEjTomtKontroll(txtBeskrivning)
                 && Validering.faltEjTomtKontroll(txtAdress)
                 && Validering.faltEjTomtKontroll(txtEpost)
+                && Validering.epostKontroll(epost)
                 && Validering.faltEjTomtKontroll(txtTelefon)
+                && Validering.telefonKontroll(telefon)
                 && Validering.faltEjTomtKontroll(txtStadId)
                 && Validering.faltEjTomtKontroll(txtChefId)) {
-            String namn = txtNamn.getText();
-            String beskrivning = txtBeskrivning.getText();
-            String adress = txtAdress.getText();
-            String epost = txtEpost.getText();
-            String telefon = txtTelefon.getText();
-            int stad = Integer.parseInt(txtStadId.getText());
-            int chef = Integer.parseInt(txtChefId.getText());
 
             if (queryAid == null) {
                 try {
@@ -388,6 +382,7 @@ public class EditAvdelning extends javax.swing.JFrame {
             }
             this.setVisible(false);
         }
+
     }//GEN-LAST:event_jButton1ActionPerformed
     
     /**
@@ -434,7 +429,6 @@ public class EditAvdelning extends javax.swing.JFrame {
     private javax.swing.JLabel lblBeskrivning;
     private javax.swing.JLabel lblChef;
     private javax.swing.JLabel lblEpost;
-    private javax.swing.JLabel lblId;
     private javax.swing.JLabel lblNamn;
     private javax.swing.JLabel lblStad;
     private javax.swing.JLabel lblTelefon;

@@ -105,53 +105,47 @@ public class AvdelningMeny extends javax.swing.JFrame {
     /**
      * Metod för att radera en vald avdelning. Utgår från den rad som är markerad i tabellen. 
      */
-    private void raderaAvdelning()
-    {
+    private void raderaAvdelning() {
         int selectedRow = jTable1.getSelectedRow();
-        if (selectedRow != -1)
-        {
+        if (selectedRow != -1) {
+            // Hämta avdelnings-ID från den valda raden
             Object avdelning = jTable1.getValueAt(selectedRow, 0);
             String queryAid = avdelning.toString();
 
-            //Först kollar vi om anställda finns vid den avdelning som ska raderas och tar bort dem från avdelningen.
             try {
-                String query1 = "UPDATE anstalld SET avdelning = null WHERE avdelning = '" + queryAid + "'";
-                idb.update(query1);
-                
-                //Sedan raderar vi kopplingen mellan avdelningen och hållbarhetsmålen.
-                try
-                {
-                    String query2 = "DELETE FROM avd_hallbarhet WHERE avdid = '" + queryAid + "'";
+                // Kontrollerar om det finns anställda kopplade till avdelningen
+                String kontrollQuery = "SELECT COUNT(*) AS antal FROM anstalld WHERE avdelning = '" + queryAid + "'";
+                String antalResultat = idb.fetchSingle(kontrollQuery);
+
+                if (antalResultat != null && Integer.parseInt(antalResultat) > 0) {
+                    JOptionPane.showMessageDialog(null, "Det finns fortfarande anställda kopplade till denna avdelning.\nFlytta dessa innan du tar bort avdelningen.");
+                    return;
+                }
+
+                // Ta bort kopplingar från `avd_hallbarhet`
+                try {
+                    String query1 = "DELETE FROM avd_hallbarhet WHERE avdid = '" + queryAid + "'";
+                    idb.delete(query1);
+                } catch (InfException e) {
+                    JOptionPane.showMessageDialog(this, "Fel vid borttagning av hållbarhetskopplingar: " + e.getMessage());
+                    return;
+                }
+
+                // Ta bort själva avdelningen
+                try {
+                    String query2 = "DELETE FROM avdelning WHERE avdid = '" + queryAid + "'";
                     idb.delete(query2);
-
-                    //Sist raderar vi själva avdelningen.
-                    try
-                    {
-                        String query3 = "DELETE FROM avdelning WHERE avdid = '" + queryAid + "'";
-                        idb.delete(query3);
-                    }
-                    catch (InfException e)
-                    {
-                        JOptionPane.showMessageDialog(this, "Avdelningen gick inte att radera. Något gick fel i kommunikation med databasen.");
-                    }
-
-                }
-                catch (InfException e)
-                {
-                    JOptionPane.showMessageDialog(this, "Det gick inte att ta bort avdelningen från anställda.");
+                    JOptionPane.showMessageDialog(this, "Avdelningen har Tagits bort.");
+                    getAvdelningar(); // Uppdatera tabellen
+                } catch (InfException e) {
+                    JOptionPane.showMessageDialog(this, "Fel vid borttagning av avdelningen: " + e.getMessage());
                 }
 
+            } catch (InfException e) {
+                JOptionPane.showMessageDialog(this, "Fel vid kontroll av anställda: " + e.getMessage());
             }
-            catch (InfException e)
-            {
-                JOptionPane.showMessageDialog(this, "Inga städer hittades.");
-            }
-        //Uppdaterar tabellen efter att raden blivit raderad.
-        getAvdelningar();
-        }
-        else 
-        {
-            JOptionPane.showMessageDialog(null, "Ingen rad är markerad!");
+        } else {
+            JOptionPane.showMessageDialog(this, "Ingen rad är markerad!");
         }
     }
 
@@ -327,7 +321,7 @@ public class AvdelningMeny extends javax.swing.JFrame {
      */
     
     private void btnUppdateraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUppdateraActionPerformed
-        getAvdelningar();
+        populeraTabell(getAvdelningar());
     }//GEN-LAST:event_btnUppdateraActionPerformed
 
     private void btnÄndraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnÄndraActionPerformed
@@ -347,7 +341,7 @@ public class AvdelningMeny extends javax.swing.JFrame {
      */
     
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
-        getAvdelningar();
+        populeraTabell(getAvdelningar());
     }//GEN-LAST:event_formWindowGainedFocus
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
