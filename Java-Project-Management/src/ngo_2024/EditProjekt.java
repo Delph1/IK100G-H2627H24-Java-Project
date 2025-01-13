@@ -586,7 +586,7 @@ public class EditProjekt extends javax.swing.JFrame {
 
     private void btnHandlaggareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHandlaggareActionPerformed
         int pid = Integer.parseInt(txtProjektID.getText());
-        new HandläggareProjektMeny(idb, pid).setVisible(true);
+        new HandlaggareProjektMeny(idb, pid).setVisible(true);
     }//GEN-LAST:event_btnHandlaggareActionPerformed
 
     private void btnAvbrytActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvbrytActionPerformed
