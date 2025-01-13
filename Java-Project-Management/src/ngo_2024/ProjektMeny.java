@@ -60,7 +60,7 @@ public class ProjektMeny extends javax.swing.JFrame {
         lblStatus.setVisible(false);
         cmbStatus.setVisible(false);
         btnPartners.setVisible(false);
-        btnÄndraProjekt.setVisible(false);
+        btnAndraProjekt.setVisible(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE );
         hamtaProjekt(aid);
@@ -83,8 +83,8 @@ public class ProjektMeny extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         btnTaBortProjekt.setVisible(false);
         btnMinaProjekt.setVisible(false);
-        btnÄndraProjekt.setVisible(false);
-        btnLäggTillProjekt.setVisible(false);
+        btnAndraProjekt.setVisible(false);
+        btnLaggTillProjekt.setVisible(false);
         btnPartners.setVisible(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         hamtaProjektAvdelning(aid);
@@ -127,13 +127,13 @@ public class ProjektMeny extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnÄndraProjekt = new javax.swing.JButton();
+        btnAndraProjekt = new javax.swing.JButton();
         btnTaBortProjekt = new javax.swing.JButton();
-        btnLäggTillProjekt = new javax.swing.JButton();
+        btnLaggTillProjekt = new javax.swing.JButton();
         cmbAvdelningsVal = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProjekt = new javax.swing.JTable();
-        btnDatumSök = new javax.swing.JButton();
+        btnDatumSok = new javax.swing.JButton();
         lblSokDatum = new javax.swing.JLabel();
         lblBindeStreck = new javax.swing.JLabel();
         cmbStatus = new javax.swing.JComboBox<>();
@@ -141,18 +141,17 @@ public class ProjektMeny extends javax.swing.JFrame {
         lblAvdelning = new javax.swing.JLabel();
         lblStatus = new javax.swing.JLabel();
         btnMinaProjekt = new javax.swing.JButton();
-        jDateStartdatumSök = new com.toedter.calendar.JDateChooser();
-        jDateSlutdatumSök = new com.toedter.calendar.JDateChooser();
+        jDateStartdatumSok = new com.toedter.calendar.JDateChooser();
+        jDateSlutdatumSok = new com.toedter.calendar.JDateChooser();
         btnPartners = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Projekt");
-        setPreferredSize(new java.awt.Dimension(1050, 480));
 
-        btnÄndraProjekt.setText("Redigera projekt");
-        btnÄndraProjekt.addActionListener(new java.awt.event.ActionListener() {
+        btnAndraProjekt.setText("Redigera projekt");
+        btnAndraProjekt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnÄndraProjektActionPerformed(evt);
+                btnAndraProjektActionPerformed(evt);
             }
         });
 
@@ -163,10 +162,10 @@ public class ProjektMeny extends javax.swing.JFrame {
             }
         });
 
-        btnLäggTillProjekt.setText("Nytt Projekt");
-        btnLäggTillProjekt.addActionListener(new java.awt.event.ActionListener() {
+        btnLaggTillProjekt.setText("Nytt Projekt");
+        btnLaggTillProjekt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLäggTillProjektActionPerformed(evt);
+                btnLaggTillProjektActionPerformed(evt);
             }
         });
 
@@ -195,10 +194,10 @@ public class ProjektMeny extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblProjekt);
 
-        btnDatumSök.setText("Sök datum");
-        btnDatumSök.addActionListener(new java.awt.event.ActionListener() {
+        btnDatumSok.setText("Sök datum");
+        btnDatumSok.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDatumSökActionPerformed(evt);
+                btnDatumSokActionPerformed(evt);
             }
         });
 
@@ -230,9 +229,9 @@ public class ProjektMeny extends javax.swing.JFrame {
             }
         });
 
-        jDateStartdatumSök.setDateFormatString("yyyy-MM-dd");
+        jDateStartdatumSok.setDateFormatString("yyyy-MM-dd");
 
-        jDateSlutdatumSök.setDateFormatString("yyyy-MM-dd");
+        jDateSlutdatumSok.setDateFormatString("yyyy-MM-dd");
 
         btnPartners.setText("Hantera partners");
         btnPartners.addActionListener(new java.awt.event.ActionListener() {
@@ -252,9 +251,9 @@ public class ProjektMeny extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnÄndraProjekt)
+                                .addComponent(btnAndraProjekt)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnLäggTillProjekt)
+                                .addComponent(btnLaggTillProjekt)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnTaBortProjekt)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -268,13 +267,13 @@ public class ProjektMeny extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblSokDatum)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jDateStartdatumSök, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jDateStartdatumSok, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lblBindeStreck)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jDateSlutdatumSök, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jDateSlutdatumSok, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnDatumSök))
+                                .addComponent(btnDatumSok))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblAvdelning)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -292,9 +291,9 @@ public class ProjektMeny extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnÄndraProjekt)
+                            .addComponent(btnAndraProjekt)
                             .addComponent(btnTaBortProjekt)
-                            .addComponent(btnLäggTillProjekt)
+                            .addComponent(btnLaggTillProjekt)
                             .addComponent(cmbAvdelningsVal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblAvdelning)
                             .addComponent(btnPartners))
@@ -311,11 +310,11 @@ public class ProjektMeny extends javax.swing.JFrame {
                         .addComponent(btnMinaProjekt))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnDatumSök)
+                            .addComponent(btnDatumSok)
                             .addComponent(lblSokDatum))
                         .addComponent(lblBindeStreck)
-                        .addComponent(jDateStartdatumSök, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jDateSlutdatumSök, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jDateStartdatumSok, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jDateSlutdatumSok, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -324,17 +323,17 @@ public class ProjektMeny extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnÄndraProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnÄndraProjektActionPerformed
+    private void btnAndraProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAndraProjektActionPerformed
         if (admin) {
             editProjekt(admin);
         } else {
             editProjekt();
         }
-    }//GEN-LAST:event_btnÄndraProjektActionPerformed
+    }//GEN-LAST:event_btnAndraProjektActionPerformed
 
-    private void btnLäggTillProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLäggTillProjektActionPerformed
+    private void btnLaggTillProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillProjektActionPerformed
         new EditProjekt(idb, true).setVisible(true);
-    }//GEN-LAST:event_btnLäggTillProjektActionPerformed
+    }//GEN-LAST:event_btnLaggTillProjektActionPerformed
 
     private void btnTaBortProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaBortProjektActionPerformed
         int selectedRow = tblProjekt.getSelectedRow();
@@ -344,8 +343,8 @@ public class ProjektMeny extends javax.swing.JFrame {
                 Object projekt = tblProjekt.getValueAt(selectedRow, 0); // Hämta pid-värde från kolumn 0
                 int queryPid = Integer.parseInt(projekt.toString()); // Konvertera till int
                 try {
-                    String sqlFråga = "delete from projekt where pid = " + queryPid;
-                    idb.delete(sqlFråga);
+                    String sqlFraga = "delete from projekt where pid = " + queryPid;
+                    idb.delete(sqlFraga);
                     JOptionPane.showMessageDialog(this, "Projekt har tagits bort.");
 
                 } catch (InfException e) {
@@ -359,10 +358,9 @@ public class ProjektMeny extends javax.swing.JFrame {
 
     private void cmbAvdelningsValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbAvdelningsValActionPerformed
         if (cmbAvdelningsVal.getSelectedIndex() == 0) {
-            hamtaProjekt();
             cmbStatus.setSelectedItem("Välj status");
         } else {
-            cmbStatus.setSelectedIndex(0);
+            ingaProjekt();
             ArrayList<HashMap<String, String>> soktaProjekt;
             try {
                 String valdAvdelning = cmbAvdelningsVal.getSelectedItem().toString();
@@ -372,8 +370,9 @@ public class ProjektMeny extends javax.swing.JFrame {
                     ingaProjekt();
                     JOptionPane.showMessageDialog(this, "Det fanns inga projekt inom din avgränsning.");
                 }
-                formateraTabell(soktaProjekt);
-
+                else {
+                    formateraTabell(soktaProjekt);
+                }
             } catch (InfException e) {
                 System.out.println(e.getMessage());
                 JOptionPane.showMessageDialog(this, "Det gick inte att hämta information om projekt som hör till din avdelning från databasen.");
@@ -381,17 +380,17 @@ public class ProjektMeny extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cmbAvdelningsValActionPerformed
 
-    private void btnDatumSökActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDatumSökActionPerformed
+    private void btnDatumSokActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDatumSokActionPerformed
         String startDatum = "1000-01-01";
         String slutDatum = "3000-12-31";
         SimpleDateFormat datumformat = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            startDatum = datumformat.format(jDateStartdatumSök.getDate());
-            slutDatum = datumformat.format(jDateSlutdatumSök.getDate());
+            startDatum = datumformat.format(jDateStartdatumSok.getDate());
+            slutDatum = datumformat.format(jDateSlutdatumSok.getDate());
         } catch (NullPointerException e) {
             JOptionPane.showMessageDialog(this, "Se över dina sökparametrar en gång till. Du måste ange ett datum i båda datumfälten och Startdatum måste komma före Slutdatum.");
         }
-        if (!startDatum.isBlank() && Validering.datumKontroll(startDatum) && !slutDatum.isBlank() && Validering.datumKontroll(slutDatum) && jDateStartdatumSök.getDate().before(jDateSlutdatumSök.getDate())) {
+        if (!startDatum.isBlank() && Validering.datumKontroll(startDatum) && !slutDatum.isBlank() && Validering.datumKontroll(slutDatum) && jDateStartdatumSok.getDate().before(jDateSlutdatumSok.getDate())) {
             if (cmbAvdelningsVal.getSelectedIndex() == 0 && cmbStatus.getSelectedIndex() == 0) {
                 String datumFraga = "Select * from projekt where startdatum >= '" + startDatum + "' AND slutdatum <= '" + slutDatum + "';";
                 try {
@@ -460,12 +459,27 @@ public class ProjektMeny extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "Se över dina sökparametrar en gång till. Du måste ange ett datum i båda fälten och Startdatum måste komma före Slutdatum.");
         }
-    }//GEN-LAST:event_btnDatumSökActionPerformed
+    }//GEN-LAST:event_btnDatumSokActionPerformed
 
     private void cmbStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbStatusActionPerformed
 
-        if (cmbStatus.getSelectedIndex() == 0) {
+        if (cmbStatus.getSelectedIndex() == 0 && cmbAvdelningsVal.getSelectedIndex() == 0) {
             hamtaProjekt();
+        } else if (cmbStatus.getSelectedIndex() == 0 && cmbAvdelningsVal.getSelectedIndex() != 0) {
+            String valdAvdelning = cmbAvdelningsVal.getSelectedItem().toString();
+            String avdFraga = "Select * from projekt where pid in (select pid from ans_proj where aid in (select aid from anstalld where avdelning =(select avdid from avdelning where namn = '" + valdAvdelning + "')));";
+            try {
+                ArrayList<HashMap<String, String>> soktaProjekt = idb.fetchRows(avdFraga);
+                ingaProjekt();
+                if (soktaProjekt.isEmpty()) {
+                    ingaProjekt();
+                    JOptionPane.showMessageDialog(this, "Inga projekt hittades.");
+                } else {
+                    formateraTabell(soktaProjekt);
+                }
+            } catch (InfException e) {
+                JOptionPane.showMessageDialog(this, "Något gick fel när projekt skulle hämtas ur databasen för valda sökparametrar.");
+            }
         } else {
             ArrayList<HashMap<String, String>> soktaProjekt;
             String valdStatus = cmbStatus.getSelectedItem().toString();
@@ -501,8 +515,8 @@ public class ProjektMeny extends javax.swing.JFrame {
         hamtaProjekt();
         cmbAvdelningsVal.setSelectedIndex(0);
         cmbStatus.setSelectedIndex(0);
-        jDateStartdatumSök.setDate(null);
-        jDateSlutdatumSök.setDate(null);
+        jDateStartdatumSok.setDate(null);
+        jDateSlutdatumSok.setDate(null);
     }//GEN-LAST:event_btnAllaProjektActionPerformed
 
     private void btnMinaProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMinaProjektActionPerformed
@@ -523,6 +537,7 @@ public class ProjektMeny extends javax.swing.JFrame {
 
     private void fyllCmbAvdelningar() {
         ArrayList<String> allaAvdelningar = avdelning.getAllaAvdelningsnamn();
+        cmbAvdelningsVal.addItem("Välj avdelning");
         if (allaAvdelningar != null) {
             for (String enAvdelning : allaAvdelningar) {
                 cmbAvdelningsVal.addItem(enAvdelning);
@@ -531,11 +546,11 @@ public class ProjektMeny extends javax.swing.JFrame {
     }
     
     private void fyllCmbStatus() {
-        String sqlfråga = "select distinct status from projekt;";
+        String sqlfraga = "select distinct status from projekt;";
         ArrayList<String> allaStatus;
         cmbStatus.addItem("Välj status");
         try {
-            allaStatus = idb.fetchColumn(sqlfråga);
+            allaStatus = idb.fetchColumn(sqlfraga);
             for (String status : allaStatus) {
                 cmbStatus.addItem(status);
             }
@@ -583,8 +598,8 @@ public class ProjektMeny extends javax.swing.JFrame {
     private void hamtaProjekt() {
         ArrayList<HashMap<String, String>> allaProjekt;
         try {
-            String sqlfråga = "SELECT * FROM projekt";
-            allaProjekt = idb.fetchRows(sqlfråga);
+            String sqlfraga = "SELECT * FROM projekt";
+            allaProjekt = idb.fetchRows(sqlfraga);
             if (allaProjekt.isEmpty()) {
                 ingaProjekt();
             } else {
@@ -601,18 +616,18 @@ public class ProjektMeny extends javax.swing.JFrame {
      * @param aid 
      */
     private void hamtaProjekt(String aid) {
-        btnLäggTillProjekt.setVisible(false);
+        btnLaggTillProjekt.setVisible(false);
         btnTaBortProjekt.setVisible(false);
         lblSokDatum.setVisible(false);
-        jDateStartdatumSök.setVisible(false);
+        jDateStartdatumSok.setVisible(false);
         lblBindeStreck.setVisible(false);
-        jDateSlutdatumSök.setVisible(false);
-        btnDatumSök.setVisible(false);
+        jDateSlutdatumSok.setVisible(false);
+        btnDatumSok.setVisible(false);
 
         ArrayList<HashMap<String, String>> allaProjekt;
         try {
-            String sqlfråga = "SELECT * FROM projekt WHERE pid IN (SELECT pid FROM ans_proj WHERE aid = "+ aid + ") UNION SELECT * FROM projekt WHERE projektchef = " + aid + ";";
-            allaProjekt = idb.fetchRows(sqlfråga);
+            String sqlfraga = "SELECT * FROM projekt WHERE pid IN (SELECT pid FROM ans_proj WHERE aid = "+ aid + ") UNION SELECT * FROM projekt WHERE projektchef = " + aid + ";";
+            allaProjekt = idb.fetchRows(sqlfraga);
             if (allaProjekt.isEmpty()) {
                 ingaProjekt();
                 JOptionPane.showMessageDialog(this, "Du har inga projekt");
@@ -657,9 +672,9 @@ public class ProjektMeny extends javax.swing.JFrame {
         if (selectedRow != -1) {
             Object projekt = tblProjekt.getValueAt(selectedRow, 0); // Hämta värde från kolumn 0
             int queryPid = Integer.parseInt(projekt.toString()); // Konvertera till String
-            String sqlÄrPL = "select projektchef from projekt where pid ="+queryPid;
+            String sqlArPL = "select projektchef from projekt where pid ="+queryPid;
             try {
-                String dbPL = idb.fetchSingle(sqlÄrPL);
+                String dbPL = idb.fetchSingle(sqlArPL);
                 if (aid.equals(dbPL)) {
                     new EditProjekt(idb, queryPid).setVisible(true); //öppnar nytt fönster, skickar med den projektets PID från databasen
                 }
@@ -729,16 +744,16 @@ public class ProjektMeny extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAllaProjekt;
-    private javax.swing.JButton btnDatumSök;
-    private javax.swing.JButton btnLäggTillProjekt;
+    private javax.swing.JButton btnAndraProjekt;
+    private javax.swing.JButton btnDatumSok;
+    private javax.swing.JButton btnLaggTillProjekt;
     private javax.swing.JButton btnMinaProjekt;
     private javax.swing.JButton btnPartners;
     private javax.swing.JButton btnTaBortProjekt;
-    private javax.swing.JButton btnÄndraProjekt;
     private javax.swing.JComboBox<String> cmbAvdelningsVal;
     private javax.swing.JComboBox<String> cmbStatus;
-    private com.toedter.calendar.JDateChooser jDateSlutdatumSök;
-    private com.toedter.calendar.JDateChooser jDateStartdatumSök;
+    private com.toedter.calendar.JDateChooser jDateSlutdatumSok;
+    private com.toedter.calendar.JDateChooser jDateStartdatumSok;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAvdelning;
     private javax.swing.JLabel lblBindeStreck;
