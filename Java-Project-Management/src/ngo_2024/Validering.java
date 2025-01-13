@@ -151,4 +151,16 @@ public class Validering {
             resultat = false;           
         }       return resultat;
     }
+    
+    public static boolean telefonKontroll (String telefon) {
+        boolean resultat = true;
+        String telRegex = "^[0-9 -]*$";
+        
+        // Fält kontrolleras här med Regex om det är ett telefonnummer, dvs innehåller endast siffror, streck och mellanslag.
+        if (!telefon.matches(telRegex)) {
+            JOptionPane.showMessageDialog(null, "Ogiltigt telefonnummer.\nVar vänlig kontrollera fältet.");
+            resultat = false;
+        }
+        return resultat;
+    }
 }
