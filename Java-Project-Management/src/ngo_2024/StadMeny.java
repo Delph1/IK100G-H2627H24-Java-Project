@@ -24,8 +24,8 @@ public class StadMeny extends javax.swing.JFrame {
         this.idb = idb;
         this.land = new LandMeny(idb);
         initComponents();
-        setLocationRelativeTo(null); // Centrera fönstret
         pupuleraStadTabell(getAllaStader()); // Ladda alla städer direkt vid start
+        setLocationRelativeTo(null); // Centrera fönstret
     }
 
     /**

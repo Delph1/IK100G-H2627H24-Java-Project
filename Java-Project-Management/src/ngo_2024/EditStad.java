@@ -45,7 +45,7 @@ public class EditStad extends javax.swing.JFrame {
                     tfNamn.setText(stad.get("namn")); // Fyller i stadens namn
                     String landId = stad.get("land");
                     String landNamn = land.getLandNamnFranId(landId);
-                    cbLand.setSelectedItem(landId + " - " + landNamn); // Förväljer rätt land i ComboBox
+                    cbLand.setSelectedItem(landId + " - " + landNamn); // väljer rätt land i ComboBox
                 } else {
                     JOptionPane.showMessageDialog(this, "Staden kunde inte hittas.");
                     dispose(); // Stänger fönstret om staden inte hittas
@@ -116,7 +116,7 @@ public class EditStad extends javax.swing.JFrame {
         cbLand = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Redigera stad");
+        setTitle("Redigera städer");
 
         btSpara.setText("Spara");
         btSpara.addActionListener(new java.awt.event.ActionListener() {
