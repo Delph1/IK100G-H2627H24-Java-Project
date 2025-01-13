@@ -70,6 +70,10 @@ public class HallbarhetsmalMeny extends javax.swing.JFrame {
                     );
                 }
                 jTable1.setModel(tableModel);
+                addRowSelectionListener();
+                if (jTable1.getRowCount() > 0) {
+                    jTable1.setRowSelectionInterval(0, 0);
+}
             } else {
                 JOptionPane.showMessageDialog(this, "Inga hållbarhetsmål hittades.");
             }
@@ -131,7 +135,33 @@ public class HallbarhetsmalMeny extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Ingen rad är markerad");
         }
     }
-        
+    
+    private void addRowSelectionListener() {
+        jTable1.getSelectionModel().addListSelectionListener(event -> {
+            if (!event.getValueIsAdjusting() && jTable1.getSelectedRow() != -1) {
+                // Hämta den valda radens index
+                int selectedRow = jTable1.getSelectedRow();
+
+                String id = jTable1.getValueAt(selectedRow, 0).toString();
+                String namn = jTable1.getValueAt(selectedRow, 1).toString();
+                String malnummer = jTable1.getValueAt(selectedRow, 2).toString();
+                String beskrivning = jTable1.getValueAt(selectedRow, 3).toString();
+                String prioritet = jTable1.getValueAt(selectedRow, 4).toString();
+
+                uppdateraInfo(id, namn, malnummer, beskrivning, prioritet);
+            }
+        });
+    }
+    
+    private void uppdateraInfo(String id, String namn, String malnummer, String beskrivning, String prioritet) {
+    lblId.setText("ID: " + id);
+    lblNamn.setText("Namn: " + namn);
+    lblMalnummer.setText("Målnummer: " + malnummer);
+    lblBeskrivning.setText("<html>Beskrivning: " + beskrivning + "</html>"); // HTML för används för att byta rad, om det behövs
+    lblPrioritet.setText("Prioritet: " + prioritet);
+}
+
+  
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -147,6 +177,11 @@ public class HallbarhetsmalMeny extends javax.swing.JFrame {
         btnÄndra = new javax.swing.JButton();
         btnTaBort = new javax.swing.JButton();
         btnNyttMal = new javax.swing.JButton();
+        lblId = new javax.swing.JLabel();
+        lblNamn = new javax.swing.JLabel();
+        lblMalnummer = new javax.swing.JLabel();
+        lblBeskrivning = new javax.swing.JLabel();
+        lblPrioritet = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Hållbarhetsmål");
@@ -207,6 +242,16 @@ public class HallbarhetsmalMeny extends javax.swing.JFrame {
             }
         });
 
+        lblId.setText("jLabel6");
+
+        lblNamn.setText("jLabel7");
+
+        lblMalnummer.setText("jLabel8");
+
+        lblBeskrivning.setText("jLabel9");
+
+        lblPrioritet.setText("jLabel10");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -214,18 +259,24 @@ public class HallbarhetsmalMeny extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 834, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnUppdatera)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnÄndra)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnTaBort)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnNyttMal)))
-                .addContainerGap(13, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnUppdatera)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnÄndra)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnTaBort)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnNyttMal))
+                            .addComponent(lblBeskrivning)
+                            .addComponent(lblMalnummer)
+                            .addComponent(lblNamn)
+                            .addComponent(lblId)
+                            .addComponent(lblPrioritet))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -237,8 +288,18 @@ public class HallbarhetsmalMeny extends javax.swing.JFrame {
                     .addComponent(btnTaBort)
                     .addComponent(btnNyttMal))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lblId)
+                .addGap(18, 18, 18)
+                .addComponent(lblPrioritet)
+                .addGap(18, 18, 18)
+                .addComponent(lblNamn)
+                .addGap(18, 18, 18)
+                .addComponent(lblMalnummer)
+                .addGap(18, 18, 18)
+                .addComponent(lblBeskrivning)
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         pack();
@@ -254,6 +315,7 @@ public class HallbarhetsmalMeny extends javax.swing.JFrame {
 
     private void btnTaBortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaBortActionPerformed
         raderaHallbarhetsmal();
+        getHallbarhetsmal();
     }//GEN-LAST:event_btnTaBortActionPerformed
 
     private void btnÄndraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnÄndraActionPerformed
@@ -278,5 +340,10 @@ public class HallbarhetsmalMeny extends javax.swing.JFrame {
     private javax.swing.JButton btnÄndra;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JLabel lblBeskrivning;
+    private javax.swing.JLabel lblId;
+    private javax.swing.JLabel lblMalnummer;
+    private javax.swing.JLabel lblNamn;
+    private javax.swing.JLabel lblPrioritet;
     // End of variables declaration//GEN-END:variables
 }
