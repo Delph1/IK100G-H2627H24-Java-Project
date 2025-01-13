@@ -148,16 +148,16 @@ public class HallbarhetsmalMeny extends javax.swing.JFrame {
                 String beskrivning = jTable1.getValueAt(selectedRow, 3).toString();
                 String prioritet = jTable1.getValueAt(selectedRow, 4).toString();
 
-                uppdateraInfoPanel(id, namn, malnummer, beskrivning, prioritet);
+                uppdateraInfo(id, namn, malnummer, beskrivning, prioritet);
             }
         });
     }
     
-    private void uppdateraInfoPanel(String id, String namn, String malnummer, String beskrivning, String prioritet) {
+    private void uppdateraInfo(String id, String namn, String malnummer, String beskrivning, String prioritet) {
     lblId.setText("ID: " + id);
     lblNamn.setText("Namn: " + namn);
     lblMalnummer.setText("Målnummer: " + malnummer);
-    lblBeskrivning.setText("<html>Beskrivning: " + beskrivning + "</html>"); // HTML för används för att byta rad om det behövs
+    lblBeskrivning.setText("<html>Beskrivning: " + beskrivning + "</html>"); // HTML för används för att byta rad, om det behövs
     lblPrioritet.setText("Prioritet: " + prioritet);
 }
 
