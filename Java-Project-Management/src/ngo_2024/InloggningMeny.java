@@ -4,8 +4,14 @@
  */
 package ngo_2024;
 
+import java.awt.BorderLayout;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import oru.inf.InfDB;
 import oru.inf.InfException;
 
@@ -29,8 +35,8 @@ public class InloggningMeny extends javax.swing.JFrame {
         lblMeddelande.setVisible(false);
         setLocationRelativeTo(null); //Den här koden sätter fönstret i mitten av skärmen.
         txtLösenord.setText("");
-        jButton1.setVisible(false); //För utvecklarnas egen testning, ej för granskning
-        jButton2.setVisible(false); //För utvecklarnas egen testning, ej för granskning
+        jButton1.setVisible(true); //För utvecklarnas egen testning, ej för granskning
+        jButton2.setVisible(true); //För utvecklarnas egen testning, ej för granskning
     }
 
     /**
@@ -50,7 +56,7 @@ public class InloggningMeny extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         txtLösenord = new javax.swing.JPasswordField();
-        btnÅterställLösenord = new javax.swing.JButton();
+        btnAterställLösenord = new javax.swing.JButton();
         lblLoggaIn = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -93,10 +99,10 @@ public class InloggningMeny extends javax.swing.JFrame {
             }
         });
 
-        btnÅterställLösenord.setText("Glömt lösenord");
-        btnÅterställLösenord.addActionListener(new java.awt.event.ActionListener() {
+        btnAterställLösenord.setText("Glömt lösenord");
+        btnAterställLösenord.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnÅterställLösenordActionPerformed(evt);
+                btnAterställLösenordActionPerformed(evt);
             }
         });
 
@@ -130,7 +136,7 @@ public class InloggningMeny extends javax.swing.JFrame {
                             .addComponent(jButton2))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnÅterställLösenord, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnAterställLösenord, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnLoggaIn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(54, Short.MAX_VALUE))
         );
@@ -155,9 +161,9 @@ public class InloggningMeny extends javax.swing.JFrame {
                     .addComponent(jButton1))
                 .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnÅterställLösenord)
+                    .addComponent(btnAterställLösenord)
                     .addComponent(jButton2))
-                .addContainerGap(9, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -235,7 +241,7 @@ public class InloggningMeny extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtLösenordKeyPressed
 
-    private void btnÅterställLösenordActionPerformed(java.awt.event.ActionEvent evt) {                                                     
+    private void btnAterställLösenordActionPerformed(java.awt.event.ActionEvent evt) {                                                     
         String dialog = "Ange din e-postadress i rutan nedan,";
         boolean pågår = true; //Fortsätta visa dialogruta tills anv får lösenord eller trycker cancel/kryss
         while (pågår) {  
@@ -251,8 +257,22 @@ public class InloggningMeny extends javax.swing.JFrame {
                             String nyttLosen = anstalld.genereraLösenord(10);
                             boolean uppdateraLosen = anstalld.uppdateraLosenord(svar, nyttLosen);
                             if (uppdateraLosen) {
-                                //Det nya lösenordet borde givetvis mejlas ut till användare egentligen, men att skriva en sådan funktion känns lite överkurs i detta skede när vi inte har tillgång till deras domän. 
-                                JOptionPane.showMessageDialog(this, "Ett nytt lösenord har slumpats fram till dig: " + nyttLosen);
+                                // Skapar en knapp för att kopiera lösenordet till urklippet
+                                JButton kopieraKnapp = new JButton("Kopiera lösenord");
+                                JPanel panel = new JPanel();
+                                panel.setLayout(new BorderLayout(10, 10));
+                                JLabel message = new JLabel("Ditt nya lösenord är: " + nyttLosen);
+                                panel.add(message, BorderLayout.CENTER);
+                                panel.add(kopieraKnapp, BorderLayout.SOUTH);
+
+                                // "lyssnar" på knappen för att kopiera det nya lösenordet.
+                                kopieraKnapp.addActionListener(e -> {
+                                    StringSelection selection = new StringSelection(nyttLosen);
+                                    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, null);
+                                    JOptionPane.showMessageDialog(this, "Lösenordet har kopierats till urklipp!");
+                                });
+                                // Visar dialogruta med kopieringsknapp
+                                JOptionPane.showMessageDialog(this, panel, "Nytt lösenord", JOptionPane.PLAIN_MESSAGE);
                             }
                         } else {
                                 JOptionPane.showMessageDialog(this, "Epostadressen hittades inte i systemet.");                            
@@ -269,8 +289,8 @@ public class InloggningMeny extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAterställLösenord;
     private javax.swing.JButton btnLoggaIn;
-    private javax.swing.JButton btnÅterställLösenord;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel lblAnvändarnamn;

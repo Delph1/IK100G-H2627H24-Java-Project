@@ -39,7 +39,10 @@ public class EditAnstalld extends javax.swing.JFrame {
         this.datumformat = new SimpleDateFormat("yyyy-MM-dd");
         this.avdelning = new AvdelningMeny(idb);
         fyllComboBox();
-        txtLosen.setText(genereraLösenord(12));
+        txtLosen.setText(genereraLösenord(8));
+        jDateAnstallningsdatum.setEnabled(false);
+        Date idag = new Date();
+        jDateAnstallningsdatum.setDate(idag);
     }
     
     /**
@@ -113,6 +116,8 @@ public class EditAnstalld extends javax.swing.JFrame {
             if (queryAid.equals(anvandare)) {
                 jCheckBoxAdmin.setEnabled(false); // Gör checkboxen oklickbar
                 jCheckBoxHandlaggare.setEnabled(false); // Gör checkboxen oklickbar
+                jDateAnstallningsdatum.setEnabled(false);
+                comboAvdelning.setEnabled(false);
                 this.setTitle("Mina uppgifter");
             } else {
                 // Kontrollera om admins är null

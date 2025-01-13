@@ -9,6 +9,7 @@ import oru.inf.InfException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -92,6 +93,13 @@ public class AnstalldMeny extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Anställda");
+        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                formWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
 
         fetchanstallda.setText("Hämta anställda");
         fetchanstallda.addActionListener(new java.awt.event.ActionListener() {
@@ -201,9 +209,26 @@ public class AnstalldMeny extends javax.swing.JFrame {
         }
 
         try {
-            String query = "SELECT * FROM anstalld WHERE LOWER(fornamn) LIKE LOWER('%" + sokterm + "%') "
+            // Delar upp sökningen på mellanslag
+            String[] delar = sokterm.trim().split("\\s+");
+            String fornamnSok = "";
+            String efternamnSok = "";
+
+            // Kontrollerar om det finns en eller två delar i sökningen
+            if (delar.length > 0) {
+                fornamnSok = delar[0]; // Förnamn
+            }
+            if (delar.length > 1) {
+                efternamnSok = delar[1]; // Efternamn
+            }
+
+
+            String query = "SELECT * FROM anstalld WHERE "
+                    + "(LOWER(fornamn) LIKE LOWER('%" + sokterm + "%') "
                     + "OR LOWER(efternamn) LIKE LOWER('%" + sokterm + "%') "
-                    + "OR LOWER(epost) LIKE LOWER('%" + sokterm + "%')";
+                    + "OR LOWER(epost) LIKE LOWER('%" + sokterm + "%')) "
+                    + "OR (LOWER(fornamn) LIKE LOWER('%" + fornamnSok + "%') "
+                    + "AND LOWER(efternamn) LIKE LOWER('%" + efternamnSok + "%'))";
 
             ArrayList<HashMap<String, String>> resultat = idb.fetchRows(query);
 
@@ -282,8 +307,24 @@ public class AnstalldMeny extends javax.swing.JFrame {
                     });
                 }
 
-                // Sätt modellen på JTable
-                jTable1.setModel(tableModel);
+            // Sätt modellen på JTable
+            jTable1.setModel(tableModel);
+
+            // Skapa en cellrenderare för att maskera lösenord
+            DefaultTableCellRenderer maskRenderer = new DefaultTableCellRenderer() {
+                @Override
+                protected void setValue(Object value) {
+                    if (value != null) {
+                        setText("******"); // vad som läggs i tabellen
+                    } else {
+                        setText(""); // om det inte finns något alls i databasen
+                    }
+                }
+            };
+
+            // Applicera renderaren på lösenordskolumnen (index 7)
+            jTable1.getColumnModel().getColumn(7).setCellRenderer(maskRenderer);
+
             } else {
                 JOptionPane.showMessageDialog(this, "Inga anställda hittades för din avdelning. Kontrollera med en administratör att din användare är del av en avdelning.");
             }
@@ -332,7 +373,6 @@ public class AnstalldMeny extends javax.swing.JFrame {
                         rad.get("avdelning")
                     });
                 }
-
                 // Sätt modellen på JTable
                 jTable1.setModel(tableModel);
             } else {
@@ -499,6 +539,14 @@ public class AnstalldMeny extends javax.swing.JFrame {
         tfSok.setText("");
         //Tar bort hjälptexten vid klick. Kan vara irriterande om man bara vill ändra i texten, men här är vi
     }//GEN-LAST:event_tfSokMouseClicked
+
+    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+        if (!newAnstalld.isVisible()) { // Kontrollera om knappen är dold
+            hamtaAnstalldaForAvdelning(anvandare); // Kör denna metod om newAnstalld är dold
+        } else {
+            hamtaAnstallda(); // Annars kör den vanliga metoden
+        }
+    }//GEN-LAST:event_formWindowGainedFocus
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSok;
