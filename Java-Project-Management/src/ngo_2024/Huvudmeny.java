@@ -88,6 +88,10 @@ public class Huvudmeny extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Metod för att visa inloggad användares namn och epost i huvudmenyn
+     * @param queryAid 
+     */
     private void visaAnvandaresNamnOchEpost(String queryAid) {
         String roll = ((admins == null) ? "Handläggare" : "Administratör"); //Korthands-if
         HashMap<String, String> resultat = anstalld.getEnAnstalld(queryAid);
@@ -96,14 +100,28 @@ public class Huvudmeny extends javax.swing.JFrame {
         lblRoll.setText(roll);
     }
     
+    /**
+     * Metod för att fylla ArrayList med och för fun facts
+     */
     private void fyllFunFacts() {
-        funFacts.add("Det här projektet har hittills haft 129 pull requests i GitHub");
-        funFacts.add("Den samlade åldern för oss i grupp 3 är 138 år");
-        funFacts.add("Tre katter har varit involverade i utvecklingen");
-        funFacts.add("Antal svordomar över Netbeans och/eller Github: 14327. Nej vänta, 14328");
+        funFacts.add("Det här projektet har hittills haft 145 pull requests och över 225 commits i GitHub.");
+        funFacts.add("Den samlade åldern för oss fyra personer i grupp 3 är 138 år.");
+        funFacts.add("Tre katter har varit involverade i utvecklingen, de heter Billy, Leif och Mad.");
+        funFacts.add("Antal svordomar över Netbeans och/eller Github: 14327. Nej vänta, 14328.");
         funFacts.add("<html>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Har du läst allt detta är jag väldigt imponerad. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</html>");
+        funFacts.add("Det här projektet är skrivet på minst sex olika datorer och en telefon.");
+        funFacts.add("Java är 28 år gammalt och körs på uppskattningsvis 100 miljarder enheter inom kort.");
+        funFacts.add("<html>Oracle som äger Java, men som med mycket annat de har idag inte skapade det, står också bakom Millenium som just nu är det mest hatade programmet inom svensk, och troligen även internationell, hälsovård.</html>");
+        funFacts.add("<html>Larry Ellison, Oracles gundare har en förmögenhet på 208 miljarder dollar och har skapat det genom att bygga en databasplattform som är väldigt stabil, men också är låst bakom ett licenssystem som ingen normal människa förstår sig på och oavsett hur bra pålitlighet den har känns den aldrig värt pengarna.</html>");
+        funFacts.add("<html>Oracle äger även varumärket JavaScript, men det har inget med Java att göra utan det fick det på köpet när de köpte upp Sun Microsystems, som i sin tur köpte det av Netscape.</html>");
+        funFacts.add("<html>Oracle fick rättigheterna till MySQL när de köpte Sun Microsystems 2010, men när det skedde valde utvecklaren att skapa en fork på MySQL som de sedan döpte till MariaDB.</html>");
+        funFacts.add("MySQL är uppkallat efter dottern till den svenska medgrundaren Michael Widenius, som heter My.");
     }
     
+    /**
+     * Metod för att randomisera index och returnera ett fun fact
+     * @return 
+     */
     private String genereraFunFact() {
         int index = randomGenerator.nextInt(funFacts.size());
         return funFacts.get(index);

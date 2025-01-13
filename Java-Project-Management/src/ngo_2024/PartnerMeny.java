@@ -48,7 +48,7 @@ public class PartnerMeny extends javax.swing.JFrame {
 
     private void getPartnersVidMinaProjekt() {
         try {
-            String query = "SELECT * FROM partner WHERE pid IN (SELECT partner_pid FROM projekt_partner WHERE pid IN (SELECT pid FROM ans_proj WHERE aid = '" + aid + "'))";
+            String query = "SELECT * FROM partner WHERE pid IN (SELECT partner_pid FROM projekt_partner WHERE pid IN (SELECT pid FROM ans_proj WHERE aid = '" + aid + "')) UNION SELECT * FROM partner WHERE pid IN (SELECT partner_pid FROM projekt_partner WHERE pid IN (SELECT pid FROM projekt WHERE projektchef = '" + aid + "'))";
             ArrayList<HashMap<String, String>> resultat = idb.fetchRows(query);
 
             if (resultat != null) {

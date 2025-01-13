@@ -396,7 +396,10 @@ public class EditProjekt extends javax.swing.JFrame {
 //            JOptionPane.showMessageDialog(null, "Databasfel");
 //        }
     }
-
+    
+    /**
+     * Lägger till alla handläggare med namn till comboboxen för val av projektchef
+     */
     private void fyllCmbProjektChef() {
         
         String query = "SELECT CONCAT(fornamn, ' ', efternamn) as namn FROM anstalld, handlaggare where anstalld.aid = handlaggare.aid";
@@ -410,7 +413,10 @@ public class EditProjekt extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Något gick fel när chef-data skulle hämtas från databasen. Kontrollera att databasen fungerar som den ska.");
         }
     }
-
+    
+    /**
+     * Lägger till alla länder med namn i comboboxen 
+     */
     private void fyllCmbLand() {
         ArrayList<String> allaLander = land.getAllaLandNamn();
         cmbLand.addItem("");
@@ -418,7 +424,11 @@ public class EditProjekt extends javax.swing.JFrame {
             cmbLand.addItem(ettLand);
         }
     }
-
+    
+    /**
+     * Redigera projekt, antingen som projektchef eller admin
+     * @param projektID 
+     */
     public void editProjekt(JTextField projektID) {
         int pid = 0;
         if (Validering.faltEjTomtKontroll(projektID) && Validering.arHeltal(projektID)) {
@@ -461,13 +471,12 @@ public class EditProjekt extends javax.swing.JFrame {
 
             } catch (InfException e) {
                 JOptionPane.showMessageDialog(this, "Något gick fel när projektdata skulle hämtas ur databasen.");
-                txtProjektID.requestFocus();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Datum är inte korrekt angivna.");
             }
         }
     }
-
+    
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
         int nyttPid = 0;
         String projektNamn = null;
@@ -511,9 +520,7 @@ public class EditProjekt extends javax.swing.JFrame {
             //Hämta aid för projektchef utifrån fulla namnet i comboboxen
             if (admin) {
                 if (cmbProjektChef.getSelectedIndex() != 0) {
-                    System.out.println(cmbProjektChef.getSelectedItem().toString());
                     String[] namn = cmbProjektChef.getSelectedItem().toString().split(" ");
-                    System.out.println(namn);
                     String sqlFornamn = namn[0];
                     String sqlEfternamn = namn[1];
                     String sqlAid = "select aid from anstalld where fornamn = '" + sqlFornamn + "' and efternamn = '" + sqlEfternamn + "'";

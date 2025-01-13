@@ -28,9 +28,6 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
-    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[400, 450]"/>
-    </Property>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -70,14 +67,19 @@
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <Component id="btnLänder" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnLander" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-                              <Component id="btnLänderKost" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnLanderKost" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
                               <Component id="btnPartners" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Component id="lblStatistikRubrik" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="lblRubrik2" min="-2" max="-2" attributes="0"/>
                                   <Component id="lblAvslutade" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -86,22 +88,21 @@
                               </Group>
                               <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                      <Component id="lblPåg" alignment="1" max="32767" attributes="0"/>
-                                      <Component id="lblTotKost" alignment="1" max="32767" attributes="0"/>
-                                      <Component id="lblAvs" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                          <Component id="lblPag" alignment="1" max="32767" attributes="0"/>
+                                          <Component id="lblTotKost" alignment="1" max="32767" attributes="0"/>
+                                          <Component id="lblAvs" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                      <Component id="lblPlanerade" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="lblKostnad" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                      </Group>
-                      <EmptySpace max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jScrollPane2" pref="0" max="32767" attributes="0"/>
-                          <Component id="sprMina" pref="347" max="32767" attributes="0"/>
-                          <Component id="sprSök" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jScrollPane2" alignment="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="sprMina" alignment="0" pref="347" max="32767" attributes="0"/>
+                          <Component id="sprSok" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
@@ -129,9 +130,12 @@
                       <Component id="lblAvslutade" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
-                      <Component id="lblTotKost" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="lblTotKost" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblPlanerade" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lblPåg" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblPag" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lblAvs" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -149,11 +153,11 @@
                   <Component id="lblAlla" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="sprSök" min="-2" pref="10" max="-2" attributes="0"/>
+              <Component id="sprSok" min="-2" pref="10" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnLänder" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnLänderKost" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnLander" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnLanderKost" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnPartners" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -213,7 +217,7 @@
         <Property name="text" type="java.lang.String" value="0"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="lblP&#xe5;g">
+    <Component class="javax.swing.JLabel" name="lblPag">
       <Properties>
         <Property name="horizontalAlignment" type="int" value="2"/>
         <Property name="text" type="java.lang.String" value="0"/>
@@ -259,20 +263,20 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="btnL&#xe4;nder">
+    <Component class="javax.swing.JButton" name="btnLander">
       <Properties>
         <Property name="text" type="java.lang.String" value="L&#xe4;nder"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnL&#xe4;nderActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLanderActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="btnL&#xe4;nderKost">
+    <Component class="javax.swing.JButton" name="btnLanderKost">
       <Properties>
         <Property name="text" type="java.lang.String" value="Kostnad l&#xe4;nder"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnL&#xe4;nderKostActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLanderKostActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnPartners">
@@ -283,7 +287,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPartnersActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JSeparator" name="sprS&#xf6;k">
+    <Component class="javax.swing.JSeparator" name="sprSok">
     </Component>
     <Component class="javax.swing.JLabel" name="lblKostnad">
       <Properties>
@@ -292,6 +296,14 @@
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="text" type="java.lang.String" value="Kostnad"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblPlanerade">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Segoe UI" size="12" style="2"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="(inkl. ev. planerade projekt)"/>
       </Properties>
     </Component>
   </SubComponents>

@@ -281,7 +281,7 @@ public class LandMeny extends javax.swing.JFrame {
      */
     
     private void btnUppdateraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUppdateraActionPerformed
-        getLander();
+        populeraLandTabell (getLander()); // Uppdatera tabellen med den nya datan
     }//GEN-LAST:event_btnUppdateraActionPerformed
 
     private void btnÄndraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnÄndraActionPerformed

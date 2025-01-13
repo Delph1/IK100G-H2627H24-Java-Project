@@ -254,26 +254,36 @@ public class EditPartner extends javax.swing.JFrame {
     }//GEN-LAST:event_cbStadNamnActionPerformed
 
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
-        if (Validering.faltEjTomtKontroll(txtNamn)
-                && Validering.faltEjTomtKontroll(txtKontaktperson)
-                && Validering.faltEjTomtKontroll(txtKontaktepost)
-                && Validering.faltEjTomtKontroll(txtTelefon)
-                && Validering.faltEjTomtKontroll(txtAdress)
-                && Validering.faltEjTomtKontroll(txtBranch)
-                && Validering.faltEjTomtKontroll(txtStadId)
-                && Validering.comboBoxInteTom(cbStadNamn.getSelectedItem())
-                && Validering.arHeltal(txtStadId)
-                && Validering.positivtVarde(txtStadId)
-                && Validering.telefonKontroll(txtTelefon.getText())) {
-            String namn = txtNamn.getText();
-            String kontaktperson = txtKontaktperson.getText();
-            String kontaktepost = txtKontaktepost.getText();
-            String telefon = txtTelefon.getText();
-            String adress = txtAdress.getText();
-            String branch = txtBranch.getText();
-            int stad = Integer.parseInt(txtStadId.getText());
+    // Kontrollera e-post först
+    if (!Validering.faltEjTomtKontroll(txtKontaktepost) || !Validering.epostKontroll(txtKontaktepost.getText())) {
+        return; // Avbryt om e-postvalidering misslyckas
+    }
+    
+        // Kontrollera telefonnummer
+    if (!Validering.faltEjTomtKontroll(txtTelefon) || !Validering.telefonnummerKontroll(txtTelefon)) {
+        return; // Avbryt om telefonnummer är ogiltigt
+    }
 
-            if (queryAid == null) {
+    // Kontrollera övriga fält
+    if (Validering.faltEjTomtKontroll(txtNamn)
+            && Validering.faltEjTomtKontroll(txtKontaktperson)
+            && Validering.faltEjTomtKontroll(txtTelefon)
+            && Validering.faltEjTomtKontroll(txtAdress)
+            && Validering.faltEjTomtKontroll(txtBranch)
+            && Validering.faltEjTomtKontroll(txtStadId)
+            && Validering.comboBoxInteTom(cbStadNamn.getSelectedItem())
+            && Validering.arHeltal(txtStadId)
+            && Validering.positivtVarde(txtStadId)) {
+
+        String namn = txtNamn.getText();
+        String kontaktperson = txtKontaktperson.getText();
+        String kontaktepost = txtKontaktepost.getText();
+        String telefon = txtTelefon.getText();
+        String adress = txtAdress.getText();
+        String branch = txtBranch.getText();
+        int stad = Integer.parseInt(txtStadId.getText());
+
+        if (queryAid == null) {
                 try {
                     int pid = Integer.parseInt(idb.getAutoIncrement("partner", "pid"));
                     String query = "INSERT INTO partner (pid, namn, kontaktperson, kontaktepost, telefon, adress, branch, stad)"

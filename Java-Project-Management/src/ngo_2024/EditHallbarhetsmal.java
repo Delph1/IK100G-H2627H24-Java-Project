@@ -10,72 +10,66 @@ import oru.inf.InfDB;
 import oru.inf.InfException;
 
 /**
- * Klass för EditHållarbetsmål
+ * Klass för EditHållbarhetsmål
+ * 
  * @author Andreas Galistel
  */
 public class EditHallbarhetsmal extends javax.swing.JFrame {
 
     private InfDB idb;
-    private String queryMid; 
-    
+    private String queryMid;
+
     /**
      * Konstruktor för EditHallbarhetsmal
-     *  @param idb
-     *  @param queryMid
+     * 
+     * @param idb
+     * @param queryMid
      */
     public EditHallbarhetsmal(InfDB idb, String queryMid) {
         this.idb = idb;
         this.queryMid = queryMid;
         initComponents();
         setLocationRelativeTo(null);
-        
-        //Kollar om queryMid är satt och i så fall hämta ut data om det satta målet. 
-        if (queryMid != null)
-        {
+
+        // Kontrollera om queryMid är satt och hämta data för det målet
+        if (queryMid != null) {
             getMaldata(queryMid);
-        }
-        else
-            //Om målet inte är satt döljs ID-fälten eftersom de inte ska fyllas i manuellt vid ett nytt mål.
-        {
+        } else {
+            // Dölj ID-fälten om ett nytt mål ska läggas till
             lblId.setVisible(false);
             txtId.setVisible(false);
         }
     }
 
     /**
-     * Metod som hämtar ut måldata.
-     * @param queryMid 
+     * Metod som hämtar data om målet
+     * 
+     * @param queryMid
      */
     private void getMaldata(String queryMid) {
         try {
             String query = "SELECT * FROM hallbarhetsmal WHERE hid = " + queryMid;
-            System.out.println(query);
 
-            HashMap<String, String> resultat = idb.fetchRow(query); // Hämta rad som en HashMap
+            HashMap<String, String> resultat = idb.fetchRow(query);
 
             if (resultat != null) {
-                // Hämta och sätt värden i motsvarande textfält
-
                 txtNamn.setText(resultat.get("namn"));
                 txtMalnummer.setText(resultat.get("malnummer"));
                 txtBeskrivning.setText(resultat.get("beskrivning"));
+
                 String prioritet = resultat.get("prioritet");
                 int prio;
                 prio = switch (prioritet) {
-                    case "Låg" ->
-                        0;
-                    case "Medel" ->
-                        1;
-                    default ->
-                        2;
+                    case "Låg" -> 0;
+                    case "Medel" -> 1;
+                    default -> 2;
                 };
                 cbPrioritet.setSelectedIndex(prio);
-
             } else {
-                JOptionPane.showMessageDialog(this, "Ingen avdelning hittades med det angivna ID-numret.");
+                JOptionPane.showMessageDialog(this, "Inget hållbarhetsmål hittades med det angivna ID-numret.");
             }
         } catch (InfException e) {
-            JOptionPane.showMessageDialog(this, "Något gick fel när målet skulle hämtas från databasen. Kontrollera att databasen fungerar som den ska.");
+            JOptionPane.showMessageDialog(this, "Något gick fel när målet skulle hämtas från databasen.");
         }
     }
     /**
@@ -143,30 +137,24 @@ public class EditHallbarhetsmal extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(16, 16, 16)
-                                .addComponent(lblNamn)
-                                .addGap(65, 65, 65)
-                                .addComponent(txtNamn, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(11, 11, 11)
-                                .addComponent(lblMalnummer)
-                                .addGap(37, 37, 37)
-                                .addComponent(txtMalnummer))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(11, 11, 11)
-                                        .addComponent(lblBeskrivning)
-                                        .addGap(42, 42, 42))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addContainerGap()
-                                        .addComponent(lblPrioritet)
-                                        .addGap(66, 66, 66)))
+                                    .addComponent(lblBeskrivning)
+                                    .addComponent(lblPrioritet))
+                                .addGap(42, 42, 42)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtBeskrivning)
-                                    .addComponent(cbPrioritet, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addComponent(cbPrioritet, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblNamn)
+                                .addGap(70, 70, 70)
+                                .addComponent(txtNamn, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblMalnummer)
+                                .addGap(37, 37, 37)
+                                .addComponent(txtMalnummer)))
                         .addGap(41, 41, 41)
                         .addComponent(lblId)
                         .addGap(18, 18, 18)
@@ -216,51 +204,47 @@ public class EditHallbarhetsmal extends javax.swing.JFrame {
      */
     
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
-        if (Validering.faltEjTomtKontroll(txtNamn)
-                && Validering.faltEjTomtKontroll(txtMalnummer)
+        if (Validering.faltEjTomtKontroll(txtNamn) && Validering.faltEjTomtKontroll(txtMalnummer)
                 && Validering.faltEjTomtKontroll(txtBeskrivning)
                 && Validering.comboBoxInteTom(cbPrioritet.getSelectedItem())) {
-            String namn = txtNamn.getText();
-            String malnummer = txtMalnummer.getText();
-            String beskrivning = txtBeskrivning.getText();
-            int prio = cbPrioritet.getSelectedIndex();
-            String prioritet;
-            prioritet = switch (prio) {
-                case 0 ->
-                    "Låg";
-                case 1 ->
-                    "Medel";
-                default ->
-                    "Hög";
-            };
-            try {
-                if (queryMid == null) {
-                    int hid = Integer.parseInt(idb.getAutoIncrement("hallbarhetsmal", "hid"));
-                    String query = "INSERT INTO hallbarhetsmal (hid, namn, malnummer, beskrivning, prioritet)"
-                            + " VALUES ("
-                            + hid + ", '"
-                            + namn + "', '"
-                            + malnummer + "', '"
-                            + beskrivning + "', '"
-                            + prioritet + "')";
-                    System.out.println(query);
-                    idb.insert(query);
+            String namn = txtNamn.getText().trim();
+            String malnummer = txtMalnummer.getText().trim();
+            String beskrivning = txtBeskrivning.getText().trim();
+            int prioIndex = cbPrioritet.getSelectedIndex();
+            String prioritet = prioIndex == 0 ? "Låg" : (prioIndex == 1 ? "Medel" : "Hög");
 
-                } else {
-                    String query = "UPDATE hallbarhetsmal "
-                            + "SET namn = '" + namn + "', "
-                            + "malnummer = '" + malnummer + "', "
-                            + "beskrivning = '" + beskrivning + "', "
-                            + "prioritet = '" + prioritet
-                            + "' WHERE hid = " + queryMid;
-                    System.out.println(query);
-                    idb.update(query);
+            try {
+                // Kontrollera om målnummer redan existerar i databasen
+                String malnummerQuery = "SELECT COUNT(*) FROM hallbarhetsmal WHERE malnummer = '" + malnummer + "'";
+                if (queryMid != null) {
+                    malnummerQuery += " AND hid != " + queryMid;
                 }
+                int count = Integer.parseInt(idb.fetchSingle(malnummerQuery));
+
+                if (count > 0) {
+                    JOptionPane.showMessageDialog(this, "Ett hållbarhetsmål med detta målnummer finns redan. Vänligen välj ett annat målnummer.");
+                    return;
+                }
+
+                if (queryMid == null) {
+                    // Lägg till ett nytt hållbarhetsmål
+                    int hid = Integer.parseInt(idb.getAutoIncrement("hallbarhetsmal", "hid"));
+                    String insertQuery = "INSERT INTO hallbarhetsmal (hid, namn, malnummer, beskrivning, prioritet) VALUES ("
+                            + hid + ", '" + namn + "', '" + malnummer + "', '" + beskrivning + "', '" + prioritet + "')";
+                    idb.insert(insertQuery);
+                } else {
+                    // Uppdatera existerande hållbarhetsmål
+                    String updateQuery = "UPDATE hallbarhetsmal SET namn = '" + namn + "', malnummer = '" + malnummer
+                            + "', beskrivning = '" + beskrivning + "', prioritet = '" + prioritet + "' WHERE hid = "
+                            + queryMid;
+                    idb.update(updateQuery);
+                }
+
                 JOptionPane.showMessageDialog(this, "Hållbarhetsmålet har sparats.");
                 this.setVisible(false);
 
             } catch (InfException e) {
-                JOptionPane.showMessageDialog(this, "Hållbarhetsmålet kunde inte sparas i databasen. Kontrollera att databasen fungerar som den ska.");
+                JOptionPane.showMessageDialog(this, "Hållbarhetsmålet kunde inte sparas i databasen.");
             }
         } else {
             JOptionPane.showMessageDialog(this, "Du måste fylla i alla fält.");
