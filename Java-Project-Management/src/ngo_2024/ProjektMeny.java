@@ -25,6 +25,8 @@ public class ProjektMeny extends javax.swing.JFrame {
     private boolean admin;
     private AvdelningMeny avdelning;
     private AnstalldMeny anstalld;
+    private int index; //För uppdatera projekttabell efter ändringar
+    DefaultTableModel tableModel = new DefaultTableModel();
     
     /**
      * Admin-vy
@@ -332,12 +334,13 @@ public class ProjektMeny extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAndraProjektActionPerformed
 
     private void btnLaggTillProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillProjektActionPerformed
-        new EditProjekt(idb, true).setVisible(true);
+        new EditProjekt(idb, this, true).setVisible(true);
     }//GEN-LAST:event_btnLaggTillProjektActionPerformed
 
     private void btnTaBortProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaBortProjektActionPerformed
         int selectedRow = tblProjekt.getSelectedRow();
         if (selectedRow != -1) {
+            index = selectedRow;
             int input = JOptionPane.showConfirmDialog(rootPane, "Är du säker på att du vill ta bort projektet?", "Ta bort projekt", JOptionPane.YES_NO_OPTION);
             if (input == 0) {
                 Object projekt = tblProjekt.getValueAt(selectedRow, 0); // Hämta pid-värde från kolumn 0
@@ -345,6 +348,7 @@ public class ProjektMeny extends javax.swing.JFrame {
                 try {
                     String sqlFraga = "delete from projekt where pid = " + queryPid;
                     idb.delete(sqlFraga);
+                    tableModel.removeRow(selectedRow);
                     JOptionPane.showMessageDialog(this, "Projekt har tagits bort.");
 
                 } catch (InfException e) {
@@ -576,8 +580,9 @@ public class ProjektMeny extends javax.swing.JFrame {
     }
     
     private void formateraTabell(ArrayList<HashMap<String, String>> param) {
-        DefaultTableModel tableModel = new DefaultTableModel();
+        
         tableModel.setRowCount(0);
+        tableModel.setColumnCount(0);
 
         // Lägg till kolumnnamn i modellen
         tableModel.addColumn("ID");
@@ -689,13 +694,14 @@ public class ProjektMeny extends javax.swing.JFrame {
     private void editProjekt() {
         int selectedRow = tblProjekt.getSelectedRow();
         if (selectedRow != -1) {
+            index = selectedRow;    //För att kunna uppdatera tabell efter ändring
             Object projekt = tblProjekt.getValueAt(selectedRow, 0); // Hämta värde från kolumn 0
             int queryPid = Integer.parseInt(projekt.toString()); // Konvertera till String
             String sqlArPL = "select projektchef from projekt where pid ="+queryPid;
             try {
                 String dbPL = idb.fetchSingle(sqlArPL);
                 if (aid.equals(dbPL)) {
-                    new EditProjekt(idb, queryPid).setVisible(true); //öppnar nytt fönster, skickar med den projektets PID från databasen
+                    new EditProjekt(idb, this, queryPid).setVisible(true); //öppnar nytt fönster, skickar med den projektets PID från databasen
                 }
                 else {
                     JOptionPane.showMessageDialog(this, "Du är inte projektchef för det här projektet\noch kan därför inte redigera det.");
@@ -712,11 +718,12 @@ public class ProjektMeny extends javax.swing.JFrame {
     }
 
     private void editProjekt(boolean admin) {
-        int selectedRow = tblProjekt.getSelectedRow();
+        int selectedRow = tblProjekt.getSelectedRow();  //För att kunna uppdatera tabellen efter ändring
         if (selectedRow != -1) {
+            index = selectedRow;
             Object projekt = tblProjekt.getValueAt(selectedRow, 0); // Hämta värde från kolumn 0
             int queryPid = Integer.parseInt(projekt.toString()); // Konvertera till String
-            new EditProjekt(idb, queryPid, admin).setVisible(true); //öppnar nytt fönster, skickar med den projektets PID från databasen
+            new EditProjekt(idb, this, queryPid, admin).setVisible(true); //öppnar nytt fönster, skickar med den projektets PID från databasen
 
             // JOptionPane.showMessageDialog(this, "Valt ID: " + projekt);
         } else {
@@ -742,9 +749,31 @@ public class ProjektMeny extends javax.swing.JFrame {
         return landNamn;
     }
     
+    /**
+     * Lägga till ny rad i tabellen när nytt projekt lagts till
+     * @param nyInfo 
+     */
+    public void nyRad(String[] nyInfo) {
+        tableModel.addRow(nyInfo);
+    }
+
+    /**
+     * Uppdatera rad i tabellen när ett projekt blivit redigerat
+     *
+     * @param nyInfo
+     */
+    public void uppdateraRad(String[] nyInfo) {
+        for (int i = 0; i < nyInfo.length; i++) {
+            tableModel.setValueAt(nyInfo[i], index, i);
+        }
+    }
+
+    /**
+     * För att sätta blank tabell vid sökning utan resultat
+     */
     private void ingaProjekt() {
-        DefaultTableModel tableModel = new DefaultTableModel();
         tableModel.setRowCount(0);
+        tableModel.setColumnCount(0);
 
         // Lägg till kolumnnamn i modellen
         tableModel.addColumn("ID");
