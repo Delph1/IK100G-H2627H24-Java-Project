@@ -29,6 +29,7 @@ public class EditProjekt extends javax.swing.JFrame{
     /**
      * För att skapa nya projekt, vilket bara admin kan, därav den parametervariabeln
      * @param idb
+     * @param projektMeny
      * @param admin
      */
     public EditProjekt(InfDB idb, ProjektMeny projektMeny, boolean admin) {
@@ -59,6 +60,7 @@ public class EditProjekt extends javax.swing.JFrame{
      * parameter. Kan användas av projektchef, alltså kan inte fältet projektchef ändras
      *
      * @param idb
+     * @param projektMeny
      * @param pid
      */
     public EditProjekt(InfDB idb, ProjektMeny projektMeny, int pid) {
@@ -84,6 +86,7 @@ public class EditProjekt extends javax.swing.JFrame{
      * projektID som parameter. Projektchef kan alltså redigeras. 
      *
      * @param idb
+     * @param projektMeny
      * @param pid
      * @param admin
      */
