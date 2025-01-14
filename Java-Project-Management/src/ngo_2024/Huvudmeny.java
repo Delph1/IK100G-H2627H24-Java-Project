@@ -104,7 +104,7 @@ public class Huvudmeny extends javax.swing.JFrame {
      * Metod för att fylla ArrayList med och för fun facts
      */
     private void fyllFunFacts() {
-        funFacts.add("Det här projektet har hittills haft 145 pull requests och över 225 commits i GitHub.");
+        funFacts.add("Det här projektet har hittills haft över 150 pull requests och 250 commits i GitHub.");
         funFacts.add("Den samlade åldern för oss fyra personer i grupp 3 är 138 år.");
         funFacts.add("Tre katter har varit involverade i utvecklingen, de heter Billy, Leif och Mad.");
         funFacts.add("Antal svordomar över Netbeans och/eller Github: 14327. Nej vänta, 14328.");
@@ -115,7 +115,7 @@ public class Huvudmeny extends javax.swing.JFrame {
         funFacts.add("<html>Larry Ellison, Oracles gundare har en förmögenhet på 208 miljarder dollar och har skapat det genom att bygga en databasplattform som är väldigt stabil, men också är låst bakom ett licenssystem som ingen normal människa förstår sig på och oavsett hur bra pålitlighet den har känns den aldrig värt pengarna.</html>");
         funFacts.add("<html>Oracle äger även varumärket JavaScript, men det har inget med Java att göra utan det fick det på köpet när de köpte upp Sun Microsystems, som i sin tur köpte det av Netscape.</html>");
         funFacts.add("<html>Oracle fick rättigheterna till MySQL när de köpte Sun Microsystems 2010, men när det skedde valde utvecklaren att skapa en fork på MySQL som de sedan döpte till MariaDB.</html>");
-        funFacts.add("MySQL är uppkallat efter dottern till den svenska medgrundaren Michael Widenius, som heter My.");
+        funFacts.add("<html>MySQL är uppkallat efter dottern till den svenska medgrundaren Michael Widenius, som heter My.</html>");
     }
     
     /**
