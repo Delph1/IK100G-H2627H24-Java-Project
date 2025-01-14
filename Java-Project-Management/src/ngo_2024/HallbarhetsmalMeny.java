@@ -58,7 +58,7 @@ public class HallbarhetsmalMeny extends javax.swing.JFrame {
                 tableModel.addColumn("Namn");
                 tableModel.addColumn("Målnummer");
                 tableModel.addColumn("Beskrivning");
-                tableModel.addColumn("pioritet");
+                tableModel.addColumn("Prioritet");
 
                 for (HashMap<String, String> rad : resultat) {
                     tableModel.addRow(new Object[]{
@@ -262,20 +262,20 @@ public class HallbarhetsmalMeny extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 834, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnUppdatera)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnÄndra)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnTaBort)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnNyttMal))
                             .addComponent(lblBeskrivning)
                             .addComponent(lblMalnummer)
                             .addComponent(lblNamn)
                             .addComponent(lblId)
                             .addComponent(lblPrioritet))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnÄndra)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnTaBort)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnNyttMal)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnUppdatera)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
