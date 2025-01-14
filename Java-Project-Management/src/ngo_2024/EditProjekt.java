@@ -17,21 +17,24 @@ import oru.inf.InfException;
  *
  * @author Märta Sjöblom
  */
-public class EditProjekt extends javax.swing.JFrame {
+public class EditProjekt extends javax.swing.JFrame{
 
     private InfDB idb;
     private boolean nyttProjekt;
     private boolean admin;  //Ska användas för att kunna ändra projektchef, bara för admin, just nu kan alla
     private SimpleDateFormat datumformat;
     private LandMeny land;
+    private ProjektMeny projektMeny;
 
     /**
      * För att skapa nya projekt, vilket bara admin kan, därav den parametervariabeln
      * @param idb
+     * @param projektMeny
      * @param admin
      */
-    public EditProjekt(InfDB idb, boolean admin) {
+    public EditProjekt(InfDB idb, ProjektMeny projektMeny, boolean admin) {
         this.idb = idb;
+        this.projektMeny = projektMeny;
         this.datumformat = new SimpleDateFormat("yyyy-MM-dd");
         nyttProjekt = true;
         this.admin = admin; 
@@ -57,10 +60,12 @@ public class EditProjekt extends javax.swing.JFrame {
      * parameter. Kan användas av projektchef, alltså kan inte fältet projektchef ändras
      *
      * @param idb
+     * @param projektMeny
      * @param pid
      */
-    public EditProjekt(InfDB idb, int pid) {
+    public EditProjekt(InfDB idb, ProjektMeny projektMeny, int pid) {
         this.idb = idb;
+        this.projektMeny = projektMeny;
         this.datumformat = new SimpleDateFormat("yyyy-MM-dd");
         this.land = new LandMeny(idb);
         initComponents();
@@ -81,12 +86,14 @@ public class EditProjekt extends javax.swing.JFrame {
      * projektID som parameter. Projektchef kan alltså redigeras. 
      *
      * @param idb
+     * @param projektMeny
      * @param pid
      * @param admin
      */
-    public EditProjekt(InfDB idb, int pid, boolean admin) {
+    public EditProjekt(InfDB idb, ProjektMeny projektMeny, int pid, boolean admin) {
         this.idb = idb;
         this.admin = admin;
+        this.projektMeny = projektMeny;
         this.datumformat = new SimpleDateFormat("yyyy-MM-dd");
         this.land = new LandMeny(idb);
         initComponents();
@@ -486,6 +493,8 @@ public class EditProjekt extends javax.swing.JFrame {
         String prioritet = null;
         int projektChef = 0;
         int lid = 0;
+        
+        String projektChefNamn="";  //För att kunna uppdatera tabellen snyggt
 
         String startDatum = "";
         String slutDatum = "";
@@ -520,6 +529,7 @@ public class EditProjekt extends javax.swing.JFrame {
             //Hämta aid för projektchef utifrån fulla namnet i comboboxen
             if (admin) {
                 if (cmbProjektChef.getSelectedIndex() != 0) {
+                    projektChefNamn = cmbProjektChef.getSelectedItem().toString();  //För att uppdatera tabellen snyggt
                     String[] namn = cmbProjektChef.getSelectedItem().toString().split(" ");
                     String sqlFornamn = namn[0];
                     String sqlEfternamn = namn[1];
@@ -547,7 +557,11 @@ public class EditProjekt extends javax.swing.JFrame {
                         + "', '" + slutDatum + "', " + kostnad + ", '" + status + "', '" + prioritet + "', " + projektChef + ", " + lid + ")";
                 try {
                     idb.insert(nyFraga);
+                    String[] nyData = {""+nyttPid, projektNamn, beskrivning, startDatum, slutDatum, txtKostnad.getText(), status, prioritet, projektChefNamn, cmbLand.getSelectedItem().toString()};
+                    projektMeny.nyRad(nyData);
                     JOptionPane.showMessageDialog(this, "Projektet har lagts till!");
+                    //Nånting här för att uppdatera i projektmenyn
+
                     dispose(); //Stänger fönstret efter projektet lagts till
                 } catch (InfException e) {
                     JOptionPane.showMessageDialog(this, "Kunde inte lägga till projekt");
@@ -564,8 +578,23 @@ public class EditProjekt extends javax.swing.JFrame {
                             + "', startdatum = '" + startDatum + "', slutdatum = '" + slutDatum + "', kostnad = " + kostnad
                             + ", status = '" + status + "', prioritet = '" + prioritet + "', land = " + lid + " where pid = " + txtProjektID.getText();
                 }
+                
+
+                //Om inte admin, hämta fullt namn för att visa snyggt i uppdaterad tabell
+                if (!admin) {
+                    String pcNamn = "select concat(fornamn, ' ', efternamn) as namn FROM anstalld where aid in (select projektchef from projekt where pid = "+ txtProjektID.getText()+");";
+                    try {
+                        projektChefNamn = idb.fetchSingle(pcNamn);
+                        System.out.println(projektChefNamn);
+                    }
+                    catch (InfException e){
+                        JOptionPane.showMessageDialog(null, "Kunde inte hämta information om projektchef. Något gick fel när data skulle hämtas i databasen.");
+                    }
+                }
                 try {
                     idb.update(uppdateraFraga);
+                    String[] nyData = {txtProjektID.getText(), projektNamn, beskrivning, startDatum, slutDatum, txtKostnad.getText(), status, prioritet, projektChefNamn, cmbLand.getSelectedItem().toString()};
+                    projektMeny.uppdateraRad(nyData);
                     JOptionPane.showMessageDialog(null, "Projektet har uppdaterats!");
                     dispose(); //Stänger fönstret efter projektet uppdaterats
                 } catch (InfException e) {
