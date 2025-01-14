@@ -52,6 +52,7 @@ public class EditAvdelning extends javax.swing.JFrame {
             //Om det inte finns döljs fälten för ID, eftersom de är tomma värden och ska inte heller fyllas i.
         {
             txtId.setVisible(false);
+            this.setTitle("Ny avdelning");
         }
         //Döljer ID-fälten för Chef och Stad. Istället visar vi de utskrivna fälten som har de faktiska nämnen på chefen och staden. 
         txtStadId.setVisible(false);
@@ -66,12 +67,19 @@ public class EditAvdelning extends javax.swing.JFrame {
      * @return HashMap<String, String>
      */
     private HashMap<String, String> skapaChefHashMap() {
-        ArrayList<HashMap<String, String>> allaAnstallda = anstalld.getAllaAnstallda();
-        HashMap<String, String> enAnstalld;
-        for (int i = 0; i < allaAnstallda.size(); i++) {
-            enAnstalld = allaAnstallda.get(i);
+        String sqlHandlaggare = "select * from anstalld where aid in (select aid from handlaggare)";
+        ArrayList<HashMap<String,String>> allaHandlaggare = new ArrayList<>();
+        try {
+             allaHandlaggare = idb.fetchRows(sqlHandlaggare);
+        }
+        catch (InfException e) {
+            JOptionPane.showMessageDialog(null, "Kunde inte hitta handläggare");
+        }
+        HashMap<String, String> enHandlaggare;
+        for (int i = 0; i < allaHandlaggare.size(); i++) {
+            enHandlaggare = allaHandlaggare.get(i);
             {
-                chefLista.put(enAnstalld.get("aid"), enAnstalld.get("fornamn") + " " + enAnstalld.get("efternamn"));
+                chefLista.put(enHandlaggare.get("aid"), enHandlaggare.get("fornamn") + " " + enHandlaggare.get("efternamn"));
             }
         }
         return chefLista;
@@ -178,6 +186,7 @@ public class EditAvdelning extends javax.swing.JFrame {
         btnAvbryt = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Redigera avdelning");
 
         txtNamn.setColumns(10);
         txtNamn.setToolTipText("");
