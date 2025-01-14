@@ -442,6 +442,8 @@ public class EditAnstalld extends javax.swing.JFrame {
         String losen = txtLosen.getText();
         String avdelningsNamn = (String) comboAvdelning.getSelectedItem(); // Hämta valt namn från combobox
         String avdelningId = avdelningMap.get(avdelningsNamn);
+        
+        if (jCheckBoxHandlaggare.isSelected()||jCheckBoxAdmin.isSelected()) {
 
         //validering av inmatad data
         if (Validering.faltEjTomtKontroll(txtFornamn)
@@ -611,6 +613,10 @@ public class EditAnstalld extends javax.swing.JFrame {
                 System.out.println("Det gick inte att hämta nästa ID-nummer från databasen.");
             }
 
+        }
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "Vänligen välj en anställd-typ\nHandläggare eller Administratör");  
         }
     }//GEN-LAST:event_sparaKnappActionPerformed
 
