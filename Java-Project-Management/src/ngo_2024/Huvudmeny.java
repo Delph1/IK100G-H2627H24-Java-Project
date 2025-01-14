@@ -145,6 +145,7 @@ public class Huvudmeny extends javax.swing.JFrame {
         lblValkommen = new javax.swing.JLabel();
         lblDagens = new javax.swing.JLabel();
         lblFunFact = new javax.swing.JLabel();
+        btnSlumpaFakta = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         menyMinaUppgifter = new javax.swing.JMenu();
         mvminMinaUppgifter = new javax.swing.JMenuItem();
@@ -219,6 +220,13 @@ public class Huvudmeny extends javax.swing.JFrame {
         lblFunFact.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         lblFunFact.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
         lblFunFact.setPreferredSize(new java.awt.Dimension(525, 100));
+
+        btnSlumpaFakta.setText("Slumpa fakta");
+        btnSlumpaFakta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSlumpaFaktaActionPerformed(evt);
+            }
+        });
 
         menyMinaUppgifter.setText("Mina uppgifter");
 
@@ -387,10 +395,12 @@ public class Huvudmeny extends javax.swing.JFrame {
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(33, 33, 33)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblDagens)
-                            .addComponent(lblValkommen)
-                            .addComponent(lblFunFact, javax.swing.GroupLayout.PREFERRED_SIZE, 523, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnSlumpaFakta)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblDagens)
+                                .addComponent(lblValkommen)
+                                .addComponent(lblFunFact, javax.swing.GroupLayout.PREFERRED_SIZE, 523, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(54, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -402,7 +412,9 @@ public class Huvudmeny extends javax.swing.JFrame {
                 .addComponent(lblDagens)
                 .addGap(18, 18, 18)
                 .addComponent(lblFunFact, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 150, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(btnSlumpaFakta)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -516,9 +528,14 @@ public class Huvudmeny extends javax.swing.JFrame {
     private void mvadnStadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mvadnStadActionPerformed
         new StadMeny(idb).setVisible(true);
     }//GEN-LAST:event_mvadnStadActionPerformed
+
+    private void btnSlumpaFaktaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSlumpaFaktaActionPerformed
+        lblFunFact.setText(genereraFunFact());
+    }//GEN-LAST:event_btnSlumpaFaktaActionPerformed
   
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSlumpaFakta;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuBar jMenuBar1;
