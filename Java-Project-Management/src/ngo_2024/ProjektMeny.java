@@ -363,6 +363,7 @@ public class ProjektMeny extends javax.swing.JFrame {
     private void cmbAvdelningsValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbAvdelningsValActionPerformed
         jDateStartdatumSok.setDate(null);   //nollställer datumväljarna
         jDateSlutdatumSok.setDate(null);    //nollställer datumväljarna
+        cmbStatus.setSelectedItem("Välj status");
         if (cmbAvdelningsVal.getSelectedIndex() == 0) {
             cmbStatus.setSelectedItem("Välj status");
         } else {
