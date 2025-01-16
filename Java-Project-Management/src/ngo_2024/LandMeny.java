@@ -138,11 +138,15 @@ public class LandMeny extends javax.swing.JFrame {
                 idb.update(query1);
 
                 // Radera landet
-                String query2 = "DELETE FROM land WHERE lid = " + queryLid;
-                idb.delete(query2);
+                try {
+                    String query2 = "DELETE FROM land WHERE lid = " + queryLid;
+                    idb.delete(query2);
+                } catch (InfException e) {
+                    JOptionPane.showMessageDialog(this, "Landet gick inte att radera. Kontrollera att databasen fungerar som den ska.");
+                }
                 populeraLandTabell(getLander());
             } catch (InfException e) {
-                JOptionPane.showMessageDialog(this, "Landet gick inte att radera. Kontrollera att databasen fungerar som den ska.");
+                JOptionPane.showMessageDialog(this, "Landet gick inte att ta bort från Stad. Kontrollera att databasen fungerar som den ska.");
             }
         } else {
             JOptionPane.showMessageDialog(this, "Ingen rad är markerad!");
