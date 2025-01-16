@@ -58,6 +58,7 @@ public class InloggningMeny extends javax.swing.JFrame {
         txtLösenord = new javax.swing.JPasswordField();
         btnAterställLösenord = new javax.swing.JButton();
         lblLoggaIn = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Inloggning");
@@ -109,13 +110,20 @@ public class InloggningMeny extends javax.swing.JFrame {
         lblLoggaIn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblLoggaIn.setText("Logga in");
 
+        jButton3.setText("Handläggare");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(42, 42, 42)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblMeddelande)
@@ -125,20 +133,22 @@ public class InloggningMeny extends javax.swing.JFrame {
                                     .addComponent(lblLösenord))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblLoggaIn)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(txtAnvändarnamn)
-                                        .addComponent(txtLösenord, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lblLoggaIn)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE))
+                                    .addComponent(txtAnvändarnamn)
+                                    .addComponent(txtLösenord)))))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(22, 22, 22)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
-                            .addComponent(jButton2))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnAterställLösenord, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnLoggaIn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addGap(28, 28, 28))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -163,7 +173,9 @@ public class InloggningMeny extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAterställLösenord)
                     .addComponent(jButton2))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton3)
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         pack();
@@ -218,8 +230,6 @@ public class InloggningMeny extends javax.swing.JFrame {
         
         String användarnamn = txtAnvändarnamn.getText();
         String lösenord = new String(txtLösenord.getPassword());
-        
-        loggaIn(användarnamn, lösenord);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -228,8 +238,6 @@ public class InloggningMeny extends javax.swing.JFrame {
         
         String användarnamn = txtAnvändarnamn.getText();
         String lösenord = new String(txtLösenord.getPassword());
-        
-        loggaIn(användarnamn, lösenord);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void txtLösenordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtLösenordKeyPressed
@@ -240,6 +248,14 @@ public class InloggningMeny extends javax.swing.JFrame {
             loggaIn(användarnamn, lösenord);
         }
     }//GEN-LAST:event_txtLösenordKeyPressed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        txtAnvändarnamn.setText("sara.l@example.com");
+        txtLösenord.setText("password456");
+        
+        String användarnamn = txtAnvändarnamn.getText();
+        String lösenord = new String(txtLösenord.getPassword());
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     private void btnAterställLösenordActionPerformed(java.awt.event.ActionEvent evt) {                                                     
         String dialog = "Ange din e-postadress i rutan nedan,";
@@ -293,6 +309,7 @@ public class InloggningMeny extends javax.swing.JFrame {
     private javax.swing.JButton btnLoggaIn;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel lblAnvändarnamn;
     private javax.swing.JLabel lblLoggaIn;
     private javax.swing.JLabel lblLösenord;
