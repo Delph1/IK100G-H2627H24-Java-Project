@@ -35,8 +35,6 @@ public class InloggningMeny extends javax.swing.JFrame {
         lblMeddelande.setVisible(false);
         setLocationRelativeTo(null); //Den här koden sätter fönstret i mitten av skärmen.
         txtLösenord.setText("");
-        jButton1.setVisible(true); //För utvecklarnas egen testning, ej för granskning
-        jButton2.setVisible(true); //För utvecklarnas egen testning, ej för granskning
     }
 
     /**
@@ -53,12 +51,9 @@ public class InloggningMeny extends javax.swing.JFrame {
         txtAnvändarnamn = new javax.swing.JTextField();
         lblMeddelande = new javax.swing.JLabel();
         btnLoggaIn = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         txtLösenord = new javax.swing.JPasswordField();
         btnAterställLösenord = new javax.swing.JButton();
         lblLoggaIn = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Inloggning");
@@ -79,20 +74,6 @@ public class InloggningMeny extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Administratör");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        jButton2.setText("Projektledare");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
         txtLösenord.setText("jPasswordField1");
         txtLösenord.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -109,13 +90,6 @@ public class InloggningMeny extends javax.swing.JFrame {
 
         lblLoggaIn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblLoggaIn.setText("Logga in");
-
-        jButton3.setText("Handläggare");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -139,12 +113,7 @@ public class InloggningMeny extends javax.swing.JFrame {
                                     .addComponent(txtAnvändarnamn)
                                     .addComponent(txtLösenord)))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
+                        .addGap(22, 169, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnAterställLösenord, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnLoggaIn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -166,16 +135,10 @@ public class InloggningMeny extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblMeddelande)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnLoggaIn)
-                    .addComponent(jButton1))
+                .addComponent(btnLoggaIn)
                 .addGap(5, 5, 5)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAterställLösenord)
-                    .addComponent(jButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addComponent(btnAterställLösenord)
+                .addContainerGap(47, Short.MAX_VALUE))
         );
 
         pack();
@@ -224,22 +187,6 @@ public class InloggningMeny extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnLoggaInActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        txtAnvändarnamn.setText("maria.g@example.com");
-        txtLösenord.setText("password123");
-        
-        String användarnamn = txtAnvändarnamn.getText();
-        String lösenord = new String(txtLösenord.getPassword());
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        txtAnvändarnamn.setText("chen.wei@example.com");
-        txtLösenord.setText("passwordabc");
-        
-        String användarnamn = txtAnvändarnamn.getText();
-        String lösenord = new String(txtLösenord.getPassword());
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     private void txtLösenordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtLösenordKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER)
         {
@@ -248,14 +195,6 @@ public class InloggningMeny extends javax.swing.JFrame {
             loggaIn(användarnamn, lösenord);
         }
     }//GEN-LAST:event_txtLösenordKeyPressed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        txtAnvändarnamn.setText("sara.l@example.com");
-        txtLösenord.setText("password456");
-        
-        String användarnamn = txtAnvändarnamn.getText();
-        String lösenord = new String(txtLösenord.getPassword());
-    }//GEN-LAST:event_jButton3ActionPerformed
 
     private void btnAterställLösenordActionPerformed(java.awt.event.ActionEvent evt) {                                                     
         String dialog = "Ange din e-postadress i rutan nedan,";
@@ -307,9 +246,6 @@ public class InloggningMeny extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAterställLösenord;
     private javax.swing.JButton btnLoggaIn;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel lblAnvändarnamn;
     private javax.swing.JLabel lblLoggaIn;
     private javax.swing.JLabel lblLösenord;
