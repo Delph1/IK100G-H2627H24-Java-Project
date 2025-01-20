@@ -12,4 +12,4 @@ Claudia Kourieh
 
 A simple GUI that connects to a mockdatabase that was created using ChatGPT. 
 
-[image](image.png)
+(image)[image.png]
