@@ -10,6 +10,6 @@ Claudia Kourieh
 
 ## Project Management System for an NGO
 
-A simple GUI that connects to a mockdatabase that was created using ChatGPT. 
+A simple GUI that connects to a mock database that was created using ChatGPT. 
 
 ![GUI screenshot](image.png "GUI")
