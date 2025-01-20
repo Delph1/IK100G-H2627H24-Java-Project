@@ -9,3 +9,7 @@ Märta Sjöblom\
 Claudia Kourieh
 
 ## Project Management System for an NGO
+
+A simple GUI that connects to a mockdatabase that was created using ChatGPT. 
+
+[image](image.png)
